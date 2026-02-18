@@ -4,25 +4,12 @@ import { Briefcase } from "lucide-react";
 
 const experiences = [
   {
-    role: "Senior QA Engineer",
-    company: "Tech Corp",
-    period: "2022 — Present",
-    description: "Lead test automation strategy for microservices architecture. Built Cypress E2E framework from scratch, reducing regression testing time by 70%.",
-    tech: ["Cypress", "TypeScript", "Jenkins", "Docker"],
-  },
-  {
-    role: "QA Engineer",
-    company: "Software Inc",
-    period: "2020 — 2022",
-    description: "Developed automated test suites for REST APIs and web applications. Implemented CI/CD pipeline integration for continuous testing.",
-    tech: ["Selenium", "Java", "Postman", "GitLab CI"],
-  },
-  {
-    role: "Junior QA Engineer",
-    company: "StartupXYZ",
-    period: "2018 — 2020",
-    description: "Performed manual and exploratory testing for mobile and web applications. Created detailed test plans and bug reports.",
-    tech: ["Jira", "TestRail", "Appium", "SQL"],
+    role: "Associate QA / App Testing Specialist",
+    company: "Appmaker.xyz",
+    period: "October 2024 — Present",
+    description:
+      "Conduct functional, regression, performance & usability testing. Validate Android & iOS mobile applications. Identify, document and track defects. Collaborate with developers to ensure release quality. Analyze engagement metrics using Firebase, MoEngage & WebEngage.",
+    tech: ["Selenium", "Postman", "JMeter", "JIRA", "Firebase", "MoEngage", "Tuskr"],
   },
 ];
 
@@ -47,7 +34,6 @@ const ExperienceSection = () => {
         </motion.div>
 
         <div className="relative">
-          {/* Timeline line */}
           <div className="absolute left-[19px] top-0 bottom-0 w-px bg-border" />
 
           <div className="space-y-12">
@@ -59,7 +45,6 @@ const ExperienceSection = () => {
                 transition={{ delay: 0.3 + i * 0.2 }}
                 className="relative pl-14"
               >
-                {/* Timeline dot */}
                 <div className="absolute left-2.5 top-1 w-4 h-4 rounded-full bg-neon neon-glow" />
 
                 <div className="bg-card border border-border rounded-lg p-6 hover:border-neon/30 transition-colors">
@@ -74,10 +59,7 @@ const ExperienceSection = () => {
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {exp.tech.map((t) => (
-                      <span
-                        key={t}
-                        className="text-xs font-mono text-neon bg-neon/10 px-2 py-1 rounded"
-                      >
+                      <span key={t} className="text-xs font-mono text-neon bg-neon/10 px-2 py-1 rounded">
                         {t}
                       </span>
                     ))}

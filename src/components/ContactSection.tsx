@@ -1,15 +1,17 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { Mail, MapPin, Send, Linkedin, Github, Twitter } from "lucide-react";
+import { Mail, MapPin, Send, Linkedin, Github, Phone } from "lucide-react";
+import useClickSound from "@/hooks/useClickSound";
 
 const ContactSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [formState, setFormState] = useState({ name: "", email: "", message: "" });
+  const playClick = useClickSound();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // placeholder
+    playClick();
     alert("Thank you for your message! I'll get back to you soon.");
     setFormState({ name: "", email: "", message: "" });
   };
@@ -26,12 +28,10 @@ const ContactSection = () => {
           <p className="text-neon font-mono text-sm tracking-widest uppercase mb-2">
             05. Contact
           </p>
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Get In Touch
-          </h2>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">Get In Touch</h2>
           <p className="text-muted-foreground max-w-lg mx-auto">
-            Have a project in mind or want to discuss QA strategies? 
-            I'm always open to new opportunities and conversations.
+            Have a project in mind or want to discuss QA strategies?
+            I'm open to opportunities worldwide.
           </p>
         </motion.div>
 
@@ -88,7 +88,21 @@ const ContactSection = () => {
               </div>
               <div>
                 <p className="text-sm font-medium">Email</p>
-                <p className="text-sm text-muted-foreground">hello@qaengineer.dev</p>
+                <a href="mailto:xaviervarghese468@gmail.com" className="text-sm text-muted-foreground hover:text-neon transition-colors">
+                  xaviervarghese468@gmail.com
+                </a>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 rounded-md bg-neon/10 flex items-center justify-center">
+                <Phone className="text-neon" size={18} />
+              </div>
+              <div>
+                <p className="text-sm font-medium">Phone</p>
+                <a href="tel:+918089507278" className="text-sm text-muted-foreground hover:text-neon transition-colors">
+                  +91 8089507278
+                </a>
               </div>
             </div>
 
@@ -98,7 +112,8 @@ const ContactSection = () => {
               </div>
               <div>
                 <p className="text-sm font-medium">Location</p>
-                <p className="text-sm text-muted-foreground">Available Worldwide (Remote)</p>
+                <p className="text-sm text-muted-foreground">Kochi, Kerala, India</p>
+                <p className="text-xs text-muted-foreground">Open to Opportunities Worldwide</p>
               </div>
             </div>
 
@@ -106,13 +121,15 @@ const ContactSection = () => {
               <p className="text-sm text-muted-foreground mb-3">Find me on</p>
               <div className="flex gap-3">
                 {[
-                  { icon: Github, href: "#" },
-                  { icon: Linkedin, href: "#" },
-                  { icon: Twitter, href: "#" },
+                  { icon: Github, href: "https://github.com/xavier552" },
+                  { icon: Linkedin, href: "https://www.linkedin.com/in/xavier-varghese-0b617624a" },
                 ].map(({ icon: Icon, href }, i) => (
                   <a
                     key={i}
                     href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={playClick}
                     className="w-10 h-10 rounded-md bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-neon hover:border-neon/50 transition-colors"
                   >
                     <Icon size={18} />

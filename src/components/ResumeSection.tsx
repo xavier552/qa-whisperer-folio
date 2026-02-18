@@ -1,16 +1,18 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Download, FileText } from "lucide-react";
+import useClickSound from "@/hooks/useClickSound";
 
 const ResumeSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const playClick = useClickSound();
 
   const resumeHighlights = [
-    { label: "Years of Experience", value: "6+" },
-    { label: "Projects Delivered", value: "30+" },
-    { label: "Bugs Found", value: "5000+" },
-    { label: "Test Cases Written", value: "10K+" },
+    { label: "Years of Experience", value: "1.5+" },
+    { label: "Manual Projects", value: "30+" },
+    { label: "Bugs Identified", value: "777+" },
+    { label: "SDLC & STLC", value: "Strong" },
   ];
 
   return (
@@ -25,9 +27,7 @@ const ResumeSection = () => {
           <p className="text-neon font-mono text-sm tracking-widest uppercase mb-2">
             06. Resume
           </p>
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            My Resume
-          </h2>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">My Resume</h2>
         </motion.div>
 
         <motion.div
@@ -36,7 +36,7 @@ const ResumeSection = () => {
           transition={{ delay: 0.3 }}
           className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10"
         >
-          {resumeHighlights.map((item, i) => (
+          {resumeHighlights.map((item) => (
             <div
               key={item.label}
               className="bg-card border border-border rounded-lg p-5 text-center hover:border-neon/40 transition-colors"
@@ -60,6 +60,7 @@ const ResumeSection = () => {
           </p>
           <a
             href="#"
+            onClick={playClick}
             className="inline-flex items-center gap-2 bg-neon text-primary-foreground px-6 py-3 rounded-md font-medium hover:opacity-90 transition-opacity text-sm"
           >
             <Download size={16} />

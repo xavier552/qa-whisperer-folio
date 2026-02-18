@@ -1,41 +1,29 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { ExternalLink, Github, FolderOpen } from "lucide-react";
+import { Github, FolderOpen } from "lucide-react";
+import useClickSound from "@/hooks/useClickSound";
 
 const projects = [
   {
-    title: "E2E Test Framework",
-    description: "A comprehensive end-to-end testing framework built with Cypress and TypeScript. Supports parallel execution, custom reporting, and CI/CD integration.",
-    tech: ["Cypress", "TypeScript", "Docker", "GitHub Actions"],
-    github: "#",
-    live: "#",
+    title: "Manual Testing – Nithya Group Website",
+    description:
+      "Designed and executed comprehensive test cases. Conducted exploratory testing to uncover edge-case defects. Documented and reported all findings systematically.",
+    tech: ["Manual Testing", "Test Cases", "Exploratory Testing", "Defect Reporting"],
+    github: "https://github.com/xavier552/Manual_Test_Practice",
   },
   {
-    title: "API Test Suite",
-    description: "Automated API testing suite for RESTful microservices. Includes data-driven testing, schema validation, and performance benchmarks.",
-    tech: ["REST Assured", "Java", "TestNG", "Allure"],
-    github: "#",
-    live: "#",
-  },
-  {
-    title: "Performance Test Dashboard",
-    description: "Real-time performance monitoring dashboard that visualizes k6 load test results. Helps teams identify bottlenecks quickly.",
-    tech: ["k6", "Grafana", "InfluxDB", "React"],
-    github: "#",
-    live: "#",
-  },
-  {
-    title: "Mobile Test Automation",
-    description: "Cross-platform mobile testing framework using Appium for both Android and iOS. Supports BDD with Cucumber.",
-    tech: ["Appium", "Cucumber", "Java", "BrowserStack"],
-    github: "#",
-    live: "#",
+    title: "Automation Testing – demoqa.com",
+    description:
+      "Automated web interactions using Selenium + TestNG. Implemented Page Object Model (POM) framework. Automated forms, alerts, buttons & iframe navigation.",
+    tech: ["Selenium WebDriver", "TestNG", "Maven", "POM", "Java"],
+    github: "https://github.com/xavier552/automation_final_project",
   },
 ];
 
 const ProjectsSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const playClick = useClickSound();
 
   return (
     <section id="projects" className="section-padding relative">
@@ -64,14 +52,15 @@ const ProjectsSection = () => {
             >
               <div className="flex items-center justify-between mb-4">
                 <FolderOpen className="text-neon" size={28} />
-                <div className="flex items-center gap-3">
-                  <a href={project.github} className="text-muted-foreground hover:text-neon transition-colors">
-                    <Github size={18} />
-                  </a>
-                  <a href={project.live} className="text-muted-foreground hover:text-neon transition-colors">
-                    <ExternalLink size={18} />
-                  </a>
-                </div>
+                <a
+                  href={project.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={playClick}
+                  className="text-muted-foreground hover:text-neon transition-colors"
+                >
+                  <Github size={18} />
+                </a>
               </div>
 
               <h3 className="text-lg font-semibold mb-2 group-hover:text-neon transition-colors">
@@ -83,10 +72,7 @@ const ProjectsSection = () => {
 
               <div className="flex flex-wrap gap-2">
                 {project.tech.map((t) => (
-                  <span
-                    key={t}
-                    className="text-xs font-mono text-muted-foreground"
-                  >
+                  <span key={t} className="text-xs font-mono text-muted-foreground">
                     {t}
                   </span>
                 ))}
