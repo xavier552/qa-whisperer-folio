@@ -1,13 +1,14 @@
-import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { Bug, TestTube, Zap, Shield } from "lucide-react";
+import { Bug, TestTube, Zap, Shield, Smartphone, BarChart3 } from "lucide-react";
 
 const skills = [
-  { icon: TestTube, label: "Test Automation", desc: "Selenium, Cypress, Playwright" },
-  { icon: Bug, label: "Bug Hunting", desc: "Manual & Exploratory Testing" },
-  { icon: Zap, label: "CI/CD", desc: "Jenkins, GitHub Actions, GitLab CI" },
-  { icon: Shield, label: "API Testing", desc: "Postman, REST Assured, k6" },
+  { icon: TestTube, label: "Manual & Exploratory", desc: "Functional, Regression, Usability Testing" },
+  { icon: Bug, label: "Automation Testing", desc: "Selenium WebDriver, TestNG, Maven, POM" },
+  { icon: Zap, label: "API & Performance", desc: "Postman, JMeter" },
+  { icon: Shield, label: "CI/CD & Version Control", desc: "Git, GitHub, JIRA, Tuskr" },
+  { icon: Smartphone, label: "Mobile Testing", desc: "Android & iOS App Testing" },
+  { icon: BarChart3, label: "Analytics Tools", desc: "Firebase, MoEngage, WebEngage, CleverTap, PostHog, Klaviyo" },
 ];
 
 const AboutSection = () => {
@@ -25,9 +26,7 @@ const AboutSection = () => {
           <p className="text-neon font-mono text-sm tracking-widest uppercase mb-2">
             01. About Me
           </p>
-          <h2 className="text-4xl md:text-5xl font-bold mb-8">
-            Who I Am
-          </h2>
+          <h2 className="text-4xl md:text-5xl font-bold mb-8">Who I Am</h2>
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-12">
@@ -38,19 +37,21 @@ const AboutSection = () => {
             className="space-y-4"
           >
             <p className="text-muted-foreground leading-relaxed">
-              I'm a QA Engineer with a passion for ensuring software quality at every level. 
-              From writing comprehensive test plans to building robust automation frameworks, 
-              I believe in catching bugs before they reach production.
+              I'm Xavier Varghese — a detail-oriented QA Engineer based in Kochi, Kerala, India with 1.5+ years of hands-on experience in manual testing, automation frameworks, API validation, and performance testing.
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              My expertise spans across manual testing, test automation, API testing, 
-              performance testing, and CI/CD integration. I enjoy collaborating with 
-              development teams to embed quality throughout the software development lifecycle.
+              I specialize in mobile application testing across Android & iOS platforms, and I'm passionate about shift-left testing practices — embedding quality throughout the entire SDLC.
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              When I'm not breaking software, you'll find me writing about QA best practices, 
-              exploring new testing tools, or contributing to the testing community.
+              My toolkit includes Java, SQL, Selenium WebDriver, Postman, JMeter, and analytics platforms like Firebase, MoEngage, and CleverTap. I thrive on finding edge cases, writing thorough test cases, and collaborating with dev teams to ship reliable software.
             </p>
+            <div className="flex flex-wrap gap-3 pt-2">
+              {["Java", "SQL", "Selenium", "TestNG", "Postman", "JMeter", "Git", "JIRA"].map((t) => (
+                <span key={t} className="text-xs font-mono text-neon bg-neon/10 px-2.5 py-1 rounded">
+                  {t}
+                </span>
+              ))}
+            </div>
           </motion.div>
 
           <motion.div

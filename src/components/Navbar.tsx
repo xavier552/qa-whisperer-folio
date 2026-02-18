@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import useClickSound from "@/hooks/useClickSound";
 
 const navItems = [
   { label: "Home", href: "#home" },
@@ -14,6 +15,7 @@ const navItems = [
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const playClick = useClickSound();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -28,16 +30,16 @@ const Navbar = () => {
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between h-16">
-        <a href="#home" className="text-xl font-bold text-neon tracking-tight">
-          &lt;QA/&gt;
+        <a href="#home" onClick={playClick} className="text-xl font-bold text-neon tracking-tight">
+          &lt;XV/&gt;
         </a>
 
-        {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-8">
           {navItems.map((item) => (
             <a
               key={item.href}
               href={item.href}
+              onClick={playClick}
               className="text-sm text-muted-foreground hover:text-neon transition-colors duration-200 tracking-wide uppercase"
             >
               {item.label}
@@ -45,22 +47,21 @@ const Navbar = () => {
           ))}
           <a
             href="#resume"
+            onClick={playClick}
             className="text-sm font-medium bg-neon text-primary-foreground px-4 py-2 rounded-md hover:opacity-90 transition-opacity"
           >
             Resume
           </a>
         </div>
 
-        {/* Mobile toggle */}
         <button
           className="md:hidden text-foreground"
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={() => { setIsOpen(!isOpen); playClick(); }}
         >
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
-      {/* Mobile menu */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -74,7 +75,7 @@ const Navbar = () => {
                 <a
                   key={item.href}
                   href={item.href}
-                  onClick={() => setIsOpen(false)}
+                  onClick={() => { setIsOpen(false); playClick(); }}
                   className="text-sm text-muted-foreground hover:text-neon transition-colors uppercase tracking-wide"
                 >
                   {item.label}
@@ -82,7 +83,7 @@ const Navbar = () => {
               ))}
               <a
                 href="#resume"
-                onClick={() => setIsOpen(false)}
+                onClick={() => { setIsOpen(false); playClick(); }}
                 className="text-sm font-medium bg-neon text-primary-foreground px-4 py-2 rounded-md text-center"
               >
                 Resume
