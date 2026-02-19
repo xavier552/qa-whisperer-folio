@@ -1,6 +1,6 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { Github, FolderOpen } from "lucide-react";
+import { Github, FolderOpen, ExternalLink } from "lucide-react";
 import useClickSound from "@/hooks/useClickSound";
 
 const projects = [
@@ -15,7 +15,7 @@ const projects = [
     title: "Automation Testing – demoqa.com",
     description:
       "Automated web interactions using Selenium + TestNG. Implemented Page Object Model (POM) framework. Automated forms, alerts, buttons & iframe navigation.",
-    tech: ["Selenium WebDriver", "TestNG", "Maven", "POM", "Java"],
+    tech: ["Selenium WebDriver", "TestNG", "Maven", "Cucumber (BDD)", "POM", "Java"],
     github: "https://github.com/xavier552/automation_final_project",
   },
 ];
@@ -70,13 +70,24 @@ const ProjectsSection = () => {
                 {project.description}
               </p>
 
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2 mb-5">
                 {project.tech.map((t) => (
                   <span key={t} className="text-xs font-mono text-muted-foreground">
                     {t}
                   </span>
                 ))}
               </div>
+
+              <a
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={playClick}
+                className="inline-flex items-center gap-2 bg-neon text-primary-foreground px-5 py-2.5 rounded-md font-medium hover:opacity-90 transition-opacity text-sm"
+              >
+                <ExternalLink size={14} />
+                View Project on GitHub
+              </a>
             </motion.div>
           ))}
         </div>

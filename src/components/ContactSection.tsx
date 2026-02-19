@@ -1,6 +1,6 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { Mail, MapPin, Send, Linkedin, Github, Phone } from "lucide-react";
+import { Mail, MapPin, Send, Linkedin, Github, Phone, MessageCircle } from "lucide-react";
 import useClickSound from "@/hooks/useClickSound";
 
 const ContactSection = () => {
@@ -80,34 +80,54 @@ const ContactSection = () => {
             initial={{ opacity: 0, x: 30 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ delay: 0.4 }}
-            className="space-y-6"
+            className="space-y-5"
           >
-            <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-md bg-neon/10 flex items-center justify-center">
+            <a
+              href="mailto:xaviervarghese468@gmail.com"
+              onClick={playClick}
+              className="flex items-center gap-4 p-3 rounded-lg hover:bg-card transition-colors group"
+            >
+              <div className="w-10 h-10 rounded-md bg-neon/10 flex items-center justify-center shrink-0">
                 <Mail className="text-neon" size={18} />
               </div>
               <div>
-                <p className="text-sm font-medium">Email</p>
-                <a href="mailto:xaviervarghese468@gmail.com" className="text-sm text-muted-foreground hover:text-neon transition-colors">
-                  xaviervarghese468@gmail.com
-                </a>
+                <p className="text-sm font-medium group-hover:text-neon transition-colors">Email</p>
+                <p className="text-sm text-muted-foreground">xaviervarghese468@gmail.com</p>
               </div>
-            </div>
+            </a>
 
-            <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-md bg-neon/10 flex items-center justify-center">
+            <a
+              href="tel:+918089507278"
+              onClick={playClick}
+              className="flex items-center gap-4 p-3 rounded-lg hover:bg-card transition-colors group"
+            >
+              <div className="w-10 h-10 rounded-md bg-neon/10 flex items-center justify-center shrink-0">
                 <Phone className="text-neon" size={18} />
               </div>
               <div>
-                <p className="text-sm font-medium">Phone</p>
-                <a href="tel:+918089507278" className="text-sm text-muted-foreground hover:text-neon transition-colors">
-                  +91 8089507278
-                </a>
+                <p className="text-sm font-medium group-hover:text-neon transition-colors">Phone</p>
+                <p className="text-sm text-muted-foreground">+91 8089507278</p>
               </div>
-            </div>
+            </a>
 
-            <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-md bg-neon/10 flex items-center justify-center">
+            <a
+              href="https://wa.me/918089507278"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={playClick}
+              className="flex items-center gap-4 p-3 rounded-lg hover:bg-card transition-colors group"
+            >
+              <div className="w-10 h-10 rounded-md bg-neon/10 flex items-center justify-center shrink-0">
+                <MessageCircle className="text-neon" size={18} />
+              </div>
+              <div>
+                <p className="text-sm font-medium group-hover:text-neon transition-colors">WhatsApp</p>
+                <p className="text-sm text-muted-foreground">Chat on WhatsApp</p>
+              </div>
+            </a>
+
+            <div className="flex items-center gap-4 p-3">
+              <div className="w-10 h-10 rounded-md bg-neon/10 flex items-center justify-center shrink-0">
                 <MapPin className="text-neon" size={18} />
               </div>
               <div>
@@ -117,15 +137,15 @@ const ContactSection = () => {
               </div>
             </div>
 
-            <div className="pt-4 border-t border-border">
+            <div className="pt-3 border-t border-border">
               <p className="text-sm text-muted-foreground mb-3">Find me on</p>
               <div className="flex gap-3">
                 {[
-                  { icon: Github, href: "https://github.com/xavier552" },
-                  { icon: Linkedin, href: "https://www.linkedin.com/in/xavier-varghese-0b617624a" },
-                ].map(({ icon: Icon, href }, i) => (
+                  { icon: Github, href: "https://github.com/xavier552", label: "GitHub" },
+                  { icon: Linkedin, href: "https://www.linkedin.com/in/xavier-varghese-0b617624a", label: "LinkedIn" },
+                ].map(({ icon: Icon, href, label }) => (
                   <a
-                    key={i}
+                    key={label}
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"

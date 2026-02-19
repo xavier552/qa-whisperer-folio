@@ -27,7 +27,7 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.6 }}
-          className="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight mb-6"
+          className="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight mb-4"
         >
           Xavier
           <br />
@@ -37,11 +37,19 @@ const HeroSection = () => {
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-          className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10"
+          transition={{ delay: 0.5 }}
+          className="text-xl md:text-2xl lg:text-3xl font-semibold text-foreground/90 italic mb-3 max-w-2xl mx-auto"
         >
-          Ensuring reliable, scalable, and production-ready software through
-          structured testing and intelligent automation.
+          "Quality is not an act, it's a habit."
+        </motion.p>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto mb-10"
+        >
+          I break things before users do. Passionate about test automation, quality processes, and building reliable software.
         </motion.p>
 
         <motion.div
