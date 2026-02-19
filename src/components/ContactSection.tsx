@@ -1,6 +1,6 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { Mail, MapPin, Send, Linkedin, Github, Phone, MessageCircle } from "lucide-react";
+import { Mail, MapPin, Send, Linkedin, Github } from "lucide-react";
 import useClickSound from "@/hooks/useClickSound";
 
 const ContactSection = () => {
@@ -93,36 +93,6 @@ const ContactSection = () => {
               <div>
                 <p className="text-sm font-medium group-hover:text-neon transition-colors">Email</p>
                 <p className="text-sm text-muted-foreground">xaviervarghese468@gmail.com</p>
-              </div>
-            </a>
-
-            <a
-              href="tel:+918089507278"
-              onClick={playClick}
-              className="flex items-center gap-4 p-3 rounded-lg hover:bg-card transition-colors group"
-            >
-              <div className="w-10 h-10 rounded-md bg-neon/10 flex items-center justify-center shrink-0">
-                <Phone className="text-neon" size={18} />
-              </div>
-              <div>
-                <p className="text-sm font-medium group-hover:text-neon transition-colors">Phone</p>
-                <p className="text-sm text-muted-foreground">+91 8089507278</p>
-              </div>
-            </a>
-
-            <a
-              href="https://wa.me/918089507278"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={playClick}
-              className="flex items-center gap-4 p-3 rounded-lg hover:bg-card transition-colors group"
-            >
-              <div className="w-10 h-10 rounded-md bg-neon/10 flex items-center justify-center shrink-0">
-                <MessageCircle className="text-neon" size={18} />
-              </div>
-              <div>
-                <p className="text-sm font-medium group-hover:text-neon transition-colors">WhatsApp</p>
-                <p className="text-sm text-muted-foreground">Chat on WhatsApp</p>
               </div>
             </a>
 

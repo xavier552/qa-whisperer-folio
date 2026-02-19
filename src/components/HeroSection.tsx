@@ -18,30 +18,21 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="text-neon font-mono text-sm mb-4 tracking-widest uppercase"
+          className="text-neon font-mono text-sm mb-6 tracking-widest uppercase"
         >
-          QA Engineer | Test Automation Specialist
+          Software Quality Engineer
         </motion.p>
 
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.6 }}
-          className="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight mb-4"
+          className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 italic text-foreground/90"
         >
-          Xavier
+          "Quality is not an act,
           <br />
-          <span className="text-gradient-neon">Varghese</span>
+          <span className="text-gradient-neon">it's a habit."</span>
         </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="text-xl md:text-2xl lg:text-3xl font-semibold text-foreground/90 italic mb-3 max-w-2xl mx-auto"
-        >
-          "Quality is not an act, it's a habit."
-        </motion.p>
 
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -61,7 +52,7 @@ const HeroSection = () => {
           <a
             href="#projects"
             onClick={playClick}
-            className="bg-neon text-primary-foreground px-8 py-3 rounded-md font-medium hover:opacity-90 transition-opacity text-sm tracking-wide"
+            className="border border-neon text-neon px-8 py-3 rounded-md font-medium hover:bg-neon hover:text-primary-foreground transition-all text-sm tracking-wide"
           >
             View Projects
           </a>
@@ -77,7 +68,7 @@ const HeroSection = () => {
             target="_blank"
             rel="noopener noreferrer"
             onClick={playClick}
-            className="border border-border text-muted-foreground px-8 py-3 rounded-md font-medium hover:border-neon hover:text-neon transition-all text-sm tracking-wide"
+            className="border border-neon text-neon px-8 py-3 rounded-md font-medium hover:bg-neon hover:text-primary-foreground transition-all text-sm tracking-wide"
           >
             Connect on LinkedIn
           </a>
