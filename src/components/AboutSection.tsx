@@ -4,7 +4,7 @@ import { Bug, TestTube, Zap, Shield, Smartphone, BarChart3 } from "lucide-react"
 
 const skills = [
   { icon: TestTube, label: "Manual & Exploratory", desc: "Functional, Regression, Usability Testing" },
-  { icon: Bug, label: "Automation Testing", desc: "Selenium WebDriver, TestNG, Maven, POM" },
+  { icon: Bug, label: "Automation Testing", desc: "Selenium WebDriver, TestNG, Maven, Cucumber (BDD), POM" },
   { icon: Zap, label: "API & Performance", desc: "Postman, JMeter" },
   { icon: Shield, label: "CI/CD & Version Control", desc: "Git, GitHub, JIRA, Tuskr" },
   { icon: Smartphone, label: "Mobile Testing", desc: "Android & iOS App Testing" },
