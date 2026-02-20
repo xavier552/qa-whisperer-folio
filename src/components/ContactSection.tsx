@@ -1,17 +1,14 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import { Mail, MapPin, Send, Linkedin, Github } from "lucide-react";
-import useClickSound from "@/hooks/useClickSound";
 
 const ContactSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [formState, setFormState] = useState({ name: "", email: "", message: "" });
-  const playClick = useClickSound();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    playClick();
     alert("Thank you for your message! I'll get back to you soon.");
     setFormState({ name: "", email: "", message: "" });
   };
@@ -26,12 +23,11 @@ const ContactSection = () => {
           className="text-center mb-12"
         >
           <p className="text-neon font-mono text-sm tracking-widest uppercase mb-2">
-            05. Contact
+            Contact
           </p>
           <h2 className="text-4xl md:text-5xl font-bold mb-4">Get In Touch</h2>
           <p className="text-muted-foreground max-w-lg mx-auto">
-            Have a project in mind or want to discuss QA strategies?
-            I'm open to opportunities worldwide.
+            Have a project in mind or want to discuss QA strategies? I'm open to opportunities worldwide.
           </p>
         </motion.div>
 
@@ -69,7 +65,7 @@ const ContactSection = () => {
             />
             <button
               type="submit"
-              className="w-full bg-neon text-primary-foreground py-3 rounded-md font-medium flex items-center justify-center gap-2 hover:opacity-90 transition-opacity text-sm"
+              className="btn-press w-full bg-neon text-primary-foreground py-3 rounded-md font-medium flex items-center justify-center gap-2 hover:opacity-90 transition-opacity text-sm"
             >
               <Send size={16} />
               Send Message
@@ -84,7 +80,6 @@ const ContactSection = () => {
           >
             <a
               href="mailto:xaviervarghese468@gmail.com"
-              onClick={playClick}
               className="flex items-center gap-4 p-3 rounded-lg hover:bg-card transition-colors group"
             >
               <div className="w-10 h-10 rounded-md bg-neon/10 flex items-center justify-center shrink-0">
@@ -92,7 +87,7 @@ const ContactSection = () => {
               </div>
               <div>
                 <p className="text-sm font-medium group-hover:text-neon transition-colors">Email</p>
-                <p className="text-sm text-muted-foreground">xaviervarghese468@gmail.com</p>
+                <p className="text-sm text-muted-foreground break-all">xaviervarghese468@gmail.com</p>
               </div>
             </a>
 
@@ -119,8 +114,7 @@ const ContactSection = () => {
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    onClick={playClick}
-                    className="w-10 h-10 rounded-md bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-neon hover:border-neon/50 transition-colors"
+                    className="btn-press w-10 h-10 rounded-md bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-neon hover:border-neon/50 transition-colors"
                   >
                     <Icon size={18} />
                   </a>

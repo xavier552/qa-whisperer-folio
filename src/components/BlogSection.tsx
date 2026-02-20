@@ -39,7 +39,7 @@ const BlogSection = () => {
           transition={{ duration: 0.6 }}
         >
           <p className="text-neon font-mono text-sm tracking-widest uppercase mb-2">
-            04. Blog
+            Blog
           </p>
           <h2 className="text-4xl md:text-5xl font-bold mb-12">
             Latest Articles

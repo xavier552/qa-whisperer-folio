@@ -1,12 +1,10 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Download, FileText } from "lucide-react";
-import useClickSound from "@/hooks/useClickSound";
 
 const ResumeSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const playClick = useClickSound();
 
   const resumeHighlights = [
     { label: "Years of Experience", value: "1.5+" },
@@ -25,7 +23,7 @@ const ResumeSection = () => {
           className="text-center mb-12"
         >
           <p className="text-neon font-mono text-sm tracking-widest uppercase mb-2">
-            06. Resume
+            Resume
           </p>
           <h2 className="text-4xl md:text-5xl font-bold mb-4">My Resume</h2>
         </motion.div>
@@ -60,8 +58,7 @@ const ResumeSection = () => {
           </p>
           <a
             href="#"
-            onClick={playClick}
-            className="inline-flex items-center gap-2 bg-neon text-primary-foreground px-6 py-3 rounded-md font-medium hover:opacity-90 transition-opacity text-sm"
+            className="btn-press inline-flex items-center gap-2 bg-neon text-primary-foreground px-6 py-3 rounded-md font-medium hover:opacity-90 transition-opacity text-sm"
           >
             <Download size={16} />
             Download Resume (PDF)
