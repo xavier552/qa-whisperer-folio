@@ -24,7 +24,7 @@ const AboutSection = () => {
           transition={{ duration: 0.6 }}
         >
           <p className="text-neon font-mono text-sm tracking-widest uppercase mb-2">
-            01. About Me
+            About Me
           </p>
           <h2 className="text-4xl md:text-5xl font-bold mb-8">Who I Am</h2>
         </motion.div>
@@ -66,9 +66,9 @@ const AboutSection = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: 0.5 + i * 0.1 }}
-                className="bg-card border border-border rounded-lg p-5 hover:border-neon/50 transition-colors group"
+                className="bg-card border border-border rounded-lg p-4 hover:border-neon/50 transition-colors group"
               >
-                <skill.icon className="text-neon mb-3 group-hover:drop-shadow-[0_0_8px_hsl(72,100%,50%,0.5)] transition-all" size={24} />
+                <skill.icon className="text-neon mb-3 group-hover:drop-shadow-[0_0_8px_hsl(72,100%,50%,0.5)] transition-all" size={22} />
                 <h3 className="font-semibold text-sm mb-1">{skill.label}</h3>
                 <p className="text-xs text-muted-foreground">{skill.desc}</p>
               </motion.div>

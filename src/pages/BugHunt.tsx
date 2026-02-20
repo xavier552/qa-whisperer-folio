@@ -70,7 +70,8 @@ const BugHunt = () => {
 
   const spawnBug = useCallback(() => {
     const g = gameRef.current;
-    const speed = 1 + g.level * 0.5 + Math.random() * g.level * 0.3;
+    // Easy mode: slower speed
+    const speed = 0.5 + g.level * 0.25 + Math.random() * g.level * 0.15;
     g.bugs.push({
       x: Math.random() * (CANVAS_W - BUG_SIZE),
       y: -BUG_SIZE,
@@ -143,15 +144,15 @@ const BugHunt = () => {
       const g = gameRef.current;
       if (g.gameState !== "playing") return;
 
-      // Input
+      // Input — smoother movement
       const keys = keysRef.current;
-      const speed = 5;
+      const speed = 4;
       if (keys.has("arrowleft") || keys.has("a")) g.playerX = Math.max(0, g.playerX - speed);
       if (keys.has("arrowright") || keys.has("d")) g.playerX = Math.min(CANVAS_W - PLAYER_W, g.playerX + speed);
 
-      // Spawn
+      // Spawn — easy: longer interval
       g.spawnTimer++;
-      const spawnRate = Math.max(20, 60 - g.level * 8);
+      const spawnRate = Math.max(45, 90 - g.level * 6);
       if (g.spawnTimer >= spawnRate) {
         spawnBug();
         g.spawnTimer = 0;

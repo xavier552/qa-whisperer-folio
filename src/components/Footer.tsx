@@ -1,13 +1,10 @@
 import { Github, Linkedin } from "lucide-react";
-import useClickSound from "@/hooks/useClickSound";
 
 const Footer = () => {
-  const playClick = useClickSound();
-
   return (
-    <footer className="border-t border-border py-8 px-6 mb-12">
+    <footer className="border-t border-border py-8 px-6">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-muted-foreground text-center md:text-left">
           © 2026 <span className="text-neon">Xavier Varghese</span> — Built with passion for quality.
         </p>
         <div className="flex items-center gap-4">
@@ -20,8 +17,7 @@ const Footer = () => {
               href={href}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={playClick}
-              className="text-muted-foreground hover:text-neon transition-colors"
+              className="btn-press text-muted-foreground hover:text-neon transition-colors"
             >
               <Icon size={16} />
             </a>

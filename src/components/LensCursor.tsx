@@ -5,12 +5,13 @@ const LensCursor = () => {
   const [visible, setVisible] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  const springConfig = { damping: 25, stiffness: 300, mass: 0.5 };
+  const springConfig = { damping: 28, stiffness: 320, mass: 0.4 };
   const x = useSpring(0, springConfig);
   const y = useSpring(0, springConfig);
 
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768 || "ontouchstart" in window);
+    const checkMobile = () =>
+      setIsMobile(window.innerWidth < 768 || "ontouchstart" in window);
     checkMobile();
     window.addEventListener("resize", checkMobile);
 
@@ -19,7 +20,6 @@ const LensCursor = () => {
       y.set(e.clientY);
       if (!visible) setVisible(true);
     };
-
     const handleLeave = () => setVisible(false);
     const handleEnter = () => setVisible(true);
 
@@ -41,32 +41,50 @@ const LensCursor = () => {
 
   return (
     <>
-      {/* Outer ring */}
+      {/* Magnifying glass lens ring */}
       <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-[9999] rounded-full border border-neon/40"
+        className="fixed top-0 left-0 pointer-events-none z-[9999] rounded-full"
         style={{
           x,
           y,
-          width: 40,
-          height: 40,
+          width: 38,
+          height: 38,
           translateX: "-50%",
           translateY: "-50%",
           opacity: visible ? 1 : 0,
+          border: "1.5px solid hsl(72 100% 50% / 0.55)",
+          boxShadow: "inset 0 0 12px hsl(72 100% 50% / 0.08)",
+          backdropFilter: "blur(0.5px)",
         }}
-        transition={{ opacity: { duration: 0.2 } }}
       />
-      {/* Inner dot */}
+      {/* Handle line extending bottom-right */}
+      <motion.div
+        className="fixed top-0 left-0 pointer-events-none z-[9999]"
+        style={{
+          x,
+          y,
+          opacity: visible ? 0.55 : 0,
+          translateX: "calc(-50% + 13px)",
+          translateY: "calc(-50% + 13px)",
+          width: 10,
+          height: 1.5,
+          borderRadius: 2,
+          backgroundColor: "hsl(72 100% 50%)",
+          rotate: 45,
+          transformOrigin: "left center",
+        }}
+      />
+      {/* Inner dot center */}
       <motion.div
         className="fixed top-0 left-0 pointer-events-none z-[9999] rounded-full bg-neon"
         style={{
           x,
           y,
-          width: 6,
-          height: 6,
+          width: 4,
+          height: 4,
           translateX: "-50%",
           translateY: "-50%",
-          opacity: visible ? 1 : 0,
-          boxShadow: "0 0 10px hsl(72 100% 50% / 0.6)",
+          opacity: visible ? 0.7 : 0,
         }}
       />
     </>

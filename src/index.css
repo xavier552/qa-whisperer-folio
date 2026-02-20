@@ -119,6 +119,11 @@
   .section-padding {
     @apply py-24 px-6 md:px-12 lg:px-20;
   }
+
+  /* Subtle press micro-animation for buttons */
+  .btn-press {
+    @apply transition-transform duration-100 active:scale-95;
+  }
 }
 
 /* Scrollbar styling */
