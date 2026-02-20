@@ -4,7 +4,7 @@ import { Github, FolderOpen } from "lucide-react";
 
 const projects = [
   {
-    title: "Manual Testing – Nithya Group Website",
+    title: "Manual Testing World",
     description:
       "Designed and executed comprehensive test cases. Conducted exploratory testing to uncover edge-case defects. Documented and reported all findings systematically.",
     tech: ["Manual Testing", "Test Cases", "Exploratory Testing", "Defect Reporting"],
@@ -12,7 +12,7 @@ const projects = [
     githubLabel: "View Manual Testing Project",
   },
   {
-    title: "Automation Testing – demoqa.com",
+    title: "Automation Testing World",
     description:
       "Automated web interactions using Selenium + TestNG. Implemented Page Object Model (POM) framework. Automated forms, alerts, buttons & iframe navigation.",
     tech: ["Selenium WebDriver", "TestNG", "Maven", "Cucumber (BDD)", "POM", "Java"],
@@ -69,21 +69,11 @@ const ProjectsSection = () => {
                 ))}
               </div>
 
-              {/* GitHub icon link */}
-              <a
-                href={project.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-muted-foreground hover:text-neon transition-colors text-sm font-medium group/link w-fit"
-              >
-                <Github
-                  size={16}
-                  className="transition-transform group-hover/link:scale-110"
-                />
-                <span className="relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-neon group-hover/link:after:w-full after:transition-all after:duration-300">
-                  {project.githubLabel}
-                </span>
-              </a>
+              {/* GitHub icon — no redirect */}
+              <span className="inline-flex items-center gap-2 text-muted-foreground text-sm font-medium w-fit opacity-50 cursor-default select-none">
+                <Github size={16} />
+                <span>{project.githubLabel}</span>
+              </span>
             </motion.div>
           ))}
         </div>

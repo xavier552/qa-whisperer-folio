@@ -11,7 +11,7 @@ import BugHuntSection from "@/components/BugHuntSection";
 import Footer from "@/components/Footer";
 import LoadingScreen from "@/components/LoadingScreen";
 import LiveClock from "@/components/LiveClock";
-import LensCursor from "@/components/LensCursor";
+
 
 const Index = () => {
   const [loading, setLoading] = useState(true);
@@ -25,7 +25,7 @@ const Index = () => {
 
       {!loading && (
         <div className="min-h-screen bg-background text-foreground">
-          <LensCursor />
+          {/* LensCursor removed */}
           <Navbar />
           <HeroSection />
           <AboutSection />

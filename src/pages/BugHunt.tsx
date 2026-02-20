@@ -136,6 +136,7 @@ const BugHunt = () => {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+    if (gameState !== "playing") return; // only run when playing
     const ctx = canvas.getContext("2d")!;
 
     const bugEmojis = ["🐛", "⚠️", "❌", "🐞"];
@@ -279,7 +280,7 @@ const BugHunt = () => {
 
     animRef.current = requestAnimationFrame(gameLoop);
     return () => cancelAnimationFrame(animRef.current);
-  }, [spawnBug, highScore]);
+  }, [spawnBug, highScore, gameState]);
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center p-4">
