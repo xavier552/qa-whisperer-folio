@@ -11,7 +11,7 @@ const BugHuntSection = () => {
           Think you can catch bugs like a QA engineer?
         </p>
         <button
-          onClick={() => navigate("/bug-hunt")}
+          onClick={() => navigate("/play")}
           className="btn-press inline-flex items-center gap-2 text-sm text-neon hover:text-foreground transition-colors font-mono group"
         >
           <Bug size={14} className="group-hover:animate-pulse" />

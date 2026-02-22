@@ -171,6 +171,7 @@ const Navbar = () => {
           <div className="hidden md:flex items-center gap-8">
             {navItems.map((item) => {
               const isActive = activeSection === item.href.replace("#", "");
+              const isResume = item.label === "Resume";
               return (
                 <a
                   key={item.href}
@@ -178,10 +179,23 @@ const Navbar = () => {
                   className={`text-sm transition-colors duration-200 tracking-wide uppercase relative pb-0.5 ${
                     isActive
                       ? "text-neon"
+                      : isResume
+                      ? "text-neon font-semibold"
                       : "text-muted-foreground hover:text-neon"
                   }`}
                 >
-                  {item.label}
+                  {isResume ? (
+                    <motion.span
+                      animate={{ opacity: [1, 0.5, 1] }}
+                      transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+                      className="flex items-center gap-1"
+                    >
+                      <FileText size={14} />
+                      {item.label}
+                    </motion.span>
+                  ) : (
+                    item.label
+                  )}
                   {isActive && (
                     <motion.div
                       layoutId="activeIndicator"

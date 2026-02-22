@@ -45,6 +45,12 @@ const AboutSection = () => {
             <p className="text-muted-foreground leading-relaxed">
               My toolkit includes Java, SQL, Selenium WebDriver, Postman, JMeter, and analytics platforms like Firebase, MoEngage, and CleverTap. I thrive on finding edge cases, writing thorough test cases, and collaborating with dev teams to ship reliable software.
             </p>
+            <div className="mt-4 p-4 bg-neon/5 border border-neon/20 rounded-lg">
+              <p className="text-sm font-semibold text-neon mb-1">🎓 Certified Software Testing Specialist (NACTET)</p>
+              <p className="text-xs text-muted-foreground">
+                Software Testing Specialist · Credential ID: 54883
+              </p>
+            </div>
             <div className="flex flex-wrap gap-3 pt-2">
               {["Java", "SQL", "Selenium", "TestNG", "Postman", "JMeter", "Git", "JIRA"].map((t) => (
                 <span key={t} className="text-xs font-mono text-neon bg-neon/10 px-2.5 py-1 rounded">
