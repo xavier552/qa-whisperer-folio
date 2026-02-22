@@ -39,7 +39,7 @@ interface Bullet {
   y: number;
 }
 
-const BugHunt = () => {
+const BugHunt = ({ embedded = false }: { embedded?: boolean }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const navigate = useNavigate();
   const playClick = useClickSound();
@@ -283,17 +283,19 @@ const BugHunt = () => {
   }, [spawnBug, highScore, gameState]);
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center p-4">
+    <div className={`${embedded ? "" : "min-h-screen"} bg-background text-foreground flex flex-col items-center justify-center p-4`}>
       <div className="w-full max-w-md">
-        <div className="flex items-center justify-between mb-4">
-          <button
-            onClick={() => { playClick(); navigate("/"); }}
-            className="text-muted-foreground hover:text-neon transition-colors flex items-center gap-1 text-sm"
-          >
-            <ArrowLeft size={16} /> Back to Portfolio
-          </button>
-          <span className="text-xs text-muted-foreground font-mono">High Score: {highScore}</span>
-        </div>
+        {!embedded && (
+          <div className="flex items-center justify-between mb-4">
+            <button
+              onClick={() => { playClick(); navigate("/"); }}
+              className="text-muted-foreground hover:text-neon transition-colors flex items-center gap-1 text-sm"
+            >
+              <ArrowLeft size={16} /> Back to Portfolio
+            </button>
+            <span className="text-xs text-muted-foreground font-mono">High Score: {highScore}</span>
+          </div>
+        )}
 
         <div className="flex items-center justify-between mb-3 text-sm font-mono">
           <span className="text-neon">Score: {score}</span>
