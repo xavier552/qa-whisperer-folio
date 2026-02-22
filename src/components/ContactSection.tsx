@@ -1,16 +1,41 @@
 import { motion, useInView } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef, useState, useCallback } from "react";
 import { Mail, MapPin, Send, Linkedin, Github } from "lucide-react";
 
 const ContactSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [formState, setFormState] = useState({ name: "", email: "", message: "" });
+  const audioCtxRef = useRef<AudioContext | null>(null);
+
+  const playTypingSound = useCallback(() => {
+    try {
+      if (!audioCtxRef.current) {
+        audioCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+      }
+      const ctx = audioCtxRef.current;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type = "sine";
+      osc.frequency.value = 600 + Math.random() * 400;
+      gain.gain.setValueAtTime(0.012, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 0.04);
+    } catch {}
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     alert("Thank you for your message! I'll get back to you soon.");
     setFormState({ name: "", email: "", message: "" });
+  };
+
+  const handleChange = (field: string, value: string) => {
+    setFormState((prev) => ({ ...prev, [field]: value }));
+    playTypingSound();
   };
 
   return (
@@ -22,9 +47,7 @@ const ContactSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <p className="text-neon font-mono text-sm tracking-widest uppercase mb-2">
-            Contact
-          </p>
+          <p className="text-neon font-mono text-sm tracking-widest uppercase mb-2">Contact</p>
           <h2 className="text-4xl md:text-5xl font-bold mb-4">Get In Touch</h2>
           <p className="text-muted-foreground max-w-lg mx-auto">
             Have a project in mind or want to discuss QA strategies? I'm open to opportunities worldwide.
@@ -43,7 +66,7 @@ const ContactSection = () => {
               type="text"
               placeholder="Your Name"
               value={formState.name}
-              onChange={(e) => setFormState({ ...formState, name: e.target.value })}
+              onChange={(e) => handleChange("name", e.target.value)}
               className="w-full bg-card border border-border rounded-md px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-neon/50 transition-colors"
               required
             />
@@ -51,7 +74,7 @@ const ContactSection = () => {
               type="email"
               placeholder="Your Email"
               value={formState.email}
-              onChange={(e) => setFormState({ ...formState, email: e.target.value })}
+              onChange={(e) => handleChange("email", e.target.value)}
               className="w-full bg-card border border-border rounded-md px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-neon/50 transition-colors"
               required
             />
@@ -59,7 +82,7 @@ const ContactSection = () => {
               placeholder="Your Message"
               rows={5}
               value={formState.message}
-              onChange={(e) => setFormState({ ...formState, message: e.target.value })}
+              onChange={(e) => handleChange("message", e.target.value)}
               className="w-full bg-card border border-border rounded-md px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-neon/50 transition-colors resize-none"
               required
             />

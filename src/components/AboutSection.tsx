@@ -1,6 +1,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { Bug, TestTube, Zap, Shield, Smartphone, BarChart3 } from "lucide-react";
+import { Bug, TestTube, Zap, Shield, Smartphone, BarChart3, ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const skills = [
   { icon: TestTube, label: "Manual & Exploratory", desc: "Functional, Regression, Usability Testing" },
@@ -14,6 +15,7 @@ const skills = [
 const AboutSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const navigate = useNavigate();
 
   return (
     <section id="about" className="section-padding relative">
@@ -37,13 +39,10 @@ const AboutSection = () => {
             className="space-y-4"
           >
             <p className="text-muted-foreground leading-relaxed">
-              I'm Xavier Varghese — a detail-oriented QA Engineer based in Kochi, Kerala, India with 1.5+ years of hands-on experience in manual testing, automation frameworks, API validation, and performance testing.
+              I'm Xavier Varghese — a detail-oriented QA Engineer based in Kochi, Kerala, India with 1.5+ years of hands-on experience in manual testing, automation, API validation, and performance testing.
             </p>
             <p className="text-muted-foreground leading-relaxed">
               I specialize in mobile application testing across Android & iOS platforms, and I'm passionate about shift-left testing practices — embedding quality throughout the entire SDLC.
-            </p>
-            <p className="text-muted-foreground leading-relaxed">
-              My toolkit includes Java, SQL, Selenium WebDriver, Postman, JMeter, and analytics platforms like Firebase, MoEngage, and CleverTap. I thrive on finding edge cases, writing thorough test cases, and collaborating with dev teams to ship reliable software.
             </p>
             <div className="mt-4 p-4 bg-neon/5 border border-neon/20 rounded-lg">
               <p className="text-sm font-semibold text-neon mb-1">🎓 Certified Software Testing Specialist (NACTET)</p>
@@ -51,13 +50,13 @@ const AboutSection = () => {
                 Software Testing Specialist · Credential ID: 54883
               </p>
             </div>
-            <div className="flex flex-wrap gap-3 pt-2">
-              {["Java", "SQL", "Selenium", "TestNG", "Postman", "JMeter", "Git", "JIRA"].map((t) => (
-                <span key={t} className="text-xs font-mono text-neon bg-neon/10 px-2.5 py-1 rounded">
-                  {t}
-                </span>
-              ))}
-            </div>
+            <button
+              onClick={() => navigate("/about")}
+              className="btn-press inline-flex items-center gap-2 text-neon text-sm font-medium hover:opacity-80 transition-opacity mt-2"
+            >
+              Learn More About Me
+              <ArrowRight size={14} />
+            </button>
           </motion.div>
 
           <motion.div
@@ -67,17 +66,18 @@ const AboutSection = () => {
             className="grid grid-cols-2 gap-4"
           >
             {skills.map((skill, i) => (
-              <motion.div
+              <motion.button
                 key={skill.label}
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: 0.5 + i * 0.1 }}
-                className="bg-card border border-border rounded-lg p-4 hover:border-neon/50 transition-colors group"
+                onClick={() => navigate("/about")}
+                className="bg-card border border-border rounded-lg p-4 hover:border-neon/50 transition-colors group text-left"
               >
                 <skill.icon className="text-neon mb-3 group-hover:drop-shadow-[0_0_8px_hsl(72,100%,50%,0.5)] transition-all" size={22} />
                 <h3 className="font-semibold text-sm mb-1">{skill.label}</h3>
                 <p className="text-xs text-muted-foreground">{skill.desc}</p>
-              </motion.div>
+              </motion.button>
             ))}
           </motion.div>
         </div>

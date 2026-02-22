@@ -1,14 +1,15 @@
 import { useState, useEffect, useCallback } from "react";
 import { Menu, X, Home, User, FolderOpen, Mail, FileText } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLocation, useNavigate } from "react-router-dom";
 import useClickSound from "@/hooks/useClickSound";
 
 const navItems = [
-  { label: "Home", href: "#home", icon: Home },
-  { label: "About", href: "#about", icon: User },
-  { label: "Projects", href: "#projects", icon: FolderOpen },
-  { label: "Contact", href: "#contact", icon: Mail },
-  { label: "Resume", href: "#resume", icon: FileText },
+  { label: "Home", href: "home", icon: Home },
+  { label: "About", href: "about", icon: User },
+  { label: "Projects", href: "projects", icon: FolderOpen },
+  { label: "Contact", href: "contact", icon: Mail },
+  { label: "Resume", href: "resume", icon: FileText },
 ];
 
 const QA_CHECKS = [
@@ -27,6 +28,9 @@ const Navbar = () => {
   const [showRefresh, setShowRefresh] = useState(false);
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
   const playClick = useClickSound();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const isHome = location.pathname === "/";
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -34,14 +38,16 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Active section detection
+  // Active section detection (home page only)
   useEffect(() => {
-    const sections = navItems.map((item) => item.href.replace("#", ""));
+    if (!isHome) return;
+    const sections = navItems.map((item) => item.href);
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setActiveSection(entry.target.id);
+            sessionStorage.setItem("lastSection", entry.target.id);
           }
         });
       },
@@ -52,17 +58,37 @@ const Navbar = () => {
       if (el) observer.observe(el);
     });
     return () => observer.disconnect();
-  }, []);
+  }, [isHome]);
+
+  const handleNavClick = useCallback(
+    (href: string, e?: React.MouseEvent) => {
+      e?.preventDefault();
+      setIsOpen(false);
+      if (isHome) {
+        const el = document.getElementById(href);
+        el?.scrollIntoView({ behavior: "smooth" });
+      } else {
+        navigate("/#" + href);
+      }
+    },
+    [isHome, navigate]
+  );
 
   const handleLogoClick = useCallback(
     (e: React.MouseEvent) => {
       e.preventDefault();
       playClick();
+
+      if (!isHome) {
+        const lastSection = sessionStorage.getItem("lastSection") || "home";
+        navigate("/#" + lastSection);
+        return;
+      }
+
       if (showRefresh) return;
       setShowRefresh(true);
       setCheckedItems([]);
 
-      // Sequentially check off items
       QA_CHECKS.forEach((check, i) => {
         setTimeout(() => {
           setCheckedItems((prev) => [...prev, check.key]);
@@ -75,7 +101,7 @@ const Navbar = () => {
         el?.scrollIntoView({ behavior: "smooth" });
       }, 1600);
     },
-    [playClick, showRefresh]
+    [playClick, showRefresh, isHome, navigate]
   );
 
   return (
@@ -98,7 +124,6 @@ const Navbar = () => {
               transition={{ duration: 0.35 }}
               className="bg-card border border-border rounded-lg p-8 w-full max-w-sm mx-4 shadow-2xl"
             >
-              {/* Mini loader bar */}
               <div className="w-full h-px bg-border mb-6 relative overflow-hidden">
                 <motion.div
                   className="absolute top-0 left-0 h-full bg-neon"
@@ -127,15 +152,14 @@ const Navbar = () => {
                             ✔
                           </motion.span>
                         ) : (
-                          <motion.div
-                            key="dot"
-                            className="w-1.5 h-1.5 rounded-full bg-border"
-                          />
+                          <motion.div key="dot" className="w-1.5 h-1.5 rounded-full bg-border" />
                         )}
                       </AnimatePresence>
                     </div>
                     <div className="flex items-center gap-2 text-xs font-mono">
-                      <span className="text-muted-foreground">[{check.label.split(" ")[0].replace("loads", "").trim() || check.key.toUpperCase()}]</span>
+                      <span className="text-muted-foreground">
+                        [{check.key.charAt(0).toUpperCase() + check.key.slice(1)}]
+                      </span>
                       <span className={checkedItems.includes(check.key) ? "text-foreground" : "text-muted-foreground/50"}>
                         {check.label}
                       </span>
@@ -152,7 +176,7 @@ const Navbar = () => {
 
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled
+          scrolled || !isHome
             ? "bg-background/80 backdrop-blur-xl border-b border-border"
             : "bg-transparent"
         }`}
@@ -170,12 +194,12 @@ const Navbar = () => {
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-8">
             {navItems.map((item) => {
-              const isActive = activeSection === item.href.replace("#", "");
+              const isActive = isHome && activeSection === item.href;
               const isResume = item.label === "Resume";
               return (
-                <a
+                <button
                   key={item.href}
-                  href={item.href}
+                  onClick={(e) => handleNavClick(item.href, e)}
                   className={`text-sm transition-colors duration-200 tracking-wide uppercase relative pb-0.5 ${
                     isActive
                       ? "text-neon"
@@ -203,7 +227,7 @@ const Navbar = () => {
                       transition={{ type: "spring", stiffness: 400, damping: 30 }}
                     />
                   )}
-                </a>
+                </button>
               );
             })}
           </div>
@@ -211,9 +235,7 @@ const Navbar = () => {
           {/* Mobile menu button */}
           <button
             className="md:hidden text-foreground active:scale-90 transition-transform"
-            onClick={() => {
-              setIsOpen(!isOpen);
-            }}
+            onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -230,14 +252,13 @@ const Navbar = () => {
             >
               <div className="px-6 py-4 flex flex-col gap-1">
                 {navItems.map((item) => {
-                  const isActive = activeSection === item.href.replace("#", "");
+                  const isActive = isHome && activeSection === item.href;
                   const Icon = item.icon;
                   return (
-                    <a
+                    <button
                       key={item.href}
-                      href={item.href}
-                      onClick={() => setIsOpen(false)}
-                      className={`flex items-center gap-3 px-3 py-2.5 rounded-md text-sm tracking-wide transition-colors ${
+                      onClick={(e) => handleNavClick(item.href, e)}
+                      className={`flex items-center gap-3 px-3 py-2.5 rounded-md text-sm tracking-wide transition-colors text-left ${
                         isActive
                           ? "text-neon bg-neon/10"
                           : "text-muted-foreground hover:text-neon hover:bg-neon/5"
@@ -245,7 +266,7 @@ const Navbar = () => {
                     >
                       <Icon size={16} />
                       {item.label}
-                    </a>
+                    </button>
                   );
                 })}
               </div>

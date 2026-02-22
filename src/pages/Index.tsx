@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
@@ -12,10 +12,22 @@ import Footer from "@/components/Footer";
 import LoadingScreen from "@/components/LoadingScreen";
 import LiveClock from "@/components/LiveClock";
 
-
 const Index = () => {
   const [loading, setLoading] = useState(true);
   const handleComplete = useCallback(() => setLoading(false), []);
+
+  // Handle hash scrolling when navigating back from sub-pages
+  useEffect(() => {
+    if (!loading) {
+      const hash = window.location.hash;
+      if (hash) {
+        setTimeout(() => {
+          const el = document.querySelector(hash);
+          el?.scrollIntoView({ behavior: "smooth" });
+        }, 150);
+      }
+    }
+  }, [loading]);
 
   return (
     <>
@@ -25,7 +37,6 @@ const Index = () => {
 
       {!loading && (
         <div className="min-h-screen bg-background text-foreground">
-          {/* LensCursor removed */}
           <Navbar />
           <HeroSection />
           <AboutSection />
