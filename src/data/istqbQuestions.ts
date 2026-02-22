@@ -1,0 +1,123 @@
+export interface QuizQuestion {
+  question: string;
+  options: string[];
+  correct: number;
+}
+
+const istqbQuestions: QuizQuestion[] = [
+  // Section 1: Fundamentals of Testing
+  { question: "What is the primary objective of software testing?", options: ["To prove the software is defect-free", "To find defects and reduce risk", "To delay project delivery", "To replace code reviews"], correct: 1 },
+  { question: "Which principle states that exhaustive testing is impossible?", options: ["Defect clustering", "Pesticide paradox", "Testing shows presence of defects", "Exhaustive testing"], correct: 3 },
+  { question: "What does the 'Pesticide Paradox' mean in testing?", options: ["Bugs multiply over time", "Repeating same tests won't find new defects", "Testing kills all bugs", "Defects cluster in modules"], correct: 1 },
+  { question: "Who is responsible for the quality of a software product?", options: ["Only testers", "Only developers", "The entire team", "Only the project manager"], correct: 2 },
+  { question: "What is 'shift-left' testing?", options: ["Moving testing earlier in the SDLC", "Testing only the left side of the UI", "Reducing test coverage", "Delaying test execution"], correct: 0 },
+  { question: "What is the difference between error, defect, and failure?", options: ["They are all the same", "Error is human mistake, defect is in code, failure is in execution", "Failure happens first, then error", "Defect only exists in production"], correct: 1 },
+  { question: "Which is a key benefit of early testing?", options: ["Lower cost of fixing defects", "More overtime for testers", "Delayed releases", "Reduced documentation"], correct: 0 },
+  { question: "What does 'testing is context-dependent' mean?", options: ["All software is tested the same way", "Testing approach varies based on the software type", "Context doesn't matter in testing", "Only mobile apps need context"], correct: 1 },
+  { question: "What is the absence-of-errors fallacy?", options: ["Finding no errors means the software is good", "Software can be 100% error-free", "Finding and fixing defects doesn't help if the system doesn't meet user needs", "Errors are always absent in tested software"], correct: 2 },
+  { question: "Which of the following is a testing principle?", options: ["Defects cluster together", "Testing can prove completeness", "Testing replaces debugging", "All defects must be found"], correct: 0 },
+  { question: "What is the main purpose of a test policy?", options: ["Define test schedule", "Describe the organization's approach to testing", "List all test cases", "Track defects"], correct: 1 },
+  { question: "What is debugging?", options: ["Finding defects", "Fixing the cause of a failure", "Running test cases", "Writing test plans"], correct: 1 },
+  { question: "Which activity is NOT part of the fundamental test process?", options: ["Test planning", "Test analysis", "Code compilation", "Test closure"], correct: 2 },
+  { question: "What is a test oracle?", options: ["A testing tool", "A source to determine expected results", "A type of database", "A test automation framework"], correct: 1 },
+  { question: "What is the relationship between testing and quality assurance?", options: ["They are identical", "Testing is part of QA", "QA is part of testing", "They are unrelated"], correct: 1 },
+
+  // Section 2: Testing Throughout the SDLC
+  { question: "In the V-Model, which test level corresponds to requirements specification?", options: ["Unit testing", "Integration testing", "System testing", "Acceptance testing"], correct: 3 },
+  { question: "What is the purpose of integration testing?", options: ["Test individual units", "Test interfaces between components", "Test the complete system", "Test user acceptance"], correct: 1 },
+  { question: "Which test level focuses on the behavior of the whole system?", options: ["Unit testing", "Component testing", "System testing", "Integration testing"], correct: 2 },
+  { question: "What is alpha testing?", options: ["Testing by end users in production", "Testing at the developer's site by potential users", "Automated regression testing", "Performance testing"], correct: 1 },
+  { question: "What is beta testing?", options: ["Testing at the developer's site", "Testing by users at their own location", "Unit testing by developers", "Security testing"], correct: 1 },
+  { question: "What is regression testing?", options: ["Testing new features only", "Re-testing after fixes to ensure no new defects", "Testing system performance", "First-time testing of a module"], correct: 1 },
+  { question: "What is confirmation testing (re-testing)?", options: ["Testing to confirm requirements", "Testing to verify a defect has been fixed", "Testing new functionality", "Testing system stability"], correct: 1 },
+  { question: "In Agile, when should testing activities begin?", options: ["After all coding is complete", "At the start of each iteration", "Only during the last sprint", "After deployment"], correct: 1 },
+  { question: "What is the purpose of smoke testing?", options: ["Detailed feature testing", "Verify basic functionality works before deeper testing", "Performance benchmarking", "Security assessment"], correct: 1 },
+  { question: "What is sanity testing?", options: ["Comprehensive system testing", "Narrow focused testing after a minor change", "Testing for user sanity", "Load testing"], correct: 1 },
+  { question: "Which development model is sequential and non-iterative?", options: ["Agile", "Waterfall", "Scrum", "Kanban"], correct: 1 },
+  { question: "What is maintenance testing?", options: ["Testing during initial development", "Testing after the system is deployed and modified", "Testing build stability", "Testing documentation"], correct: 1 },
+  { question: "What is the main difference between functional and non-functional testing?", options: ["Functional tests what the system does; non-functional tests how well", "They are the same", "Non-functional is more important", "Functional only tests the UI"], correct: 0 },
+  { question: "Which is an example of non-functional testing?", options: ["Login validation", "Performance testing", "Boundary value testing", "Equivalence partitioning"], correct: 1 },
+  { question: "What is component testing also known as?", options: ["System testing", "Unit testing", "Acceptance testing", "Regression testing"], correct: 1 },
+
+  // Section 3: Static Testing
+  { question: "What is static testing?", options: ["Testing without executing the code", "Testing with test data", "Testing system performance", "Testing after deployment"], correct: 0 },
+  { question: "Which is an example of static testing?", options: ["Running unit tests", "Code review", "Performance testing", "Exploratory testing"], correct: 1 },
+  { question: "What is the difference between a review and a walkthrough?", options: ["They are identical", "Review is formal; walkthrough is informal and author-led", "Walkthrough is more formal", "Reviews don't involve people"], correct: 1 },
+  { question: "What is a formal review called?", options: ["Walkthrough", "Peer review", "Inspection", "Desk check"], correct: 2 },
+  { question: "Who leads an inspection?", options: ["The author", "A trained moderator", "The project manager", "The client"], correct: 1 },
+  { question: "What is the main benefit of static analysis tools?", options: ["They execute test cases", "They find defects without running the code", "They replace testers", "They create test data"], correct: 1 },
+  { question: "Which defects are commonly found by static testing?", options: ["Runtime crashes only", "Coding standard violations and unreachable code", "Network failures", "Hardware issues"], correct: 1 },
+  { question: "What is a checklist-based review?", options: ["A random review process", "A review guided by a predefined checklist of common issues", "A review without any criteria", "An automated code scan"], correct: 1 },
+  { question: "What is the role of the scribe in a formal review?", options: ["Write the code", "Document issues and decisions during the review", "Test the code", "Approve the release"], correct: 1 },
+  { question: "Which is NOT a type of review?", options: ["Informal review", "Walkthrough", "Inspection", "Regression review"], correct: 3 },
+
+  // Section 4: Test Techniques
+  { question: "What is equivalence partitioning?", options: ["Testing all possible values", "Dividing inputs into groups that should behave the same", "Testing only boundary values", "Random testing"], correct: 1 },
+  { question: "What is boundary value analysis?", options: ["Testing values at the edges of equivalence classes", "Testing random values", "Testing only middle values", "Testing invalid inputs only"], correct: 0 },
+  { question: "Which is a black-box test technique?", options: ["Statement coverage", "Branch coverage", "Decision table testing", "Path testing"], correct: 2 },
+  { question: "Which is a white-box test technique?", options: ["Equivalence partitioning", "Statement coverage", "State transition testing", "Use case testing"], correct: 1 },
+  { question: "What does 100% statement coverage mean?", options: ["All branches are tested", "Every statement has been executed at least once", "All possible paths are tested", "All inputs are tested"], correct: 1 },
+  { question: "What does 100% branch coverage guarantee?", options: ["100% path coverage", "100% statement coverage", "100% condition coverage", "All defects are found"], correct: 1 },
+  { question: "What is a decision table?", options: ["A table listing all test cases", "A table showing combinations of conditions and their outcomes", "A project schedule", "A bug tracking sheet"], correct: 1 },
+  { question: "What is state transition testing?", options: ["Testing database states", "Testing how the system moves between different states", "Testing UI transitions", "Testing animation performance"], correct: 1 },
+  { question: "What is use case testing?", options: ["Testing code functions", "Testing based on user interaction scenarios", "Testing database queries", "Testing server response times"], correct: 1 },
+  { question: "What is exploratory testing?", options: ["Scripted testing only", "Simultaneous learning, test design, and execution", "Automated testing", "Performance testing"], correct: 1 },
+  { question: "What is error guessing?", options: ["Guessing the project deadline", "Using experience to anticipate where defects might occur", "Random clicking", "Automated defect prediction"], correct: 1 },
+  { question: "In equivalence partitioning, how many test values from each partition are needed?", options: ["All values", "At least one", "Exactly three", "None"], correct: 1 },
+  { question: "What is condition coverage?", options: ["Testing all conditions in a decision to both true and false", "Testing only true conditions", "Testing performance conditions", "Testing network conditions"], correct: 0 },
+  { question: "What is path coverage?", options: ["Testing all network paths", "Testing all possible execution paths through the code", "Testing file paths", "Testing only the happy path"], correct: 1 },
+  { question: "Which technique is best for testing combinations of inputs?", options: ["Boundary value analysis", "Equivalence partitioning", "Decision table testing", "Statement coverage"], correct: 2 },
+  { question: "What is pairwise testing?", options: ["Testing in pairs of testers", "Testing all combinations of two input parameters", "Testing two modules at once", "Testing both mobile and desktop"], correct: 1 },
+  { question: "What type of coverage does branch testing measure?", options: ["How many lines are executed", "How many decision outcomes are exercised", "How many functions are called", "How many test cases pass"], correct: 1 },
+  { question: "What is the minimum number of test cases for 100% branch coverage of an IF-ELSE?", options: ["1", "2", "3", "4"], correct: 1 },
+  { question: "Which technique uses a state diagram as input?", options: ["Boundary value analysis", "State transition testing", "Decision table testing", "Equivalence partitioning"], correct: 1 },
+  { question: "What is checklist-based testing?", options: ["Testing using a predefined list of conditions to check", "Testing without any plan", "Automated testing only", "Performance benchmarking"], correct: 0 },
+
+  // Section 5: Test Management
+  { question: "What is a test plan?", options: ["A list of bugs", "A document describing scope, approach, resources, and schedule of testing", "A code review report", "A user manual"], correct: 1 },
+  { question: "What is test estimation?", options: ["Guessing how many bugs exist", "Predicting the effort needed for testing activities", "Counting test cases", "Measuring code coverage"], correct: 1 },
+  { question: "What is a test summary report?", options: ["A daily status update", "A document summarizing testing activities and results at the end", "A list of test tools", "A requirements document"], correct: 1 },
+  { question: "What is risk-based testing?", options: ["Avoiding all risks", "Prioritizing testing based on the risk of failure", "Testing only risky features", "Ignoring low-risk areas completely"], correct: 1 },
+  { question: "What is a defect life cycle?", options: ["The time a bug lives in production", "The stages a defect goes through from detection to closure", "The number of bugs in a release", "The cost of fixing bugs"], correct: 1 },
+  { question: "Which is a valid defect status?", options: ["New, Open, Fixed, Closed", "Start, Middle, End", "Green, Yellow, Red", "Pass, Fail, Skip"], correct: 0 },
+  { question: "What is test prioritization?", options: ["Running all tests equally", "Ordering tests by importance and risk", "Skipping unimportant tests", "Testing only critical features"], correct: 1 },
+  { question: "What is the entry criteria for testing?", options: ["Conditions that must be met before testing begins", "The first test case to run", "The login credentials for the test environment", "The test report template"], correct: 0 },
+  { question: "What is the exit criteria for testing?", options: ["Logging out of the test system", "Conditions that must be met to stop testing", "The last test case", "Deleting test data"], correct: 1 },
+  { question: "What is a traceability matrix?", options: ["A debugging tool", "A document mapping requirements to test cases", "A performance metric", "A code coverage report"], correct: 1 },
+  { question: "What is configuration management in testing?", options: ["Configuring test tools", "Managing and controlling test items, environments, and versions", "Setting up email notifications", "Managing team schedules"], correct: 1 },
+  { question: "What is incident management?", options: ["Managing workplace incidents", "The process of recognizing, investigating, and resolving defects", "Managing team conflicts", "Tracking server downtime"], correct: 1 },
+  { question: "What is a test charter?", options: ["A legal document", "A brief document describing the objective and scope of a test session", "A test automation script", "A project charter"], correct: 1 },
+  { question: "What is the tester's role in requirement reviews?", options: ["Only write test cases", "Identify ambiguities and testability issues", "Approve requirements", "Write code"], correct: 1 },
+  { question: "Which metric measures defect detection effectiveness?", options: ["Lines of code", "Defect detection percentage (DDP)", "Number of test cases", "Team velocity"], correct: 1 },
+  { question: "What is product risk?", options: ["Risk to the project timeline", "Risk that the product may not meet user needs or has defects", "Risk of team turnover", "Risk of budget overrun"], correct: 1 },
+  { question: "What is project risk in testing?", options: ["Risk related to the product quality", "Risk related to test management (schedule, resources, tools)", "Risk of server failure", "Risk of data loss"], correct: 1 },
+  { question: "What is independence of testing?", options: ["Testers working alone", "Separation of testing from development for objectivity", "Testing without tools", "Testing without requirements"], correct: 1 },
+  { question: "What is a test control activity?", options: ["Writing test cases", "Taking corrective actions when testing deviates from the plan", "Executing test scripts", "Reporting bugs"], correct: 1 },
+  { question: "Who typically creates the master test plan?", options: ["Junior tester", "Test manager or test lead", "Developer", "Business analyst"], correct: 1 },
+
+  // Section 6: Tools and Automation
+  { question: "What is a test harness?", options: ["A physical device", "Software and test data used to test a component in isolation", "A test report", "A review checklist"], correct: 1 },
+  { question: "Which is a benefit of test automation?", options: ["Eliminates need for manual testing", "Faster execution of repetitive tests", "Finds all defects", "Replaces test planning"], correct: 1 },
+  { question: "What is a test execution tool?", options: ["A tool that writes test cases", "A tool that runs automated test scripts", "A tool that manages requirements", "A word processor"], correct: 1 },
+  { question: "Which is a popular open-source test automation tool?", options: ["Microsoft Word", "Selenium", "Photoshop", "Excel"], correct: 1 },
+  { question: "What is keyword-driven testing?", options: ["Testing with keyboard shortcuts", "Using action keywords to represent test steps in a table format", "Testing search functionality", "SEO testing"], correct: 1 },
+  { question: "What is data-driven testing?", options: ["Testing databases only", "Running the same test with different sets of input data", "Testing data entry forms", "Creating test data"], correct: 1 },
+  { question: "What is a static analysis tool used for?", options: ["Running performance tests", "Analyzing code without executing it to find defects", "Managing test cases", "Creating test reports"], correct: 1 },
+  { question: "What should be considered when selecting a test tool?", options: ["Only the price", "Compatibility, learning curve, support, and ROI", "Only the vendor reputation", "Only the UI design"], correct: 1 },
+  { question: "What is a test management tool?", options: ["A code editor", "A tool for planning, tracking, and managing test activities", "A build tool", "A version control system"], correct: 1 },
+  { question: "What is continuous testing?", options: ["Testing that never stops", "Automated testing integrated into the CI/CD pipeline", "Manual testing done continuously", "Testing only in production"], correct: 1 },
+
+  // Section 7: Mixed/Advanced
+  { question: "What is the purpose of a test environment?", options: ["To develop code", "To provide a controlled setting for test execution", "To host the production application", "To store backup data"], correct: 1 },
+  { question: "What is the difference between verification and validation?", options: ["They are the same", "Verification checks against specifications; validation checks against user needs", "Validation is done first", "Verification is only for documents"], correct: 1 },
+  { question: "What is negative testing?", options: ["Testing with a negative attitude", "Testing with invalid inputs to ensure proper error handling", "Testing that always fails", "Testing in a negative environment"], correct: 1 },
+  { question: "What is ad-hoc testing?", options: ["Formal scripted testing", "Informal testing without documentation or planning", "Automated testing", "Performance testing"], correct: 1 },
+  { question: "What is the purpose of a test closure report?", options: ["To start testing", "To summarize what was tested, results, and lessons learned", "To assign new test cases", "To install test tools"], correct: 1 },
+  { question: "What is monkey testing?", options: ["Testing by monkeys", "Random testing without predefined test cases", "Testing animal tracking software", "A formal testing technique"], correct: 1 },
+  { question: "What is end-to-end testing?", options: ["Testing only the endpoints", "Testing the complete flow from start to finish", "Testing the last module only", "Testing API endpoints"], correct: 1 },
+  { question: "What is cross-browser testing?", options: ["Testing only on Chrome", "Verifying the application works across different browsers", "Testing browser extensions", "Testing browsing speed"], correct: 1 },
+  { question: "What does CRUD stand for in database testing?", options: ["Create, Read, Update, Delete", "Copy, Rename, Undo, Drop", "Check, Review, Upload, Download", "Connect, Request, Use, Disconnect"], correct: 0 },
+  { question: "What is the purpose of a defect triage meeting?", options: ["To celebrate bug-free releases", "To prioritize and assign defects for resolution", "To write new test cases", "To demo the product"], correct: 1 },
+];
+
+export default istqbQuestions;

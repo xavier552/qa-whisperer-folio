@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
-import { ArrowLeft, Github, ExternalLink, TestTube, Bug, Wifi, BarChart3, Database } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Github, ExternalLink, TestTube, Bug, Wifi, BarChart3, Database } from "lucide-react";
+import Navbar from "@/components/Navbar";
 
 const allProjects = [
   {
@@ -46,20 +46,10 @@ const allProjects = [
 ];
 
 const AllProjects = () => {
-  const navigate = useNavigate();
-
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <button
-            onClick={() => navigate("/")}
-            className="text-muted-foreground hover:text-neon transition-colors flex items-center gap-1 text-sm"
-          >
-            <ArrowLeft size={16} /> Back to Portfolio
-          </button>
-        </div>
-
+      <Navbar />
+      <div className="max-w-6xl mx-auto px-4 pt-24 pb-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -69,7 +59,7 @@ const AllProjects = () => {
             All Projects
           </p>
           <h1 className="text-3xl md:text-4xl font-bold">
-            QA Projects & Testing Portfolio
+            How I Think & What I Break
           </h1>
         </motion.div>
 
