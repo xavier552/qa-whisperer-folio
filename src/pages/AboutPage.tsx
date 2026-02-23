@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Bug, TestTube, Zap, Shield, Smartphone, BarChart3, User } from "lucide-react";
 import Navbar from "@/components/Navbar";
@@ -12,10 +13,14 @@ const skills = [
 ];
 
 const AboutPage = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
-      <div className="max-w-5xl mx-auto px-4 pt-24 pb-16">
+      <div className="max-w-5xl mx-auto px-4 pt-28 pb-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -23,6 +28,7 @@ const AboutPage = () => {
         >
           <p className="text-neon font-mono text-sm tracking-widest uppercase mb-2">About Me</p>
           <h1 className="text-3xl md:text-4xl font-bold">Xavier Varghese</h1>
+          <p className="text-muted-foreground text-sm mt-1">QA Engineer · Detail-Oriented · Quality Advocate</p>
         </motion.div>
 
         {/* Profile Section */}
@@ -42,12 +48,8 @@ const AboutPage = () => {
           </div>
 
           <div className="md:col-span-2 space-y-4">
-            <h2 className="text-2xl font-bold mb-4">Why Testing?</h2>
             <p className="text-muted-foreground leading-relaxed">
               I'm Xavier Varghese — a detail-oriented QA Engineer with 1.5+ years of hands-on experience in manual testing, automation frameworks, API validation, and performance testing. I believe quality is not just a phase — it's a mindset that must be embedded throughout the entire software development lifecycle.
-            </p>
-            <p className="text-muted-foreground leading-relaxed">
-              I chose software testing because I'm fascinated by the challenge of breaking things systematically. Finding a critical bug before it reaches users gives me immense satisfaction. Testing requires analytical thinking, attention to detail, and creative problem-solving — skills that I've honed through rigorous practice and real-world projects.
             </p>
             <p className="text-muted-foreground leading-relaxed">
               I specialize in mobile application testing across Android & iOS platforms and I'm passionate about shift-left testing practices. My toolkit includes Java, SQL, Selenium WebDriver, Postman, JMeter, and analytics platforms like Firebase, MoEngage, and CleverTap.
@@ -96,10 +98,10 @@ const AboutPage = () => {
           <h2 className="text-2xl font-bold mb-6">Tools & Technologies</h2>
           <div className="flex flex-wrap gap-3">
             {[
-              "Java", "SQL", "Selenium WebDriver", "TestNG", "Maven", "Cucumber (BDD)",
+              "Java", "SQL", "Selenium WebDriver", "Selenium IDE", "TestNG", "Maven", "Cucumber (BDD)",
               "Postman", "Apache JMeter", "Git", "GitHub", "JIRA", "Tuskr",
               "Firebase", "MoEngage", "WebEngage", "CleverTap", "PostHog", "Klaviyo",
-              "Android Testing", "iOS Testing", "Charles Proxy", "Chrome DevTools",
+              "Android Testing", "iOS Testing",
             ].map((t) => (
               <span key={t} className="text-xs font-mono text-neon bg-neon/10 px-3 py-1.5 rounded-md">
                 {t}

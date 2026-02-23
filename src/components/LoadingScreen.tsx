@@ -5,10 +5,18 @@ const LoadingScreen = ({ onComplete }: { onComplete: () => void }) => {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
+    // Only show loading on first visit per session
+    const hasLoaded = sessionStorage.getItem("hasLoaded");
+    if (hasLoaded) {
+      onComplete();
+      return;
+    }
+
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(interval);
+          sessionStorage.setItem("hasLoaded", "true");
           setTimeout(onComplete, 400);
           return 100;
         }
@@ -42,7 +50,6 @@ const LoadingScreen = ({ onComplete }: { onComplete: () => void }) => {
               }}
             />
           ))}
-          {/* User icon silhouette */}
           <div className="absolute inset-0 flex items-center justify-center">
             <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="hsl(72, 100%, 50%)" strokeWidth="1.5">
               <circle cx="12" cy="8" r="4" />
@@ -60,7 +67,6 @@ const LoadingScreen = ({ onComplete }: { onComplete: () => void }) => {
           Xavier Varghese
         </motion.p>
 
-        {/* Progress bar */}
         <div className="w-48 h-0.5 bg-white/10 rounded-full overflow-hidden">
           <motion.div
             className="h-full rounded-full"

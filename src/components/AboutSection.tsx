@@ -44,17 +44,11 @@ const AboutSection = () => {
             <p className="text-muted-foreground leading-relaxed">
               I specialize in mobile application testing across Android & iOS platforms, and I'm passionate about shift-left testing practices — embedding quality throughout the entire SDLC.
             </p>
-            <div className="mt-4 p-4 bg-neon/5 border border-neon/20 rounded-lg">
-              <p className="text-sm font-semibold text-neon mb-1">🎓 Certified Software Testing Specialist (NACTET)</p>
-              <p className="text-xs text-muted-foreground">
-                Software Testing Specialist · Credential ID: 54883
-              </p>
-            </div>
             <button
               onClick={() => navigate("/about")}
               className="btn-press inline-flex items-center gap-2 text-neon text-sm font-medium hover:opacity-80 transition-opacity mt-2"
             >
-              Learn More About Me
+              Get to know me
               <ArrowRight size={14} />
             </button>
           </motion.div>
