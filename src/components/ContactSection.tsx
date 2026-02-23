@@ -1,31 +1,11 @@
 import { motion, useInView } from "framer-motion";
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState } from "react";
 import { Mail, MapPin, Send, Linkedin, Github } from "lucide-react";
 
 const ContactSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [formState, setFormState] = useState({ name: "", email: "", message: "" });
-  const audioCtxRef = useRef<AudioContext | null>(null);
-
-  const playTypingSound = useCallback(() => {
-    try {
-      if (!audioCtxRef.current) {
-        audioCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
-      }
-      const ctx = audioCtxRef.current;
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.type = "sine";
-      osc.frequency.value = 600 + Math.random() * 400;
-      gain.gain.setValueAtTime(0.012, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
-      osc.start(ctx.currentTime);
-      osc.stop(ctx.currentTime + 0.04);
-    } catch {}
-  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,7 +15,6 @@ const ContactSection = () => {
 
   const handleChange = (field: string, value: string) => {
     setFormState((prev) => ({ ...prev, [field]: value }));
-    playTypingSound();
   };
 
   return (
