@@ -63,8 +63,11 @@ const QAQuiz = () => {
       >
         <div className="text-4xl mb-4">🧠</div>
         <h3 className="text-2xl font-bold mb-2">ISTQB Quiz Challenge</h3>
-        <p className="text-sm text-muted-foreground mb-6">
-          Test your QA knowledge with 10 randomly selected ISTQB-style questions from a bank of 100. Each attempt gives you a fresh set of questions.
+        <p className="text-sm text-muted-foreground mb-3">
+          Get 10 surprise ISTQB-style questions pulled from our secret QA bank.
+        </p>
+        <p className="text-xs text-muted-foreground/70 italic mb-6">
+          Every attempt is a fresh mission — because real testers never test the same scenario twice!
         </p>
         <button
           onClick={() => setStarted(true)}

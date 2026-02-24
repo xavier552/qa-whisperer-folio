@@ -51,6 +51,13 @@ const HeroSection = () => {
               href={btn.href}
               target={btn.external ? "_blank" : undefined}
               rel={btn.external ? "noopener noreferrer" : undefined}
+              onClick={(e) => {
+                if (!btn.external) {
+                  e.preventDefault();
+                  const el = document.querySelector(btn.href);
+                  el?.scrollIntoView({ behavior: "smooth" });
+                }
+              }}
               className="btn-press border border-neon text-neon px-7 py-3 rounded-md font-medium hover:bg-neon hover:text-primary-foreground transition-all text-sm tracking-wide"
             >
               {btn.label}

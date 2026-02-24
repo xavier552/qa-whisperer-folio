@@ -1,13 +1,15 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { Download, FileText } from "lucide-react";
 
 const ResumeSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const navigate = useNavigate();
 
-  const resumeHighlights = [
-    { label: "Years of Experience", value: "1.5+" },
+  const resumeHighlights: { label: string; value: string; link?: string }[] = [
+    { label: "Years of Experience", value: "1.5+", link: "/experience" },
     { label: "Manual Projects", value: "30+" },
     { label: "Bugs Identified", value: "777+" },
     { label: "SDLC & STLC", value: "Strong" },
@@ -34,15 +36,19 @@ const ResumeSection = () => {
           transition={{ delay: 0.3 }}
           className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10"
         >
-          {resumeHighlights.map((item) => (
-            <div
-              key={item.label}
-              className="bg-card border border-border rounded-lg p-5 text-center hover:border-neon/40 transition-colors"
-            >
-              <p className="text-3xl font-bold text-neon mb-1">{item.value}</p>
-              <p className="text-xs text-muted-foreground">{item.label}</p>
-            </div>
-          ))}
+          {resumeHighlights.map((item) => {
+            const Wrapper = item.link ? "button" : "div";
+            return (
+              <Wrapper
+                key={item.label}
+                onClick={item.link ? () => navigate(item.link!) : undefined}
+                className={`bg-card border border-border rounded-lg p-5 text-center hover:border-neon/40 transition-colors ${item.link ? "cursor-pointer" : ""}`}
+              >
+                <p className="text-3xl font-bold text-neon mb-1">{item.value}</p>
+                <p className="text-xs text-muted-foreground">{item.label}</p>
+              </Wrapper>
+            );
+          })}
         </motion.div>
 
         <motion.div

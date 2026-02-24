@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Github, ExternalLink, TestTube, Bug, Wifi, BarChart3, Database, LayoutGrid, List } from "lucide-react";
-import Navbar from "@/components/Navbar";
+import SubPageHeader from "@/components/SubPageHeader";
 
 const allProjects = [
   {
@@ -55,8 +55,8 @@ const AllProjects = () => {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Navbar />
-      <div className="max-w-6xl mx-auto px-4 pt-28 pb-16">
+      <SubPageHeader />
+      <div className="max-w-6xl mx-auto px-4 pt-20 pb-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
