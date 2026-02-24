@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Bug, TestTube, Zap, Shield, Smartphone, BarChart3, User } from "lucide-react";
-import Navbar from "@/components/Navbar";
+import SubPageHeader from "@/components/SubPageHeader";
 
 const skills = [
   { icon: TestTube, label: "Manual & Exploratory Testing", desc: "Skilled in functional, regression, usability, and exploratory testing. I design comprehensive test cases that cover edge cases and critical user flows, ensuring every feature meets quality standards before release." },
@@ -19,8 +19,8 @@ const AboutPage = () => {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Navbar />
-      <div className="max-w-5xl mx-auto px-4 pt-28 pb-16">
+      <SubPageHeader />
+      <div className="max-w-5xl mx-auto px-4 pt-20 pb-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -49,7 +49,7 @@ const AboutPage = () => {
 
           <div className="md:col-span-2 space-y-4">
             <p className="text-muted-foreground leading-relaxed">
-              I'm Xavier Varghese — a detail-oriented QA Engineer with 1.5+ years of hands-on experience in manual testing, automation frameworks, API validation, and performance testing. I believe quality is not just a phase — it's a mindset that must be embedded throughout the entire software development lifecycle.
+              A detail-oriented QA Engineer with 1.5+ years of hands-on experience in manual testing, automation frameworks, API validation, and performance testing. I believe quality is not just a phase — it's a mindset that must be embedded throughout the entire software development lifecycle.
             </p>
             <p className="text-muted-foreground leading-relaxed">
               I specialize in mobile application testing across Android & iOS platforms and I'm passionate about shift-left testing practices. My toolkit includes Java, SQL, Selenium WebDriver, Postman, JMeter, and analytics platforms like Firebase, MoEngage, and CleverTap.

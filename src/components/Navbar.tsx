@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
-import { Menu, X, Home, User, FolderOpen, Mail, FileText, ArrowLeft } from "lucide-react";
+import { Menu, X, Home, User, FolderOpen, Mail, FileText, Sun, Moon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useTheme } from "next-themes";
 import useClickSound from "@/hooks/useClickSound";
 
 const navItems = [
@@ -17,9 +17,10 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const playClick = useClickSound();
-  const location = useLocation();
-  const navigate = useNavigate();
-  const isHome = location.pathname === "/";
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -28,7 +29,6 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    if (!isHome) return;
     const sections = navItems.map((item) => item.href);
     const observer = new IntersectionObserver(
       (entries) => {
@@ -46,78 +46,37 @@ const Navbar = () => {
       if (el) observer.observe(el);
     });
     return () => observer.disconnect();
-  }, [isHome]);
+  }, []);
 
-  const handleNavClick = useCallback(
-    (href: string, e?: React.MouseEvent) => {
-      e?.preventDefault();
-      setIsOpen(false);
-      if (isHome) {
-        const el = document.getElementById(href);
-        el?.scrollIntoView({ behavior: "smooth" });
-      } else {
-        navigate("/#" + href);
-      }
-    },
-    [isHome, navigate]
-  );
+  const handleNavClick = useCallback((href: string, e?: React.MouseEvent) => {
+    e?.preventDefault();
+    setIsOpen(false);
+    const el = document.getElementById(href);
+    el?.scrollIntoView({ behavior: "smooth" });
+  }, []);
 
   const handleLogoClick = useCallback(
     (e: React.MouseEvent) => {
       e.preventDefault();
       playClick();
-      if (!isHome) {
-        const lastSection = sessionStorage.getItem("lastSection") || "home";
-        navigate("/#" + lastSection);
-        return;
-      }
       const el = document.getElementById("home");
       el?.scrollIntoView({ behavior: "smooth" });
     },
-    [playClick, isHome, navigate]
+    [playClick]
   );
 
-  const handleBackToHome = () => {
-    const lastSection = sessionStorage.getItem("lastSection") || "home";
-    navigate("/#" + lastSection);
+  const toggleTheme = () => {
+    setTheme(theme === "dark" ? "light" : "dark");
   };
 
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled || !isHome
+        scrolled
           ? "bg-background/80 backdrop-blur-xl border-b border-border"
           : "bg-transparent"
       }`}
     >
-      {/* Back to Home bar on sub-pages */}
-      {!isHome && (
-        <div className="bg-neon/5 border-b border-neon/10">
-          <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between h-9">
-            <button
-              onClick={handleBackToHome}
-              className="flex items-center gap-1.5 text-xs font-mono text-neon hover:opacity-80 transition-opacity"
-            >
-              <ArrowLeft size={12} />
-              Back to Home
-            </button>
-            <a
-              href="#"
-              className="flex items-center gap-1.5 text-xs font-mono text-neon hover:opacity-80 transition-opacity"
-            >
-              <motion.span
-                animate={{ opacity: [1, 0.5, 1] }}
-                transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-                className="flex items-center gap-1"
-              >
-                <FileText size={11} />
-                Download Resume
-              </motion.span>
-            </a>
-          </div>
-        </div>
-      )}
-
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between h-16">
         <button onClick={handleLogoClick} className="text-left group">
           <span className="text-sm font-bold text-neon tracking-tight block leading-tight group-hover:opacity-80 transition-opacity">
@@ -131,7 +90,7 @@ const Navbar = () => {
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-8">
           {navItems.map((item) => {
-            const isActive = isHome && activeSection === item.href;
+            const isActive = activeSection === item.href;
             const isResume = item.label === "Resume";
             return (
               <button
@@ -167,15 +126,37 @@ const Navbar = () => {
               </button>
             );
           })}
+
+          {/* Theme toggle */}
+          {mounted && (
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-md border border-border hover:border-neon/40 text-muted-foreground hover:text-neon transition-colors"
+              aria-label="Toggle theme"
+            >
+              {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+            </button>
+          )}
         </div>
 
         {/* Mobile menu button */}
-        <button
-          className="md:hidden text-foreground active:scale-90 transition-transform"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        <div className="md:hidden flex items-center gap-3">
+          {mounted && (
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-md border border-border text-muted-foreground hover:text-neon transition-colors"
+              aria-label="Toggle theme"
+            >
+              {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+            </button>
+          )}
+          <button
+            className="text-foreground active:scale-90 transition-transform"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu */}
@@ -189,7 +170,7 @@ const Navbar = () => {
           >
             <div className="px-6 py-4 flex flex-col gap-1">
               {navItems.map((item) => {
-                const isActive = isHome && activeSection === item.href;
+                const isActive = activeSection === item.href;
                 const isResume = item.label === "Resume";
                 const Icon = item.icon;
                 return (

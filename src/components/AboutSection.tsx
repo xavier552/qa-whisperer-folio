@@ -28,7 +28,7 @@ const AboutSection = () => {
           <p className="text-neon font-mono text-sm tracking-widest uppercase mb-2">
             About Me
           </p>
-          <h2 className="text-4xl md:text-5xl font-bold mb-8">Who I Am</h2>
+          <h2 className="text-4xl md:text-5xl font-bold mb-8">Xavier Varghese</h2>
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-12">
@@ -39,7 +39,7 @@ const AboutSection = () => {
             className="space-y-4"
           >
             <p className="text-muted-foreground leading-relaxed">
-              I'm Xavier Varghese — a detail-oriented QA Engineer based in Kochi, Kerala, India with 1.5+ years of hands-on experience in manual testing, automation, API validation, and performance testing.
+              A detail-oriented QA Engineer based in Kochi, Kerala, India with 1.5+ years of hands-on experience in manual testing, automation, API validation, and performance testing.
             </p>
             <p className="text-muted-foreground leading-relaxed">
               I specialize in mobile application testing across Android & iOS platforms, and I'm passionate about shift-left testing practices — embedding quality throughout the entire SDLC.
