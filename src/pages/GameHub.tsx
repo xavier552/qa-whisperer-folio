@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Brain, Eye, Sparkles } from "lucide-react";
 import SubPageHeader from "@/components/SubPageHeader";
@@ -37,52 +37,14 @@ const VenomButton = ({
 
 const GameHub = () => {
   const [activeTab, setActiveTab] = useState<"quiz" | "diff">("quiz");
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
-  const [isHovering, setIsHovering] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const handleMouseMove = (e: MouseEvent) => {
-      const rect = container.getBoundingClientRect();
-      setCursorPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-    };
-
-    const handleEnter = () => setIsHovering(true);
-    const handleLeave = () => setIsHovering(false);
-
-    container.addEventListener("mousemove", handleMouseMove);
-    container.addEventListener("mouseenter", handleEnter);
-    container.addEventListener("mouseleave", handleLeave);
-    return () => {
-      container.removeEventListener("mousemove", handleMouseMove);
-      container.removeEventListener("mouseenter", handleEnter);
-      container.removeEventListener("mouseleave", handleLeave);
-    };
-  }, []);
-
   return (
-    <div className="min-h-screen bg-background text-foreground" ref={containerRef} style={{ cursor: "none" }}>
+    <div className="min-h-screen bg-background text-foreground">
       <SubPageHeader />
-
-      {/* Custom cursor */}
-      {isHovering && (
-        <motion.div
-          className="pointer-events-none fixed z-[100] mix-blend-difference"
-          animate={{ x: cursorPos.x - 16, y: cursorPos.y - 16 }}
-          transition={{ type: "spring", stiffness: 500, damping: 28, mass: 0.5 }}
-        >
-          <div className="w-8 h-8 rounded-full border-2 border-neon shadow-[0_0_15px_hsl(var(--neon)/0.6)] flex items-center justify-center">
-            <div className="w-1.5 h-1.5 rounded-full bg-neon" />
-          </div>
-        </motion.div>
-      )}
 
       <div className="max-w-4xl mx-auto px-4 pt-20 pb-8">
         <motion.div
