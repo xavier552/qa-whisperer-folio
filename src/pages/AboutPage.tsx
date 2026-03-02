@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { motion } from "framer-motion";
-import { Bug, TestTube, Zap, Shield, Smartphone, BarChart3, User } from "lucide-react";
+import { Bug, TestTube, Zap, Shield, Smartphone, BarChart3, User, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import SubPageHeader from "@/components/SubPageHeader";
 
 const skills = [
@@ -60,6 +61,13 @@ const AboutPage = () => {
               <p className="text-xs text-muted-foreground">
                 Software Testing Specialist · Credential ID: 54883
               </p>
+              <Link
+                to="/experience"
+                className="inline-flex items-center gap-2 mt-4 text-sm font-medium text-neon hover:opacity-80 transition-opacity group"
+              >
+                My Experience
+                <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+              </Link>
             </div>
           </div>
         </motion.div>
