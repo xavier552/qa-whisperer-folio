@@ -168,14 +168,35 @@ const AllProjects = () => {
                   </div>
                   <div className="shrink-0">
                     {project.github !== "#" ? (
-                      <a
+                      <motion.a
                         href={project.github}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-muted-foreground hover:text-neon transition-colors"
+                        className="relative block text-muted-foreground hover:text-neon transition-colors"
+                        whileHover={{ scale: 1.2 }}
+                        whileTap={{ scale: 0.9 }}
                       >
                         <Github size={18} />
-                      </a>
+                        <motion.span
+                          className="absolute -inset-2 rounded-full border border-neon/0"
+                          whileHover={{
+                            borderColor: "hsl(var(--neon) / 0.5)",
+                            scale: [1, 1.4, 1.2],
+                          }}
+                          transition={{ duration: 0.4 }}
+                        />
+                        <motion.span
+                          className="absolute inset-0 flex items-center justify-center"
+                          initial={{ opacity: 0, scale: 0 }}
+                          whileTap={{
+                            opacity: [0, 1, 0],
+                            scale: [0.5, 1.8, 2.5],
+                          }}
+                          transition={{ duration: 0.5 }}
+                        >
+                          <span className="w-full h-full rounded-full bg-neon/20" />
+                        </motion.span>
+                      </motion.a>
                     ) : (
                       <span className="text-muted-foreground">
                         <ExternalLink size={18} />
