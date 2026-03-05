@@ -41,6 +41,65 @@ const PlaneSendAnimation = ({ onComplete }: { onComplete: () => void }) => {
   );
 };
 
+const EmailIcon = () => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <motion.div
+      className="w-12 h-12 rounded-lg bg-neon/10 flex items-center justify-center shrink-0 cursor-pointer overflow-hidden relative"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <AnimatePresence mode="wait">
+        {!isHovered ? (
+          <motion.div
+            key="default"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+          >
+            {/* Default: envelope with subtle bounce */}
+            <motion.div
+              animate={{ y: [0, -3, 0] }}
+              transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+            >
+              <Mail className="text-neon" size={20} />
+            </motion.div>
+          </motion.div>
+        ) : (
+          <motion.div
+            key="hover"
+            initial={{ opacity: 0, scale: 0.5, rotate: -20 }}
+            animate={{ opacity: 1, scale: 1, rotate: 0 }}
+            exit={{ opacity: 0, scale: 0.5 }}
+            transition={{ type: "spring", stiffness: 400, damping: 15 }}
+            className="relative"
+          >
+            {/* Hover: open envelope with glow */}
+            <motion.div
+              animate={{ 
+                y: [0, -2, 0],
+                filter: ["drop-shadow(0 0 4px hsl(72 100% 50% / 0.4))", "drop-shadow(0 0 12px hsl(72 100% 50% / 0.7))", "drop-shadow(0 0 4px hsl(72 100% 50% / 0.4))"]
+              }}
+              transition={{ repeat: Infinity, duration: 1.2, ease: "easeInOut" }}
+            >
+              <Mail className="text-neon" size={22} />
+            </motion.div>
+            {/* Small notification dot */}
+            <motion.div
+              className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-neon"
+              initial={{ scale: 0 }}
+              animate={{ scale: [0, 1.2, 1] }}
+              transition={{ delay: 0.15, duration: 0.3 }}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+};
+
 const ContactSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
@@ -131,9 +190,7 @@ const ContactSection = () => {
                 href="mailto:xaviervarghese468@gmail.com"
                 className="flex items-center gap-4 p-3 rounded-lg hover:bg-card transition-colors group"
               >
-                <div className="w-10 h-10 rounded-md bg-neon/10 flex items-center justify-center shrink-0">
-                  <Mail className="text-neon" size={18} />
-                </div>
+                <EmailIcon />
                 <div>
                   <p className="text-sm font-medium group-hover:text-neon transition-colors">Email</p>
                   <p className="text-sm text-muted-foreground break-all">xaviervarghese468@gmail.com</p>
@@ -141,8 +198,8 @@ const ContactSection = () => {
               </a>
 
               <div className="flex items-center gap-4 p-3">
-                <div className="w-10 h-10 rounded-md bg-neon/10 flex items-center justify-center shrink-0">
-                  <MapPin className="text-neon" size={18} />
+                <div className="w-12 h-12 rounded-lg bg-neon/10 flex items-center justify-center shrink-0">
+                  <MapPin className="text-neon" size={20} />
                 </div>
                 <div>
                   <p className="text-sm font-medium">Location</p>

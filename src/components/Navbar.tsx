@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
-import { Menu, X, Home, User, FolderOpen, Mail, FileText, Sun, Moon } from "lucide-react";
+import { Menu, X, Home, User, FolderOpen, Mail, FileText } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useTheme } from "next-themes";
 import useClickSound from "@/hooks/useClickSound";
 
 const navItems = [
@@ -17,10 +16,6 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const playClick = useClickSound();
-  const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -64,10 +59,6 @@ const Navbar = () => {
     },
     [playClick]
   );
-
-  const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
-  };
 
   return (
     <nav
@@ -126,37 +117,15 @@ const Navbar = () => {
               </button>
             );
           })}
-
-          {/* Theme toggle */}
-          {mounted && (
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-md border border-border hover:border-neon/40 text-muted-foreground hover:text-neon transition-colors"
-              aria-label="Toggle theme"
-            >
-              {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
-            </button>
-          )}
         </div>
 
         {/* Mobile menu button */}
-        <div className="md:hidden flex items-center gap-3">
-          {mounted && (
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-md border border-border text-muted-foreground hover:text-neon transition-colors"
-              aria-label="Toggle theme"
-            >
-              {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
-            </button>
-          )}
-          <button
-            className="text-foreground active:scale-90 transition-transform"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
+        <button
+          className="md:hidden text-foreground active:scale-90 transition-transform"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          {isOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
       </div>
 
       {/* Mobile menu */}
@@ -190,7 +159,6 @@ const Navbar = () => {
                       <motion.span
                         animate={{ opacity: [1, 0.5, 1] }}
                         transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-                        className="flex items-center gap-1"
                       >
                         {item.label}
                       </motion.span>
