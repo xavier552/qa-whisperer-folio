@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { motion } from "framer-motion";
-import { Bug, TestTube, Zap, Shield, Smartphone, BarChart3, User, ArrowRight } from "lucide-react";
+import { Bug, TestTube, Zap, Shield, Smartphone, BarChart3, User, ArrowRight, Briefcase } from "lucide-react";
 import { Link } from "react-router-dom";
 import SubPageHeader from "@/components/SubPageHeader";
 
@@ -21,7 +21,7 @@ const AboutPage = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <SubPageHeader />
-      <div className="max-w-5xl mx-auto px-4 pt-20 pb-16">
+      <div className="max-w-5xl mx-auto px-6 pt-24 pb-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -56,19 +56,25 @@ const AboutPage = () => {
               I specialize in mobile application testing across Android & iOS platforms and I'm passionate about shift-left testing practices. My toolkit includes Java, SQL, Selenium WebDriver, Postman, JMeter, and analytics platforms like Firebase, MoEngage, and CleverTap.
             </p>
 
-            <div className="mt-6 p-4 bg-neon/5 border border-neon/20 rounded-lg">
+            <div className="p-4 bg-neon/5 border border-neon/20 rounded-lg">
               <p className="text-sm font-semibold text-neon mb-1">🎓 Certified Software Testing Specialist (NACTET)</p>
               <p className="text-xs text-muted-foreground">
                 Software Testing Specialist · Credential ID: 54883
               </p>
-              <Link
-                to="/experience"
-                className="inline-flex items-center gap-2 mt-4 text-sm font-medium text-neon hover:opacity-80 transition-opacity group"
-              >
-                My Experience
-                <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-              </Link>
             </div>
+
+            {/* Experience Link - standalone button */}
+            <Link
+              to="/experience"
+              className="inline-flex items-center gap-3 mt-2 px-5 py-3 rounded-lg border border-neon/30 bg-neon/5 hover:bg-neon/10 hover:border-neon/50 transition-all group"
+            >
+              <Briefcase className="text-neon" size={18} />
+              <div>
+                <p className="text-sm font-semibold text-foreground group-hover:text-neon transition-colors">My Experience</p>
+                <p className="text-xs text-muted-foreground">View my professional journey</p>
+              </div>
+              <ArrowRight size={16} className="text-neon ml-auto group-hover:translate-x-1 transition-transform" />
+            </Link>
           </div>
         </motion.div>
 

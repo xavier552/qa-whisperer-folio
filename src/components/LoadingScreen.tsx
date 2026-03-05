@@ -3,83 +3,131 @@ import { useState, useEffect } from "react";
 
 const LoadingScreen = ({ onComplete }: { onComplete: () => void }) => {
   const [progress, setProgress] = useState(0);
+  const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
-    // Only show loading on first visit per session
     const hasLoaded = sessionStorage.getItem("hasLoaded");
     if (hasLoaded) {
       onComplete();
       return;
     }
 
+    // Show quote content after brief delay
+    setTimeout(() => setShowContent(true), 200);
+
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(interval);
           sessionStorage.setItem("hasLoaded", "true");
-          setTimeout(onComplete, 400);
+          setTimeout(onComplete, 600);
           return 100;
         }
-        return prev + Math.random() * 15 + 5;
+        return prev + Math.random() * 12 + 4;
       });
-    }, 120);
+    }, 140);
     return () => clearInterval(interval);
   }, [onComplete]);
 
   return (
     <AnimatePresence>
       <motion.div
-        exit={{ opacity: 0, scale: 1.05 }}
-        transition={{ duration: 0.5 }}
-        className="fixed inset-0 z-[100] flex flex-col items-center justify-center"
-        style={{ backgroundColor: "hsl(120, 30%, 6%)" }}
+        exit={{ opacity: 0, scale: 1.02 }}
+        transition={{ duration: 0.6 }}
+        className="fixed inset-0 z-[100] flex flex-col items-center justify-center px-6"
+        style={{ backgroundColor: "hsl(0, 0%, 3%)" }}
       >
-        {/* Animated rings */}
-        <div className="relative w-32 h-32 mb-8">
-          {[0, 1, 2].map((i) => (
-            <motion.div
-              key={i}
-              className="absolute inset-0 rounded-full"
-              style={{
-                border: `1px solid hsl(72, 100%, 50%, ${0.3 - i * 0.08})`,
-              }}
-              animate={{ rotate: 360, scale: [1, 1.1 + i * 0.05, 1] }}
-              transition={{
-                rotate: { duration: 3 + i, repeat: Infinity, ease: "linear" },
-                scale: { duration: 2 + i * 0.5, repeat: Infinity, ease: "easeInOut" },
-              }}
-            />
-          ))}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="hsl(72, 100%, 50%)" strokeWidth="1.5">
-              <circle cx="12" cy="8" r="4" />
-              <path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1" />
-            </svg>
-          </div>
-        </div>
+        {/* Background grid pattern */}
+        <div
+          className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage: `linear-gradient(hsl(72 100% 50% / 0.3) 1px, transparent 1px), linear-gradient(90deg, hsl(72 100% 50% / 0.3) 1px, transparent 1px)`,
+            backgroundSize: "60px 60px",
+          }}
+        />
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="text-sm font-mono tracking-widest uppercase mb-6"
-          style={{ color: "hsl(72, 100%, 50%)" }}
-        >
-          Xavier Varghese
-        </motion.p>
+        {/* Decorative corner accents */}
+        <div className="absolute top-8 left-8 w-16 h-16 border-l border-t border-neon/20" />
+        <div className="absolute bottom-8 right-8 w-16 h-16 border-r border-b border-neon/20" />
 
-        <div className="w-48 h-0.5 bg-white/10 rounded-full overflow-hidden">
+        {/* Main content */}
+        <div className="relative z-10 max-w-2xl text-center">
+          {showContent && (
+            <>
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: 48 }}
+                transition={{ duration: 0.6 }}
+                className="h-px bg-neon mx-auto mb-10"
+              />
+
+              <motion.blockquote
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.8 }}
+                className="mb-6"
+              >
+                <p
+                  className="text-2xl sm:text-3xl md:text-4xl font-bold leading-tight italic"
+                  style={{ color: "hsl(60, 100%, 97%)" }}
+                >
+                  "Quality is not an act,
+                  <br />
+                  <span style={{ color: "hsl(72, 100%, 50%)" }}>it's a habit."</span>
+                </p>
+              </motion.blockquote>
+
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.8, duration: 0.6 }}
+                className="text-sm sm:text-base leading-relaxed max-w-lg mx-auto mb-12"
+                style={{ color: "hsl(0, 0%, 50%)" }}
+              >
+                I break things before users do. Passionate about test automation,
+                quality processes, and building reliable software.
+              </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.2, duration: 0.5 }}
+                className="mb-8"
+              >
+                <p
+                  className="text-xs font-mono tracking-[0.3em] uppercase"
+                  style={{ color: "hsl(72, 100%, 50%)" }}
+                >
+                  Xavier Varghese
+                </p>
+              </motion.div>
+            </>
+          )}
+
+          {/* Progress bar */}
           <motion.div
-            className="h-full rounded-full"
-            style={{ backgroundColor: "hsl(72, 100%, 50%)" }}
-            initial={{ width: 0 }}
-            animate={{ width: `${Math.min(progress, 100)}%` }}
-            transition={{ duration: 0.3 }}
-          />
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="w-48 mx-auto"
+          >
+            <div className="h-px bg-white/10 rounded-full overflow-hidden">
+              <motion.div
+                className="h-full rounded-full"
+                style={{ backgroundColor: "hsl(72, 100%, 50%)" }}
+                initial={{ width: 0 }}
+                animate={{ width: `${Math.min(progress, 100)}%` }}
+                transition={{ duration: 0.3 }}
+              />
+            </div>
+            <p
+              className="text-[10px] mt-2 font-mono tracking-widest"
+              style={{ color: "hsl(0, 0%, 35%)" }}
+            >
+              {Math.min(Math.round(progress), 100)}%
+            </p>
+          </motion.div>
         </div>
-
-        <p className="text-xs mt-3 font-mono" style={{ color: "hsl(0, 0%, 40%)" }}>
-          {Math.min(Math.round(progress), 100)}%
-        </p>
       </motion.div>
     </AnimatePresence>
   );
