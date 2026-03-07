@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Bug, TestTube, Zap, Shield, Smartphone, BarChart3, User, ArrowRight, Briefcase, X } from "lucide-react";
+import { useEffect } from "react";
+import { motion } from "framer-motion";
+import { Bug, TestTube, Zap, Shield, Smartphone, BarChart3, User, ArrowRight, Briefcase } from "lucide-react";
 import { Link } from "react-router-dom";
 import SubPageHeader from "@/components/SubPageHeader";
 
@@ -14,8 +14,6 @@ const skills = [
 ];
 
 const AboutPage = () => {
-  const [modalSkill, setModalSkill] = useState<typeof skills[0] | null>(null);
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -47,7 +45,7 @@ const AboutPage = () => {
             </div>
             <h2 className="text-lg font-bold">Xavier Varghese</h2>
             <p className="text-sm text-neon font-mono">QA Engineer</p>
-            <p className="text-xs text-muted-foreground mt-1">Kochi, Kerala, India</p>
+            <p className="text-xs text-muted-foreground mt-1">Kochi, India</p>
           </div>
 
           <div className="md:col-span-2 space-y-4">
@@ -86,7 +84,7 @@ const AboutPage = () => {
           </div>
         </motion.div>
 
-        {/* Skills Section - Click to open modal */}
+        {/* Skills Section - Hover to reveal */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -94,56 +92,31 @@ const AboutPage = () => {
           className="mb-16"
         >
           <h2 className="text-2xl font-bold mb-2">What I Do</h2>
-          <p className="text-sm text-muted-foreground mb-8">Click any skill to learn more</p>
+          <p className="text-sm text-muted-foreground mb-8">Hover over a skill to learn more</p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {skills.map((skill, i) => (
-              <motion.button
+              <motion.div
                 key={skill.label}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 + i * 0.1 }}
-                onClick={() => setModalSkill(skill)}
-                className="bg-card border border-border rounded-lg p-6 hover:border-neon/50 transition-colors group text-left cursor-pointer"
+                whileHover={{ y: -6, transition: { duration: 0.2 } }}
+                className="bg-card border border-border rounded-lg p-6 hover:border-neon/50 transition-all group cursor-default relative overflow-hidden"
               >
                 <skill.icon className="text-neon mb-3 group-hover:drop-shadow-[0_0_8px_hsl(72,100%,50%,0.5)] transition-all" size={28} />
-                <h3 className="font-semibold mb-1">{skill.label}</h3>
-                <p className="text-xs text-muted-foreground">Click to expand →</p>
-              </motion.button>
+                <h3 className="font-semibold mb-2">{skill.label}</h3>
+                {/* Description revealed on hover (desktop) / always visible sizing for tap (mobile) */}
+                <p className="text-xs text-muted-foreground leading-relaxed max-h-0 group-hover:max-h-40 overflow-hidden transition-all duration-500 ease-in-out opacity-0 group-hover:opacity-100 sm:block hidden">
+                  {skill.desc}
+                </p>
+                {/* Mobile: always show description */}
+                <p className="text-xs text-muted-foreground leading-relaxed sm:hidden">
+                  {skill.desc}
+                </p>
+              </motion.div>
             ))}
           </div>
         </motion.div>
-
-        {/* Skill Modal */}
-        <AnimatePresence>
-          {modalSkill && (
-            <motion.div
-              className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm p-4"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setModalSkill(null)}
-            >
-              <motion.div
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.9, opacity: 0 }}
-                transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                onClick={(e) => e.stopPropagation()}
-                className="bg-card border border-border rounded-2xl p-6 sm:p-8 max-w-lg w-full relative"
-              >
-                <button
-                  onClick={() => setModalSkill(null)}
-                  className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  <X size={20} />
-                </button>
-                <modalSkill.icon className="text-neon mb-4" size={36} />
-                <h3 className="text-xl font-bold mb-3">{modalSkill.label}</h3>
-                <p className="text-muted-foreground leading-relaxed text-sm">{modalSkill.desc}</p>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
 
         {/* Tools & Technologies */}
         <motion.div
@@ -166,11 +139,27 @@ const AboutPage = () => {
             </div>
 
             <div>
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground/70 mb-3">Testing Tools</h3>
+              <div className="flex flex-wrap gap-3">
+                {[
+                  "Selenium WebDriver", "TestNG", "Maven", "Cucumber (BDD)",
+                  "Postman", "JMeter", "JIRA", "Tuskr", "Git", "GitHub",
+                ].map((t) => (
+                  <span key={t} className="text-xs font-mono text-neon bg-neon/10 px-3 py-1.5 rounded-md">
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div>
               <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground/70 mb-3">Testing Skills</h3>
               <div className="flex flex-wrap gap-3">
                 {[
                   "Manual Testing", "Functional Testing", "Regression Testing",
-                  "Smoke Testing", "Mobile App Testing (Android & iOS)",
+                  "Smoke Testing", "Usability Testing", "Exploratory Testing",
+                  "Mobile App Testing (Android & iOS)", "API Testing", "Performance Testing",
+                  "Cross-Device Testing", "Release Validation",
                 ].map((t) => (
                   <span key={t} className="text-xs font-mono text-neon bg-neon/10 px-3 py-1.5 rounded-md">
                     {t}
