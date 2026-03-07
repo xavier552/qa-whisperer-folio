@@ -1,6 +1,6 @@
-import { useEffect } from "react";
-import { motion } from "framer-motion";
-import { Bug, TestTube, Zap, Shield, Smartphone, BarChart3, User, ArrowRight, Briefcase } from "lucide-react";
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Bug, TestTube, Zap, Shield, Smartphone, BarChart3, User, ArrowRight, Briefcase, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import SubPageHeader from "@/components/SubPageHeader";
 
@@ -14,6 +14,8 @@ const skills = [
 ];
 
 const AboutPage = () => {
+  const [modalSkill, setModalSkill] = useState<typeof skills[0] | null>(null);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -21,7 +23,7 @@ const AboutPage = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <SubPageHeader />
-      <div className="max-w-5xl mx-auto px-6 pt-24 pb-20">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-24 pb-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -50,10 +52,16 @@ const AboutPage = () => {
 
           <div className="md:col-span-2 space-y-4">
             <p className="text-muted-foreground leading-relaxed">
-              A detail-oriented QA Engineer with 1.5+ years of hands-on experience in manual testing, automation frameworks, API validation, and performance testing. I believe quality is not just a phase — it's a mindset that must be embedded throughout the entire software development lifecycle.
+              I am a Software Quality Engineer with 1.5+ years of hands-on experience in manual testing, currently working with mobile applications built using Appmaker.xyz.
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              I specialize in mobile application testing across Android & iOS platforms and I'm passionate about shift-left testing practices. My toolkit includes Java, SQL, Selenium WebDriver, Postman, JMeter, and analytics platforms like Firebase, MoEngage, and CleverTap.
+              I specialize in mobile application testing across Android and iOS platforms, ensuring stable releases through structured testing practices including functional, regression, and usability testing.
+            </p>
+            <p className="text-muted-foreground leading-relaxed">
+              Although my professional experience has been focused on manual testing, I also have knowledge of test automation concepts and tools. I am passionate about shift-left testing practices, collaborating closely with development teams to identify issues early and maintain product quality.
+            </p>
+            <p className="text-muted-foreground leading-relaxed">
+              My toolkit includes Java, SQL, Selenium WebDriver, Postman, JMeter, along with analytics platforms such as Firebase, MoEngage, and CleverTap.
             </p>
 
             <div className="p-4 bg-neon/5 border border-neon/20 rounded-lg">
@@ -63,7 +71,7 @@ const AboutPage = () => {
               </p>
             </div>
 
-            {/* Experience Link - standalone button */}
+            {/* Experience Link */}
             <Link
               to="/experience"
               className="inline-flex items-center gap-3 mt-2 px-5 py-3 rounded-lg border border-neon/30 bg-neon/5 hover:bg-neon/10 hover:border-neon/50 transition-all group"
@@ -78,30 +86,64 @@ const AboutPage = () => {
           </div>
         </motion.div>
 
-        {/* Skills Section */}
+        {/* Skills Section - Click to open modal */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
           className="mb-16"
         >
-          <h2 className="text-2xl font-bold mb-8">What I Do</h2>
+          <h2 className="text-2xl font-bold mb-2">What I Do</h2>
+          <p className="text-sm text-muted-foreground mb-8">Click any skill to learn more</p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {skills.map((skill, i) => (
-              <motion.div
+              <motion.button
                 key={skill.label}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 + i * 0.1 }}
-                className="bg-card border border-border rounded-lg p-6 hover:border-neon/50 transition-colors group"
+                onClick={() => setModalSkill(skill)}
+                className="bg-card border border-border rounded-lg p-6 hover:border-neon/50 transition-colors group text-left cursor-pointer"
               >
                 <skill.icon className="text-neon mb-3 group-hover:drop-shadow-[0_0_8px_hsl(72,100%,50%,0.5)] transition-all" size={28} />
-                <h3 className="font-semibold mb-2">{skill.label}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{skill.desc}</p>
-              </motion.div>
+                <h3 className="font-semibold mb-1">{skill.label}</h3>
+                <p className="text-xs text-muted-foreground">Click to expand →</p>
+              </motion.button>
             ))}
           </div>
         </motion.div>
+
+        {/* Skill Modal */}
+        <AnimatePresence>
+          {modalSkill && (
+            <motion.div
+              className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm p-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setModalSkill(null)}
+            >
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                onClick={(e) => e.stopPropagation()}
+                className="bg-card border border-border rounded-2xl p-6 sm:p-8 max-w-lg w-full relative"
+              >
+                <button
+                  onClick={() => setModalSkill(null)}
+                  className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <X size={20} />
+                </button>
+                <modalSkill.icon className="text-neon mb-4" size={36} />
+                <h3 className="text-xl font-bold mb-3">{modalSkill.label}</h3>
+                <p className="text-muted-foreground leading-relaxed text-sm">{modalSkill.desc}</p>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Tools & Technologies */}
         <motion.div
@@ -109,18 +151,46 @@ const AboutPage = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
         >
-          <h2 className="text-2xl font-bold mb-6">Tools & Technologies</h2>
-          <div className="flex flex-wrap gap-3">
-            {[
-              "Java", "SQL", "Selenium WebDriver", "Selenium IDE", "TestNG", "Maven", "Cucumber (BDD)",
-              "Postman", "Apache JMeter", "Git", "GitHub", "JIRA", "Tuskr",
-              "Firebase", "MoEngage", "WebEngage", "CleverTap", "PostHog", "Klaviyo",
-              "Android Testing", "iOS Testing",
-            ].map((t) => (
-              <span key={t} className="text-xs font-mono text-neon bg-neon/10 px-3 py-1.5 rounded-md">
-                {t}
-              </span>
-            ))}
+          <h2 className="text-2xl font-bold mb-6">Core Knowledge</h2>
+
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground/70 mb-3">Languages</h3>
+              <div className="flex flex-wrap gap-3">
+                {["Java", "SQL"].map((t) => (
+                  <span key={t} className="text-xs font-mono text-neon bg-neon/10 px-3 py-1.5 rounded-md">
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground/70 mb-3">Testing Skills</h3>
+              <div className="flex flex-wrap gap-3">
+                {[
+                  "Manual Testing", "Functional Testing", "Regression Testing",
+                  "Smoke Testing", "Mobile App Testing (Android & iOS)",
+                ].map((t) => (
+                  <span key={t} className="text-xs font-mono text-neon bg-neon/10 px-3 py-1.5 rounded-md">
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground/70 mb-3">Analytics & Engagement Tools</h3>
+              <div className="flex flex-wrap gap-3">
+                {[
+                  "Firebase", "MoEngage", "WebEngage", "CleverTap", "Klaviyo", "PostHog",
+                ].map((t) => (
+                  <span key={t} className="text-xs font-mono text-neon bg-neon/10 px-3 py-1.5 rounded-md">
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </div>
           </div>
         </motion.div>
       </div>
