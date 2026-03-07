@@ -9,6 +9,7 @@ import GameHub from "./pages/GameHub";
 import AllProjects from "./pages/AllProjects";
 import AboutPage from "./pages/AboutPage";
 import ExperiencePage from "./pages/ExperiencePage";
+import TestedApps from "./pages/TestedApps";
 
 const queryClient = new QueryClient();
 
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/projects" element={<AllProjects />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/experience" element={<ExperiencePage />} />
+          <Route path="/tested-apps" element={<TestedApps />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
