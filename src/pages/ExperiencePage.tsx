@@ -98,7 +98,7 @@ const ExperiencePage = () => {
                       </span>
                       <span className="flex items-center gap-1.5 sm:justify-end">
                         <MapPin size={13} className="text-neon/70" />
-                        {exp.location} · {exp.type}
+                        {exp.location}
                       </span>
                     </div>
                   </div>
