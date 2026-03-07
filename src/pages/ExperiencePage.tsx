@@ -5,36 +5,39 @@ import SubPageHeader from "@/components/SubPageHeader";
 
 const experiences = [
   {
-    role: "Associate QA / App Testing Specialist",
+    role: "QA Engineer",
     company: "Appmaker.xyz",
-    location: "Remote",
-    period: "October 2024 — Present",
+    location: "Kochi, India",
+    period: "Sep 2024 — Present",
     type: "Full-time",
     summary:
-      "Leading quality assurance across mobile platforms, ensuring every release meets the highest standards through rigorous testing methodologies and data-driven insights.",
+      "Ensuring quality across Shopify-based mobile applications on Android and iOS platforms through structured manual testing practices, cross-device validation, and close collaboration with the development and support teams.",
     responsibilities: [
-      "Conduct functional, regression, performance & usability testing across Android & iOS platforms",
-      "Validate mobile applications for cross-device compatibility and UI consistency",
-      "Identify, document and track defects using JIRA and Tuskr",
-      "Collaborate with developers to ensure release quality and timely bug fixes",
-      "Analyze engagement metrics using Firebase, MoEngage, WebEngage, CleverTap, PostHog & Klaviyo",
-      "Perform API testing using Postman for backend validation",
-      "Execute load and stress testing with Apache JMeter",
+      "Perform manual testing of Shopify-based mobile applications on Android and iOS platforms",
+      "Test end-to-end user flows including onboarding, navigation, product browsing, checkout, payments, and notifications",
+      "Conduct functional, usability, and regression testing to validate new releases and updates",
+      "Identify, document, and track defects using traditional tracking methods such as Excel and Google Sheets",
+      "Validate UI/UX consistency across themes, widgets, and plugin features",
+      "Execute smoke testing, regression testing, and re-testing cycles for each build generated from the Appmaker dashboard",
+      "Perform cross-device and cross-version compatibility testing across Android and iOS devices",
+      "Work with the support team to reproduce customer issues and validate fixes",
+      "Test webview-based eCommerce flows such as product listing, cart, and checkout",
+      "Conduct release validation before Play Store / App Store submission",
+      "Support developers by re-testing and performing regression testing after CI/CD pipeline updates",
     ],
     achievements: [
-      "Identified 777+ bugs across multiple product releases",
-      "Reduced regression cycle time through systematic test case optimization",
-      "Built automated test suites using Selenium WebDriver with Java",
+      "Contributed to successful releases for multiple client apps with minimal post-release issues",
+      "Helped ensure stable mobile experiences across different devices and OS versions",
+      "Supported rapid development cycles by quickly validating builds and retesting fixes",
     ],
     tech: [
-      "Selenium",
-      "Postman",
-      "JMeter",
-      "JIRA",
+      "Manual Testing",
+      "Android",
+      "iOS",
       "Firebase",
       "MoEngage",
-      "Tuskr",
-      "TestNG",
+      "Excel",
+      "Google Sheets",
     ],
   },
 ];
@@ -47,7 +50,7 @@ const ExperiencePage = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <SubPageHeader />
-      <div className="max-w-4xl mx-auto px-4 pt-20 pb-20">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-20 pb-20">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -66,7 +69,6 @@ const ExperiencePage = () => {
 
         {/* Timeline */}
         <div className="relative">
-          {/* Vertical line */}
           <div className="absolute left-4 md:left-8 top-0 bottom-0 w-px bg-gradient-to-b from-neon/60 via-border to-transparent" />
 
           {experiences.map((exp, index) => (
@@ -77,13 +79,11 @@ const ExperiencePage = () => {
               transition={{ delay: 0.2 + index * 0.15, duration: 0.5 }}
               className="relative pl-12 md:pl-20 mb-12"
             >
-              {/* Timeline dot */}
               <div className="absolute left-2 md:left-6 top-2 w-5 h-5 rounded-full bg-background border-2 border-neon shadow-[0_0_12px_hsl(var(--neon)/0.4)] z-10" />
 
-              {/* Card */}
               <div className="bg-card border border-border rounded-2xl overflow-hidden hover:border-neon/30 transition-all duration-300">
                 {/* Card header */}
-                <div className="p-6 md:p-8 border-b border-border/50">
+                <div className="p-5 sm:p-6 md:p-8 border-b border-border/50">
                   <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
                     <div>
                       <h2 className="text-xl md:text-2xl font-bold mb-1">
@@ -108,7 +108,7 @@ const ExperiencePage = () => {
                 </div>
 
                 {/* Responsibilities & Achievements */}
-                <div className="p-6 md:p-8 grid md:grid-cols-2 gap-8">
+                <div className="p-5 sm:p-6 md:p-8 space-y-8">
                   <div>
                     <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground/70 mb-4">
                       What I Do
@@ -119,7 +119,7 @@ const ExperiencePage = () => {
                           key={i}
                           initial={{ opacity: 0, x: -10 }}
                           animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 0.4 + i * 0.05 }}
+                          transition={{ delay: 0.4 + i * 0.04 }}
                           className="text-sm text-muted-foreground flex items-start gap-2.5"
                         >
                           <span className="mt-2 w-1.5 h-1.5 rounded-full bg-neon shrink-0" />
@@ -129,42 +129,46 @@ const ExperiencePage = () => {
                     </ul>
                   </div>
 
-                  <div>
-                    <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground/70 mb-4 flex items-center gap-2">
-                      <Trophy size={14} className="text-neon" />
-                      Key Wins
-                    </h3>
-                    <ul className="space-y-3 mb-8">
-                      {exp.achievements.map((a, i) => (
-                        <motion.li
-                          key={i}
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 0.5 + i * 0.05 }}
-                          className="text-sm text-muted-foreground flex items-start gap-2.5"
-                        >
-                          <span className="text-neon shrink-0 mt-0.5">✓</span>
-                          {a}
-                        </motion.li>
-                      ))}
-                    </ul>
+                  <div className="grid sm:grid-cols-2 gap-8">
+                    <div>
+                      <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground/70 mb-4 flex items-center gap-2">
+                        <Trophy size={14} className="text-neon" />
+                        Key Wins
+                      </h3>
+                      <ul className="space-y-3">
+                        {exp.achievements.map((a, i) => (
+                          <motion.li
+                            key={i}
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.5 + i * 0.05 }}
+                            className="text-sm text-muted-foreground flex items-start gap-2.5"
+                          >
+                            <span className="text-neon shrink-0 mt-0.5">✓</span>
+                            {a}
+                          </motion.li>
+                        ))}
+                      </ul>
+                    </div>
 
-                    <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground/70 mb-4 flex items-center gap-2">
-                      <Wrench size={14} className="text-neon" />
-                      Tools & Tech
-                    </h3>
-                    <div className="flex flex-wrap gap-2">
-                      {exp.tech.map((t, i) => (
-                        <motion.span
-                          key={t}
-                          initial={{ opacity: 0, scale: 0.8 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          transition={{ delay: 0.6 + i * 0.04 }}
-                          className="text-xs font-mono text-neon bg-neon/10 border border-neon/20 px-2.5 py-1 rounded-full"
-                        >
-                          {t}
-                        </motion.span>
-                      ))}
+                    <div>
+                      <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground/70 mb-4 flex items-center gap-2">
+                        <Wrench size={14} className="text-neon" />
+                        Tools & Tech
+                      </h3>
+                      <div className="flex flex-wrap gap-2">
+                        {exp.tech.map((t, i) => (
+                          <motion.span
+                            key={t}
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 0.6 + i * 0.04 }}
+                            className="text-xs font-mono text-neon bg-neon/10 border border-neon/20 px-2.5 py-1 rounded-full"
+                          >
+                            {t}
+                          </motion.span>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>

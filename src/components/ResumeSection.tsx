@@ -68,7 +68,7 @@ const ResumeSection = () => {
 
   const resumeHighlights: { label: string; value: string; link?: string }[] = [
     { label: "Years of Experience", value: "1.5+", link: "/experience" },
-    { label: "Manual Projects", value: "30+" },
+    { label: "Manual Projects", value: "30+", link: "/tested-apps" },
     { label: "Bugs Identified", value: "777+" },
     { label: "SDLC & STLC", value: "Strong" },
   ];

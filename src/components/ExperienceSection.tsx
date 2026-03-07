@@ -4,12 +4,12 @@ import { Briefcase } from "lucide-react";
 
 const experiences = [
   {
-    role: "Associate QA / App Testing Specialist",
+    role: "QA Engineer",
     company: "Appmaker.xyz",
-    period: "October 2024 — Present",
+    period: "Sep 2024 — Present",
     description:
-      "Conduct functional, regression, performance & usability testing. Validate Android & iOS mobile applications. Identify, document and track defects. Collaborate with developers to ensure release quality. Analyze engagement metrics using Firebase, MoEngage & WebEngage.",
-    tech: ["Selenium", "Postman", "JMeter", "JIRA", "Firebase", "MoEngage", "Tuskr"],
+      "Perform manual testing of Shopify-based mobile applications on Android and iOS. Test end-to-end user flows, conduct functional, usability, and regression testing. Validate UI/UX consistency across themes, widgets, and plugin features.",
+    tech: ["Manual Testing", "Android", "iOS", "Firebase", "MoEngage"],
   },
 ];
 
