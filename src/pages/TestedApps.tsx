@@ -1,106 +1,95 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Smartphone, Apple, ShoppingBag, X, Layers } from "lucide-react";
+import { Search, X, Layers, LayoutGrid, List, ExternalLink } from "lucide-react";
 import SubPageHeader from "@/components/SubPageHeader";
 
 type AppEntry = {
   name: string;
-  android: boolean;
-  ios: boolean;
 };
-
-const confirmedBoth: string[] = [
-  "Med7 Online", "Kalki India", "Lea Clothing Co", "FNP KSA", "FNP Qatar",
-  "Juicy Chemistry", "Toffe Coffee Roasters", "Adore by Priyanka", "House of Masaba",
-  "Itsy Bitsy", "Nuskhe by Paras", "All Things Baby", "Voyage Eyewear", "Adil Qadri",
-  "Earth Rhythm", "Kalki UK", "Halamama", "R For Rabbit", "Thrive", "Yallamomz",
-  "Sugar Cosmetics", "Outzidr", "Blue Island", "Recode Studio", "FYXX",
-  "United Vintage", "Dudes Boutique", "TKMC", "Baby Forest", "Blue Spinach",
-];
-
-const androidOnly: string[] = [
-  "Zouk", "Westside", "The Face Shop", "The Better Flour", "Star Delite",
-  "Preethi Shapewear", "Amydus", "Jai Bros", "Mcaffeine", "Gritstones",
-  "Cyber Dog", "Tyaani", "Unniyarcha", "JustLilThings", "Maverick Tattoo",
-];
-
-const needsVerification: string[] = [
-  "Fashor", "Trendia", "Koskii", "Levi's India", "Avimee Herbal", "Aristobrat",
-  "Studd Muffyn", "Loolia Closet Lebanon", "Loolia Closet Egypt", "Loolia Closet Jordan",
-  "SohatiCare Lebanon", "SohatiCare Egypt", "SohatiCare Jordan", "Nursery Live",
-  "Care n Cure", "Sportpodium", "Farm Shop", "Anveshan", "Faces Canada",
-  "Sri Sri Tattva", "Boat",
-];
 
 const allApps: AppEntry[] = [
-  ...confirmedBoth.map((name) => ({ name, android: true, ios: true })),
-  ...androidOnly.map((name) => ({ name, android: true, ios: false })),
-  ...needsVerification.map((name) => ({ name, android: true, ios: false })),
-];
+  "Sugar Cosmetics", "Westside", "House of Masaba", "Mcaffeine", "Juicy Chemistry",
+  "Kalki India", "The Face Shop", "Voyage Eyewear", "Zouk", "Amydus",
+  "R For Rabbit", "Earth Rhythm", "Adil Qadri", "Blue Island", "Cyber Dog",
+  "Kalki UK", "FNP Qatar", "FNP KSA", "JustLilThings", "Tyaani",
+  "Baby Forest", "Outzidr", "FYXX", "United Vintage", "Recode Studio",
+  "Thrive", "Gritstones", "All Things Baby", "Med7 Online", "Lea Clothing Co",
+  "Toffe Coffee Roasters", "Adore by Priyanka", "Itsy Bitsy", "Nuskhe by Paras",
+  "Halamama", "Yallamomz", "Dudes Boutique", "TKMC", "Blue Spinach",
+  "The Better Flour", "Star Delite", "Preethi Shapewear", "Jai Bros",
+  "Unniyarcha", "Maverick Tattoo", "Fashor", "Trendia", "Koskii",
+  "Levi's India", "Avimee Herbal", "Aristobrat", "Studd Muffyn",
+  "Loolia Closet Lebanon", "Loolia Closet Egypt", "Loolia Closet Jordan",
+  "SohatiCare Lebanon", "SohatiCare Egypt", "SohatiCare Jordan",
+  "Nursery Live", "Care n Cure", "Sportpodium", "Farm Shop", "Anveshan",
+  "Faces Canada", "Sri Sri Tattva", "Boat",
+].map((name) => ({ name }));
 
-const getInitials = (name: string) => {
-  return name.split(" ").slice(0, 2).map(w => w[0]).join("").toUpperCase();
-};
+const getInitials = (name: string) =>
+  name.split(" ").slice(0, 2).map((w) => w[0]).join("").toUpperCase();
 
-const AppCard = ({ app, index }: { app: AppEntry; index: number }) => (
+const AppCardGrid = ({ app, index }: { app: AppEntry; index: number }) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ delay: 0.02 * index, duration: 0.4 }}
     whileHover={{ y: -4, transition: { duration: 0.2 } }}
-    className="bg-card border border-border rounded-xl p-4 hover:border-neon/40 transition-colors group"
+    className="bg-card border border-border rounded-xl p-4 hover:border-neon/40 transition-colors group flex flex-col items-center text-center gap-3"
   >
-    <div className="flex items-center gap-3">
-      <div className="w-10 h-10 rounded-lg bg-neon/10 border border-neon/20 flex items-center justify-center shrink-0 group-hover:bg-neon/20 transition-colors text-neon font-bold text-xs">
-        {getInitials(app.name)}
-      </div>
-      <div className="flex-1 min-w-0">
-        <h3 className="font-semibold text-sm group-hover:text-neon transition-colors truncate">
-          {app.name}
-        </h3>
-        <div className="flex items-center gap-3 mt-1">
-          <span className="inline-flex items-center gap-1 text-[11px] text-neon/80">
-            <Smartphone size={10} />
-            Android ✓
-          </span>
-          {app.ios && (
-            <span className="inline-flex items-center gap-1 text-[11px] text-neon/80">
-              <Apple size={10} />
-              iOS ✓
-            </span>
-          )}
-        </div>
-      </div>
+    <div className="w-12 h-12 rounded-xl bg-neon/10 border border-neon/20 flex items-center justify-center shrink-0 group-hover:bg-neon/20 transition-colors text-neon font-bold text-sm">
+      {getInitials(app.name)}
     </div>
+    <h3 className="font-semibold text-sm group-hover:text-neon transition-colors leading-tight">
+      {app.name}
+    </h3>
+  </motion.div>
+);
+
+const AppCardList = ({ app, index }: { app: AppEntry; index: number }) => (
+  <motion.div
+    initial={{ opacity: 0, x: -20 }}
+    animate={{ opacity: 1, x: 0 }}
+    transition={{ delay: 0.02 * index, duration: 0.3 }}
+    className="bg-card border border-border rounded-lg px-4 py-3 hover:border-neon/40 transition-colors group flex items-center gap-3"
+  >
+    <div className="w-9 h-9 rounded-lg bg-neon/10 border border-neon/20 flex items-center justify-center shrink-0 group-hover:bg-neon/20 transition-colors text-neon font-bold text-xs">
+      {getInitials(app.name)}
+    </div>
+    <h3 className="font-semibold text-sm group-hover:text-neon transition-colors">
+      {app.name}
+    </h3>
   </motion.div>
 );
 
 const TestedApps = () => {
   const [showModal, setShowModal] = useState(false);
+  const [view, setView] = useState<"grid" | "list">("grid");
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
+  const filtered = allApps.filter((app) =>
+    app.name.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <SubPageHeader />
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-20 pb-20">
+      <div className="max-w-[1200px] mx-auto px-6 pt-20 pb-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="mb-12"
         >
-          <p className="text-neon font-mono text-sm tracking-widest uppercase mb-3">
-            Manual Testing Portfolio
-          </p>
-          <h1 className="text-3xl md:text-5xl font-bold mb-3">Tested Apps</h1>
+          <h1 className="text-3xl md:text-5xl font-bold mb-3">Inside the QA Lab</h1>
           <p className="text-muted-foreground text-sm md:text-base max-w-2xl">
-            Shopify-based mobile applications tested across Android & iOS platforms with comprehensive QA coverage.
+            A collection of real-world applications and platforms I have tested while ensuring stability, usability, and product quality.
           </p>
         </motion.div>
 
-        {/* Appmaker Projects Block */}
+        {/* Appmaker Works Block */}
         <motion.button
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -114,13 +103,24 @@ const TestedApps = () => {
             <div className="w-14 h-14 rounded-xl bg-neon/10 border border-neon/20 flex items-center justify-center group-hover:bg-neon/20 transition-colors">
               <Layers className="text-neon" size={28} />
             </div>
-            <div>
-              <h2 className="text-xl font-bold group-hover:text-neon transition-colors">Appmaker Projects</h2>
-              <p className="text-sm text-muted-foreground mt-1">
-                Tested mobile apps built using Appmaker platform — {allApps.length} apps
+            <div className="flex-1 min-w-0">
+              <h2 className="text-xl font-bold group-hover:text-neon transition-colors">
+                <a
+                  href="https://appmaker.xyz"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="hover:underline inline-flex items-center gap-1.5"
+                >
+                  Appmaker
+                  <ExternalLink size={14} className="opacity-50" />
+                </a>{" "}
+                Works
+              </h2>
+              <p className="text-sm text-muted-foreground mt-1 max-w-xl">
+                Mobile applications built using the Appmaker platform that I have tested across Android and iOS devices, ensuring functionality, usability, and release quality.
               </p>
             </div>
-            <ShoppingBag className="text-neon/40 ml-auto group-hover:text-neon transition-colors" size={24} />
           </div>
         </motion.button>
 
@@ -134,7 +134,6 @@ const TestedApps = () => {
               exit={{ opacity: 0 }}
               onClick={() => setShowModal(false)}
             >
-              {/* Backdrop */}
               <motion.div
                 className="absolute inset-0 bg-background/85 backdrop-blur-md"
                 initial={{ opacity: 0 }}
@@ -142,7 +141,6 @@ const TestedApps = () => {
                 exit={{ opacity: 0 }}
               />
 
-              {/* Modal */}
               <motion.div
                 initial={{ scale: 0.9, opacity: 0, rotateX: 8 }}
                 animate={{ scale: 1, opacity: 1, rotateX: 0 }}
@@ -153,26 +151,70 @@ const TestedApps = () => {
                 style={{ perspective: "1200px" }}
               >
                 {/* Modal Header */}
-                <div className="flex items-center justify-between p-6 border-b border-border shrink-0">
-                  <div>
-                    <h2 className="text-xl font-bold">Appmaker Projects</h2>
-                    <p className="text-sm text-muted-foreground mt-1">{allApps.length} tested applications</p>
+                <div className="flex flex-col gap-4 p-6 border-b border-border shrink-0">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h2 className="text-xl font-bold">Appmaker Works</h2>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        60+ applications tested across Android and iOS platforms as part of my QA work using the Appmaker platform.
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => setShowModal(false)}
+                      className="w-10 h-10 rounded-full bg-muted/50 flex items-center justify-center hover:bg-muted transition-colors shrink-0"
+                    >
+                      <X size={18} />
+                    </button>
                   </div>
-                  <button
-                    onClick={() => setShowModal(false)}
-                    className="w-10 h-10 rounded-full bg-muted/50 flex items-center justify-center hover:bg-muted transition-colors"
-                  >
-                    <X size={18} />
-                  </button>
+
+                  {/* Search + View Toggle */}
+                  <div className="flex items-center gap-3">
+                    <div className="flex-1 relative">
+                      <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                      <input
+                        type="text"
+                        placeholder="Search apps..."
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        className="w-full h-10 pl-9 pr-3 rounded-lg bg-muted/50 border border-border text-sm placeholder:text-muted-foreground focus:outline-none focus:border-neon/50 transition-colors"
+                      />
+                    </div>
+                    <div className="flex gap-1 border border-border rounded-lg p-0.5 shrink-0">
+                      <button
+                        onClick={() => setView("grid")}
+                        className={`p-2 rounded-md transition-colors ${view === "grid" ? "bg-neon/10 text-neon" : "text-muted-foreground hover:text-foreground"}`}
+                      >
+                        <LayoutGrid size={16} />
+                      </button>
+                      <button
+                        onClick={() => setView("list")}
+                        className={`p-2 rounded-md transition-colors ${view === "list" ? "bg-neon/10 text-neon" : "text-muted-foreground hover:text-foreground"}`}
+                      >
+                        <List size={16} />
+                      </button>
+                    </div>
+                  </div>
                 </div>
 
-                {/* Scrollable Grid */}
+                {/* Scrollable Content */}
                 <div className="flex-1 overflow-y-auto p-6">
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                    {allApps.map((app, i) => (
-                      <AppCard key={app.name} app={app} index={i} />
-                    ))}
-                  </div>
+                  {filtered.length === 0 ? (
+                    <div className="flex items-center justify-center h-32 text-muted-foreground text-sm">
+                      No apps found matching "{search}"
+                    </div>
+                  ) : view === "grid" ? (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                      {filtered.map((app, i) => (
+                        <AppCardGrid key={app.name} app={app} index={i} />
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                      {filtered.map((app, i) => (
+                        <AppCardList key={app.name} app={app} index={i} />
+                      ))}
+                    </div>
+                  )}
                 </div>
               </motion.div>
             </motion.div>
