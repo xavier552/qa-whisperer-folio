@@ -25,7 +25,7 @@ const allProjects = [
     description:
       "Validated RESTful APIs using Postman with comprehensive request/response verification. Tested GET, POST, PUT, DELETE endpoints with status code validation, schema checks, and environment-based configurations.",
     tech: ["Postman", "REST API", "JSON", "Status Codes", "Collections", "Newman"],
-    github: "#",
+    github: "https://github.com/xavier552/POSTMAN_REST-APIs",
     icon: Wifi,
   },
   {
