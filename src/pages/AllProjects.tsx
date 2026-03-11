@@ -44,7 +44,7 @@ const thinkProjects = [
     description:
       "Performed database validation using SQL queries. Verified data integrity, CRUD operations, joins, and stored procedures. Ensured backend data consistency with frontend displays.",
     tech: ["SQL", "MySQL", "Data Validation", "CRUD", "Joins", "Stored Procedures"],
-    github: "https://github.com/xavier552/Sql_Full_query-",
+    github: "https://github.com/xavier552/SQL-Testing",
     icon: Database,
   },
 ];
