@@ -76,7 +76,12 @@ const ResumeSection = () => {
   const handleDownload = (e: React.MouseEvent) => {
     e.preventDefault();
     setShowSuccess(true);
-    // Trigger actual download here when you have a real resume file
+    const link = document.createElement("a");
+    link.href = "/XAVIER_ATS_CV.pdf";
+    link.download = "XAVIER_ATS_CV.pdf";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
