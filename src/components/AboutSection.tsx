@@ -2,6 +2,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Bug, TestTube, Zap, Shield, Smartphone, BarChart3, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import DeviceShowcase from "./DeviceShowcase";
 
 const skills = [
   { icon: TestTube, label: "Manual & Exploratory", desc: "Functional, Regression, Usability Testing" },
