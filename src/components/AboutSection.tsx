@@ -2,6 +2,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Bug, TestTube, Zap, Shield, Smartphone, BarChart3, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import DeviceShowcase from "./DeviceShowcase";
 
 const skills = [
   { icon: TestTube, label: "Manual & Exploratory", desc: "Functional, Regression, Usability Testing" },
@@ -20,6 +21,7 @@ const AboutSection = () => {
   return (
     <section id="about" className="section-padding relative">
       <div className="max-w-6xl mx-auto" ref={ref}>
+        <DeviceShowcase />
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
