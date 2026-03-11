@@ -20,6 +20,9 @@ const breakProjects = [
     github: "https://github.com/xavier552/automation_final_project",
     icon: Bug,
   },
+];
+
+const thinkProjects = [
   {
     title: "API Testing",
     description:
@@ -28,9 +31,6 @@ const breakProjects = [
     github: "https://github.com/xavier552/POSTMAN_REST-APIs",
     icon: Wifi,
   },
-];
-
-const thinkProjects = [
   {
     title: "Performance Testing (JMeter)",
     description:
@@ -44,7 +44,7 @@ const thinkProjects = [
     description:
       "Performed database validation using SQL queries. Verified data integrity, CRUD operations, joins, and stored procedures. Ensured backend data consistency with frontend displays.",
     tech: ["SQL", "MySQL", "Data Validation", "CRUD", "Joins", "Stored Procedures"],
-    github: " https://github.com/xavier552/Sql_Full_query-",
+    github: "https://github.com/xavier552/Sql_Full_query-",
     icon: Database,
   },
 ];

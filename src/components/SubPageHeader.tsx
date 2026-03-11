@@ -11,7 +11,12 @@ const SubPageHeader = () => {
   };
 
   const handleResumeClick = () => {
-    navigate("/#resume");
+    const link = document.createElement("a");
+    link.href = "/XAVIER_ATS_CV.pdf";
+    link.download = "XAVIER_ATS_CV.pdf";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
