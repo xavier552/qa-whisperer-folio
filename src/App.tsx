@@ -10,25 +10,30 @@ import AllProjects from "./pages/AllProjects";
 import AboutPage from "./pages/AboutPage";
 import ExperiencePage from "./pages/ExperiencePage";
 import TestedApps from "./pages/TestedApps";
+import BlogsPage from "./pages/BlogsPage";
+import ClickSpark from "./components/ClickSpark";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/play" element={<GameHub />} />
-          <Route path="/projects" element={<AllProjects />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/experience" element={<ExperiencePage />} />
-          <Route path="/tested-apps" element={<TestedApps />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+      <ClickSpark sparkColor="hsl(var(--neon))" sparkSize={10} sparkRadius={15} sparkCount={8} duration={400}>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/play" element={<GameHub />} />
+            <Route path="/projects" element={<AllProjects />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/experience" element={<ExperiencePage />} />
+            <Route path="/tested-apps" element={<TestedApps />} />
+            <Route path="/blogs" element={<BlogsPage />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </ClickSpark>
     </TooltipProvider>
   </QueryClientProvider>
 );

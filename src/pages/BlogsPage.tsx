@@ -1,8 +1,9 @@
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
-import { Calendar, ArrowRight } from "lucide-react";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { Calendar, ArrowRight, Search } from "lucide-react";
+import SubPageHeader from "@/components/SubPageHeader";
 
-const posts = [
+const allPosts = [
   {
     title: "Building a Scalable Test Automation Framework",
     excerpt: "Learn how to architect a test automation framework that grows with your application and team.",
@@ -26,42 +27,62 @@ const posts = [
   },
 ];
 
-const BlogSection = () => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+const BlogsPage = () => {
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  const filtered = allPosts.filter(
+    (p) =>
+      p.title.toLowerCase().includes(search.toLowerCase()) ||
+      p.tag.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
-    <section id="blog" className="section-padding relative">
-      <div className="max-w-6xl mx-auto" ref={ref}>
+    <div className="min-h-screen bg-background text-foreground">
+      <SubPageHeader />
+      <div className="max-w-6xl mx-auto px-4 pt-20 pb-16">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-10"
         >
           <p className="text-neon font-mono text-sm tracking-widest uppercase mb-2">
             Blog
           </p>
-          <div className="flex items-center justify-between mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold">
-              Latest Articles
-            </h2>
-            <a
-              href="/blogs"
-              className="text-muted-foreground hover:text-neon transition-colors p-2 rounded-lg hover:bg-neon/10"
-              aria-label="View all blog articles"
-            >
-              <ArrowRight size={24} />
-            </a>
-          </div>
+          <h1 className="text-3xl md:text-4xl font-bold mb-4">
+            Latest Articles
+          </h1>
+          <p className="text-muted-foreground max-w-2xl">
+            Insights, guides, and best practices from the world of software testing and quality assurance.
+          </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-6">
-          {posts.map((post, i) => (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="relative mb-8 max-w-md"
+        >
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
+          <input
+            type="text"
+            placeholder="Search articles..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full bg-card border border-border rounded-lg pl-10 pr-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-neon/50 transition-colors"
+          />
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filtered.map((post, i) => (
             <motion.article
               key={post.title}
               initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.2 + i * 0.15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15 + i * 0.1 }}
               className="bg-card border border-border rounded-lg overflow-hidden hover:border-neon/40 transition-all group hover:-translate-y-1 duration-300 cursor-pointer"
             >
               <div className="h-1 bg-neon/20 group-hover:bg-neon transition-colors" />
@@ -75,14 +96,12 @@ const BlogSection = () => {
                     {post.date}
                   </span>
                 </div>
-
                 <h3 className="font-semibold mb-2 group-hover:text-neon transition-colors leading-tight">
                   {post.title}
                 </h3>
                 <p className="text-sm text-muted-foreground leading-relaxed mb-4">
                   {post.excerpt}
                 </p>
-
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-muted-foreground">{post.readTime}</span>
                   <ArrowRight className="text-neon opacity-0 group-hover:opacity-100 transition-opacity" size={16} />
@@ -91,9 +110,13 @@ const BlogSection = () => {
             </motion.article>
           ))}
         </div>
+
+        {filtered.length === 0 && (
+          <p className="text-center text-muted-foreground mt-12">No articles found.</p>
+        )}
       </div>
-    </section>
+    </div>
   );
 };
 
-export default BlogSection;
+export default BlogsPage;
