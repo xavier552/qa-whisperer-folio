@@ -1,6 +1,28 @@
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import { useRef, useState } from "react";
-import { Mail, MapPin, Send, Linkedin, Github, CheckCircle } from "lucide-react";
+import { useRef, useState, useMemo } from "react";
+import { Mail, Send, Linkedin, Github, CheckCircle, Calendar, Clock, ChevronLeft, ChevronRight } from "lucide-react";
+import { format, addDays, isBefore, startOfDay } from "date-fns";
+
+const PROJECT_TYPES = [
+  "Web Application",
+  "Mobile App",
+  "Website",
+  "Design System",
+  "Others",
+];
+
+const TIME_SLOTS = [
+  "09:00 AM",
+  "10:00 AM",
+  "11:00 AM",
+  "12:00 PM",
+  "01:00 PM",
+  "02:00 PM",
+  "03:00 PM",
+  "04:00 PM",
+  "05:00 PM",
+  "06:00 PM",
+];
 
 const PlaneSendAnimation = ({ onComplete }: { onComplete: () => void }) => {
   return (
@@ -25,7 +47,6 @@ const PlaneSendAnimation = ({ onComplete }: { onComplete: () => void }) => {
         >
           <Send className="text-neon" size={48} />
         </motion.div>
-
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -59,7 +80,6 @@ const EmailIcon = () => {
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
           >
-            {/* Default: envelope with subtle bounce */}
             <motion.div
               animate={{ y: [0, -3, 0] }}
               transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
@@ -76,17 +96,19 @@ const EmailIcon = () => {
             transition={{ type: "spring", stiffness: 400, damping: 15 }}
             className="relative"
           >
-            {/* Hover: open envelope with glow */}
             <motion.div
-              animate={{ 
+              animate={{
                 y: [0, -2, 0],
-                filter: ["drop-shadow(0 0 4px hsl(72 100% 50% / 0.4))", "drop-shadow(0 0 12px hsl(72 100% 50% / 0.7))", "drop-shadow(0 0 4px hsl(72 100% 50% / 0.4))"]
+                filter: [
+                  "drop-shadow(0 0 4px hsl(72 100% 50% / 0.4))",
+                  "drop-shadow(0 0 12px hsl(72 100% 50% / 0.7))",
+                  "drop-shadow(0 0 4px hsl(72 100% 50% / 0.4))",
+                ],
               }}
               transition={{ repeat: Infinity, duration: 1.2, ease: "easeInOut" }}
             >
               <Mail className="text-neon" size={22} />
             </motion.div>
-            {/* Small notification dot */}
             <motion.div
               className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-neon"
               initial={{ scale: 0 }}
@@ -100,21 +122,202 @@ const EmailIcon = () => {
   );
 };
 
+/* ─── Mini Calendar ─── */
+const MiniCalendar = ({
+  selectedDate,
+  onSelect,
+}: {
+  selectedDate: Date | null;
+  onSelect: (d: Date) => void;
+}) => {
+  const [viewMonth, setViewMonth] = useState(() => addDays(new Date(), 1));
+  const minDate = startOfDay(addDays(new Date(), 1));
+
+  const year = viewMonth.getFullYear();
+  const month = viewMonth.getMonth();
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  const days = useMemo(() => {
+    const arr: (number | null)[] = [];
+    for (let i = 0; i < firstDay; i++) arr.push(null);
+    for (let d = 1; d <= daysInMonth; d++) arr.push(d);
+    return arr;
+  }, [firstDay, daysInMonth]);
+
+  const canGoPrev = new Date(year, month, 1) > minDate;
+
+  return (
+    <div className="space-y-2">
+      <div className="flex items-center justify-between">
+        <button
+          type="button"
+          onClick={() => setViewMonth(new Date(year, month - 1, 1))}
+          disabled={!canGoPrev}
+          className="p-1 rounded hover:bg-secondary disabled:opacity-30 transition-colors"
+        >
+          <ChevronLeft size={16} />
+        </button>
+        <span className="text-sm font-medium">{format(viewMonth, "MMMM yyyy")}</span>
+        <button
+          type="button"
+          onClick={() => setViewMonth(new Date(year, month + 1, 1))}
+          className="p-1 rounded hover:bg-secondary transition-colors"
+        >
+          <ChevronRight size={16} />
+        </button>
+      </div>
+      <div className="grid grid-cols-7 gap-1 text-center text-xs text-muted-foreground">
+        {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((d) => (
+          <span key={d} className="py-1">{d}</span>
+        ))}
+        {days.map((day, i) => {
+          if (day === null) return <span key={`e-${i}`} />;
+          const date = new Date(year, month, day);
+          const disabled = isBefore(date, minDate);
+          const isSelected =
+            selectedDate &&
+            date.toDateString() === selectedDate.toDateString();
+          return (
+            <button
+              key={day}
+              type="button"
+              disabled={disabled}
+              onClick={() => onSelect(date)}
+              className={`py-1.5 rounded text-xs transition-colors ${
+                disabled
+                  ? "text-muted-foreground/30 cursor-not-allowed"
+                  : isSelected
+                  ? "bg-neon text-primary-foreground font-semibold"
+                  : "hover:bg-secondary text-foreground"
+              }`}
+            >
+              {day}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+/* ─── Meeting Scheduler ─── */
+const MeetingScheduler = () => {
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [booked, setBooked] = useState(false);
+
+  const handleBook = () => {
+    if (selectedDate && selectedTime) {
+      setBooked(true);
+      setTimeout(() => {
+        setBooked(false);
+        setSelectedDate(null);
+        setSelectedTime(null);
+      }, 3000);
+    }
+  };
+
+  return (
+    <div className="bg-card border border-border rounded-lg p-5 space-y-4">
+      <div className="flex items-center gap-3 mb-1">
+        <div className="w-10 h-10 rounded-lg bg-neon/10 flex items-center justify-center shrink-0">
+          <Calendar className="text-neon" size={18} />
+        </div>
+        <div>
+          <p className="text-sm font-semibold">Let's Talk</p>
+          <p className="text-xs text-muted-foreground">Schedule a Call or Meeting</p>
+        </div>
+      </div>
+
+      <AnimatePresence mode="wait">
+        {booked ? (
+          <motion.div
+            key="booked"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            className="text-center py-6 space-y-2"
+          >
+            <CheckCircle className="text-neon mx-auto" size={32} />
+            <p className="text-sm font-medium">Meeting Booked!</p>
+            <p className="text-xs text-muted-foreground">
+              {format(selectedDate!, "PPP")} at {selectedTime}
+            </p>
+          </motion.div>
+        ) : (
+          <motion.div key="form" className="space-y-4">
+            <MiniCalendar selectedDate={selectedDate} onSelect={setSelectedDate} />
+
+            {selectedDate && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                className="space-y-2"
+              >
+                <p className="text-xs text-muted-foreground flex items-center gap-1">
+                  <Clock size={12} /> Available slots for{" "}
+                  {format(selectedDate, "MMM d")}
+                </p>
+                <div className="grid grid-cols-2 gap-2">
+                  {TIME_SLOTS.map((slot) => (
+                    <button
+                      key={slot}
+                      type="button"
+                      onClick={() => setSelectedTime(slot)}
+                      className={`text-xs py-2 px-3 rounded-md border transition-colors ${
+                        selectedTime === slot
+                          ? "border-neon bg-neon/10 text-neon font-medium"
+                          : "border-border hover:border-neon/30 text-muted-foreground"
+                      }`}
+                    >
+                      {slot}
+                    </button>
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  onClick={handleBook}
+                  disabled={!selectedTime}
+                  className="w-full mt-2 bg-neon text-primary-foreground py-2.5 rounded-md text-sm font-medium disabled:opacity-40 hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+                >
+                  <Calendar size={14} />
+                  Book Meeting
+                </button>
+              </motion.div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+/* ─── Main Section ─── */
 const ContactSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const [formState, setFormState] = useState({ name: "", email: "", message: "" });
+  const [formState, setFormState] = useState({
+    name: "",
+    email: "",
+    company: "",
+    projectType: "",
+    message: "",
+  });
   const [showSendAnimation, setShowSendAnimation] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setShowSendAnimation(true);
-    setFormState({ name: "", email: "", message: "" });
+    setFormState({ name: "", email: "", company: "", projectType: "", message: "" });
   };
 
   const handleChange = (field: string, value: string) => {
     setFormState((prev) => ({ ...prev, [field]: value }));
   };
+
+  const inputClass =
+    "w-full bg-card border border-border rounded-md px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-neon/50 transition-colors";
 
   return (
     <>
@@ -149,26 +352,55 @@ const ContactSection = () => {
             >
               <input
                 type="text"
-                placeholder="Your Name"
+                placeholder="Your Full Name"
                 value={formState.name}
                 onChange={(e) => handleChange("name", e.target.value)}
-                className="w-full bg-card border border-border rounded-md px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-neon/50 transition-colors"
+                className={inputClass}
                 required
               />
               <input
                 type="email"
-                placeholder="Your Email"
+                placeholder="you@email.com"
                 value={formState.email}
                 onChange={(e) => handleChange("email", e.target.value)}
-                className="w-full bg-card border border-border rounded-md px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-neon/50 transition-colors"
+                className={inputClass}
                 required
               />
+              <input
+                type="text"
+                placeholder="Optional"
+                value={formState.company}
+                onChange={(e) => handleChange("company", e.target.value)}
+                className={inputClass}
+              />
+              <div className="relative">
+                <select
+                  value={formState.projectType}
+                  onChange={(e) => handleChange("projectType", e.target.value)}
+                  className={`${inputClass} appearance-none cursor-pointer ${
+                    !formState.projectType ? "text-muted-foreground" : ""
+                  }`}
+                >
+                  <option value="" disabled>
+                    Select Project Type
+                  </option>
+                  {PROJECT_TYPES.map((t) => (
+                    <option key={t} value={t}>
+                      {t}
+                    </option>
+                  ))}
+                </select>
+                <ChevronRight
+                  size={14}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 rotate-90 text-muted-foreground pointer-events-none"
+                />
+              </div>
               <textarea
                 placeholder="Your Message"
-                rows={5}
+                rows={4}
                 value={formState.message}
                 onChange={(e) => handleChange("message", e.target.value)}
-                className="w-full bg-card border border-border rounded-md px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-neon/50 transition-colors resize-none"
+                className={`${inputClass} resize-none`}
                 required
               />
               <button
@@ -197,16 +429,8 @@ const ContactSection = () => {
                 </div>
               </a>
 
-              <div className="flex items-center gap-4 p-3">
-                <div className="w-12 h-12 rounded-lg bg-neon/10 flex items-center justify-center shrink-0">
-                  <MapPin className="text-neon" size={20} />
-                </div>
-                <div>
-                  <p className="text-sm font-medium">Location</p>
-                  <p className="text-sm text-muted-foreground">Kochi, Kerala, India</p>
-                  <p className="text-xs text-muted-foreground">Open to Opportunities Worldwide</p>
-                </div>
-              </div>
+              {/* Meeting Scheduler replaces Location */}
+              <MeetingScheduler />
 
               <div className="pt-3 border-t border-border">
                 <p className="text-sm text-muted-foreground mb-3">Find me on</p>
