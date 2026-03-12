@@ -2,6 +2,7 @@ import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Download, FileText, CheckCircle } from "lucide-react";
+import CountUp from "./CountUp";
 
 const SuccessAnimation = ({ onComplete }: { onComplete: () => void }) => {
   return (
@@ -13,7 +14,6 @@ const SuccessAnimation = ({ onComplete }: { onComplete: () => void }) => {
       onAnimationComplete={() => setTimeout(onComplete, 1800)}
     >
       <div className="flex flex-col items-center gap-4">
-        {/* Circle drawing */}
         <motion.div className="relative w-24 h-24">
           <svg viewBox="0 0 100 100" className="w-full h-full">
             <motion.circle
@@ -66,11 +66,11 @@ const ResumeSection = () => {
   const navigate = useNavigate();
   const [showSuccess, setShowSuccess] = useState(false);
 
-  const resumeHighlights: { label: string; value: string; link?: string }[] = [
-    { label: "Years of Experience", value: "1.5+", link: "/experience" },
-    { label: "Manual Projects", value: "30+", link: "/tested-apps" },
-    { label: "Bugs Identified", value: "777+" },
-    { label: "SDLC & STLC", value: "Strong" },
+  const resumeHighlights: { label: string; value: number; suffix: string; link?: string }[] = [
+    { label: "Years Experience", value: 1.5, suffix: "+", link: "/experience" },
+    { label: "Projects", value: 30, suffix: "+", link: "/tested-apps" },
+    { label: "Hands-on Manual QA Experience", value: 1, suffix: "", },
+    { label: "Bugs Found", value: 555, suffix: "+" },
   ];
 
   const handleDownload = (e: React.MouseEvent) => {
@@ -116,7 +116,9 @@ const ResumeSection = () => {
                   onClick={item.link ? () => navigate(item.link!) : undefined}
                   className={`bg-card border border-border rounded-lg p-5 text-center hover:border-neon/40 transition-colors ${item.link ? "cursor-pointer" : ""}`}
                 >
-                  <p className="text-3xl font-bold text-neon mb-1">{item.value}</p>
+                  <p className="text-3xl font-bold mb-1">
+                    <CountUp end={item.value} suffix={item.suffix} />
+                  </p>
                   <p className="text-xs text-muted-foreground">{item.label}</p>
                 </Wrapper>
               );

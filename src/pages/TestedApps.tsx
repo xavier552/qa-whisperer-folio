@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { Search, X, Layers, LayoutGrid, List, ExternalLink } from "lucide-react";
 import SubPageHeader from "@/components/SubPageHeader";
+import FadeInUp from "@/components/FadeInUp";
 
 type AppEntry = {
   name: string;
@@ -78,53 +79,48 @@ const TestedApps = () => {
     <div className="min-h-screen bg-background text-foreground">
       <SubPageHeader />
       <div className="max-w-[1200px] mx-auto px-6 pt-20 pb-20">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-12"
-        >
+        <FadeInUp className="mb-12">
           <h1 className="text-3xl md:text-5xl font-bold mb-3">Inside the QA Lab</h1>
           <p className="text-muted-foreground text-sm md:text-base max-w-2xl">
             A collection of real-world applications and platforms I have tested while ensuring stability, usability, and product quality.
           </p>
-        </motion.div>
+        </FadeInUp>
 
         {/* Appmaker Works Block */}
-        <motion.button
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
-          whileTap={{ scale: 0.98 }}
-          onClick={() => setShowModal(true)}
-          className="w-full bg-card border border-border rounded-2xl p-8 text-left hover:border-neon/50 transition-all group cursor-pointer mb-8"
-        >
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-xl bg-neon/10 border border-neon/20 flex items-center justify-center group-hover:bg-neon/20 transition-colors">
-              <Layers className="text-neon" size={28} />
+        <FadeInUp delay={0.2}>
+          <motion.button
+            whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => setShowModal(true)}
+            className="w-full bg-card border border-border rounded-2xl p-8 text-left hover:border-neon/50 transition-all group cursor-pointer mb-8"
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 rounded-xl bg-neon/10 border border-neon/20 flex items-center justify-center group-hover:bg-neon/20 transition-colors">
+                <Layers className="text-neon" size={28} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <h2 className="text-xl font-bold group-hover:text-neon transition-colors">
+                  <a
+                    href="https://appmaker.xyz"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="hover:underline inline-flex items-center gap-1.5"
+                  >
+                    Appmaker
+                    <ExternalLink size={14} className="opacity-50" />
+                  </a>{" "}
+                  Works
+                </h2>
+                <p className="text-sm text-muted-foreground mt-1 max-w-xl">
+                  Mobile applications built using the Appmaker platform that I have tested across Android and iOS devices, ensuring functionality, usability, and release quality.
+                </p>
+              </div>
             </div>
-            <div className="flex-1 min-w-0">
-              <h2 className="text-xl font-bold group-hover:text-neon transition-colors">
-                <a
-                  href="https://appmaker.xyz"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(e) => e.stopPropagation()}
-                  className="hover:underline inline-flex items-center gap-1.5"
-                >
-                  Appmaker
-                  <ExternalLink size={14} className="opacity-50" />
-                </a>{" "}
-                Works
-              </h2>
-              <p className="text-sm text-muted-foreground mt-1 max-w-xl">
-                Mobile applications built using the Appmaker platform that I have tested across Android and iOS devices, ensuring functionality, usability, and release quality.
-              </p>
-            </div>
-          </div>
-        </motion.button>
+          </motion.button>
+        </FadeInUp>
 
-        {/* 3D Animated Modal */}
+        {/* Modal */}
         <AnimatePresence>
           {showModal && (
             <motion.div
@@ -134,13 +130,7 @@ const TestedApps = () => {
               exit={{ opacity: 0 }}
               onClick={() => setShowModal(false)}
             >
-              <motion.div
-                className="absolute inset-0 bg-background/85 backdrop-blur-md"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-              />
-
+              <motion.div className="absolute inset-0 bg-background/85 backdrop-blur-md" />
               <motion.div
                 initial={{ scale: 0.9, opacity: 0, rotateX: 8 }}
                 animate={{ scale: 1, opacity: 1, rotateX: 0 }}
@@ -148,15 +138,13 @@ const TestedApps = () => {
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 onClick={(e) => e.stopPropagation()}
                 className="relative bg-card border border-border rounded-[20px] w-[85%] max-w-6xl h-[80vh] flex flex-col overflow-hidden z-10"
-                style={{ perspective: "1200px" }}
               >
-                {/* Modal Header */}
                 <div className="flex flex-col gap-4 p-6 border-b border-border shrink-0">
                   <div className="flex items-center justify-between">
                     <div>
                       <h2 className="text-xl font-bold">Appmaker Works</h2>
                       <p className="text-sm text-muted-foreground mt-1">
-                        60+ applications tested across Android and iOS platforms as part of my QA work using the Appmaker platform.
+                        60+ applications tested across Android and iOS platforms.
                       </p>
                     </div>
                     <button
@@ -166,8 +154,6 @@ const TestedApps = () => {
                       <X size={18} />
                     </button>
                   </div>
-
-                  {/* Search + View Toggle */}
                   <div className="flex items-center gap-3">
                     <div className="flex-1 relative">
                       <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
@@ -195,8 +181,6 @@ const TestedApps = () => {
                     </div>
                   </div>
                 </div>
-
-                {/* Scrollable Content */}
                 <div className="flex-1 overflow-y-auto p-6">
                   {filtered.length === 0 ? (
                     <div className="flex items-center justify-center h-32 text-muted-foreground text-sm">

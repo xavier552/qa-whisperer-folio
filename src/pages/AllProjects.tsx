@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import { Github, ExternalLink, TestTube, Bug, Wifi, BarChart3, Database, LayoutGrid, List } from "lucide-react";
 import SubPageHeader from "@/components/SubPageHeader";
+import FadeInUp from "@/components/FadeInUp";
+import { motion } from "framer-motion";
 
 const breakProjects = [
   {
@@ -66,16 +67,10 @@ const ProjectCard = ({ project, index, view }: ProjectCardProps) => {
         transition={{ delay: 0.05 + index * 0.05 }}
         className="bg-card border border-border rounded-lg p-5 hover:border-neon/40 transition-all group flex items-start gap-5"
       >
-        <div className="shrink-0 mt-1">
-          <Icon className="text-neon" size={24} />
-        </div>
+        <div className="shrink-0 mt-1"><Icon className="text-neon" size={24} /></div>
         <div className="flex-1 min-w-0">
-          <h3 className="text-base font-semibold mb-1 group-hover:text-neon transition-colors">
-            {project.title}
-          </h3>
-          <p className="text-muted-foreground text-sm leading-relaxed mb-2">
-            {project.description}
-          </p>
+          <h3 className="text-base font-semibold mb-1 group-hover:text-neon transition-colors">{project.title}</h3>
+          <p className="text-muted-foreground text-sm leading-relaxed mb-2">{project.description}</p>
           <div className="flex flex-wrap gap-2">
             {project.tech.map((t) => (
               <span key={t} className="text-xs font-mono text-muted-foreground">{t}</span>
@@ -84,16 +79,9 @@ const ProjectCard = ({ project, index, view }: ProjectCardProps) => {
         </div>
         <div className="shrink-0">
           {project.github !== "#" ? (
-            <motion.a
-              href={project.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="relative block text-muted-foreground hover:text-neon transition-colors"
-              whileHover={{ scale: 1.2 }}
-              whileTap={{ scale: 0.9 }}
-            >
+            <a href={project.github} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-neon transition-colors">
               <Github size={18} />
-            </motion.a>
+            </a>
           ) : (
             <span className="text-muted-foreground"><ExternalLink size={18} /></span>
           )}
@@ -150,15 +138,9 @@ const AllProjects = () => {
     <div className="min-h-screen bg-background text-foreground">
       <SubPageHeader />
       <div className="max-w-6xl mx-auto px-4 pt-20 pb-16">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-8 flex items-end justify-between"
-        >
+        <FadeInUp className="mb-8 flex items-end justify-between">
           <div>
-            <p className="text-neon font-mono text-sm tracking-widest uppercase mb-2">
-              All Projects
-            </p>
+            <p className="text-neon font-mono text-sm tracking-widest uppercase mb-2">All Projects</p>
           </div>
           <div className="flex gap-1 border border-border rounded-md p-0.5">
             <button
@@ -174,15 +156,10 @@ const AllProjects = () => {
               <List size={16} />
             </button>
           </div>
-        </motion.div>
+        </FadeInUp>
 
         {/* Section 1: What I Break / Validated */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.05 }}
-          className="mb-10"
-        >
+        <FadeInUp delay={0.1} className="mb-10">
           <h2 className="text-2xl md:text-3xl font-bold mb-6">
             What I Break<span className="text-neon">/</span>Validated
           </h2>
@@ -199,14 +176,10 @@ const AllProjects = () => {
               ))}
             </div>
           )}
-        </motion.div>
+        </FadeInUp>
 
         {/* Section 2: What I Think / Mastered */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-        >
+        <FadeInUp delay={0.2}>
           <h2 className="text-2xl md:text-3xl font-bold mb-6">
             What I Think<span className="text-neon">/</span>Mastered
           </h2>
@@ -223,7 +196,7 @@ const AllProjects = () => {
               ))}
             </div>
           )}
-        </motion.div>
+        </FadeInUp>
       </div>
     </div>
   );

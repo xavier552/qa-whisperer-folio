@@ -26,6 +26,7 @@ const AboutSection = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
+          className="mt-2 md:mt-4"
         >
           <p className="text-neon font-mono text-sm tracking-widest uppercase mb-2">
             About Me

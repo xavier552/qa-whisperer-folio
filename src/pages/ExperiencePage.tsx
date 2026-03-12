@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import { motion } from "framer-motion";
 import { Calendar, MapPin, Trophy, Wrench } from "lucide-react";
 import SubPageHeader from "@/components/SubPageHeader";
+import FadeInUp from "@/components/FadeInUp";
 
 const experiences = [
   {
@@ -52,11 +52,7 @@ const ExperiencePage = () => {
       <SubPageHeader />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-20 pb-20">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-16"
-        >
+        <FadeInUp className="mb-16">
           <p className="text-neon font-mono text-sm tracking-widest uppercase mb-3">
             Career Journey
           </p>
@@ -65,30 +61,21 @@ const ExperiencePage = () => {
             Building quality into every product through meticulous testing and a
             passion for uncovering what others miss.
           </p>
-        </motion.div>
+        </FadeInUp>
 
         {/* Timeline */}
         <div className="relative">
           <div className="absolute left-4 md:left-8 top-0 bottom-0 w-px bg-gradient-to-b from-neon/60 via-border to-transparent" />
 
           {experiences.map((exp, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 + index * 0.15, duration: 0.5 }}
-              className="relative pl-12 md:pl-20 mb-12"
-            >
+            <FadeInUp key={index} delay={0.2 + index * 0.15} className="relative pl-12 md:pl-20 mb-12">
               <div className="absolute left-2 md:left-6 top-2 w-5 h-5 rounded-full bg-background border-2 border-neon shadow-[0_0_12px_hsl(var(--neon)/0.4)] z-10" />
 
               <div className="bg-card border border-border rounded-2xl overflow-hidden hover:border-neon/30 transition-all duration-300">
-                {/* Card header */}
                 <div className="p-5 sm:p-6 md:p-8 border-b border-border/50">
                   <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
                     <div>
-                      <h2 className="text-xl md:text-2xl font-bold mb-1">
-                        {exp.role}
-                      </h2>
+                      <h2 className="text-xl md:text-2xl font-bold mb-1">{exp.role}</h2>
                       <p className="text-neon font-medium">{exp.company}</p>
                     </div>
                     <div className="flex flex-col gap-1 text-sm text-muted-foreground sm:text-right shrink-0">
@@ -102,29 +89,18 @@ const ExperiencePage = () => {
                       </span>
                     </div>
                   </div>
-                  <p className="text-muted-foreground text-sm mt-4 leading-relaxed">
-                    {exp.summary}
-                  </p>
+                  <p className="text-muted-foreground text-sm mt-4 leading-relaxed">{exp.summary}</p>
                 </div>
 
-                {/* Responsibilities & Achievements */}
                 <div className="p-5 sm:p-6 md:p-8 space-y-8">
                   <div>
-                    <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground/70 mb-4">
-                      What I Do
-                    </h3>
+                    <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground/70 mb-4">What I Do</h3>
                     <ul className="space-y-3">
                       {exp.responsibilities.map((r, i) => (
-                        <motion.li
-                          key={i}
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 0.4 + i * 0.04 }}
-                          className="text-sm text-muted-foreground flex items-start gap-2.5"
-                        >
+                        <li key={i} className="text-sm text-muted-foreground flex items-start gap-2.5">
                           <span className="mt-2 w-1.5 h-1.5 rounded-full bg-neon shrink-0" />
                           {r}
-                        </motion.li>
+                        </li>
                       ))}
                     </ul>
                   </div>
@@ -137,16 +113,10 @@ const ExperiencePage = () => {
                       </h3>
                       <ul className="space-y-3">
                         {exp.achievements.map((a, i) => (
-                          <motion.li
-                            key={i}
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.5 + i * 0.05 }}
-                            className="text-sm text-muted-foreground flex items-start gap-2.5"
-                          >
+                          <li key={i} className="text-sm text-muted-foreground flex items-start gap-2.5">
                             <span className="text-neon shrink-0 mt-0.5">✓</span>
                             {a}
-                          </motion.li>
+                          </li>
                         ))}
                       </ul>
                     </div>
@@ -157,23 +127,15 @@ const ExperiencePage = () => {
                         Tools & Tech
                       </h3>
                       <div className="flex flex-wrap gap-2">
-                        {exp.tech.map((t, i) => (
-                          <motion.span
-                            key={t}
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 0.6 + i * 0.04 }}
-                            className="text-xs font-mono text-neon bg-neon/10 border border-neon/20 px-2.5 py-1 rounded-full"
-                          >
-                            {t}
-                          </motion.span>
+                        {exp.tech.map((t) => (
+                          <span key={t} className="text-xs font-mono text-neon bg-neon/10 border border-neon/20 px-2.5 py-1 rounded-full">{t}</span>
                         ))}
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </FadeInUp>
           ))}
         </div>
       </div>
