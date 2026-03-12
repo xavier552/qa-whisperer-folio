@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import { Brain, Eye, Sparkles } from "lucide-react";
 import SubPageHeader from "@/components/SubPageHeader";
 import QAQuiz from "@/components/QAQuiz";
 import FindTheDifference from "@/components/FindTheDifference";
+import FadeInUp from "@/components/FadeInUp";
+import { motion } from "framer-motion";
 
 const VenomButton = ({
   active,
@@ -47,11 +48,7 @@ const GameHub = () => {
       <SubPageHeader />
 
       <div className="max-w-4xl mx-auto px-4 pt-20 pb-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-8"
-        >
+        <FadeInUp className="text-center mb-8">
           <div className="flex justify-center mb-3">
             <motion.div
               animate={{ rotate: [0, 10, -10, 0] }}
@@ -69,7 +66,7 @@ const GameHub = () => {
           <p className="text-sm text-muted-foreground">
             Challenge yourself with an ISTQB quiz or find UI differences like a real QA engineer.
           </p>
-        </motion.div>
+        </FadeInUp>
 
         <div className="flex justify-center gap-3 mb-8">
           <VenomButton active={activeTab === "quiz"} onClick={() => setActiveTab("quiz")}>
