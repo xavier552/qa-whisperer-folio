@@ -1,6 +1,6 @@
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState, useMemo } from "react";
-import { Mail, Send, Linkedin, Github, CheckCircle, Calendar, Clock, ChevronLeft, ChevronRight } from "lucide-react";
+import { Mail, Send, Linkedin, Github, CheckCircle, Calendar, Clock, ChevronLeft, ChevronRight, X } from "lucide-react";
 import { format, addDays, isBefore, startOfDay } from "date-fns";
 
 const PROJECT_TYPES = [
@@ -201,95 +201,237 @@ const MiniCalendar = ({
   );
 };
 
-/* ─── Meeting Scheduler ─── */
+/* ─── Meeting Scheduler (Click to open booking window) ─── */
 const MeetingScheduler = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
-  const [booked, setBooked] = useState(false);
+  const [showEmailModal, setShowEmailModal] = useState(false);
+  const [email, setEmail] = useState("");
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [showCancelMsg, setShowCancelMsg] = useState(false);
 
-  const handleBook = () => {
+  const handleSlotSelected = () => {
     if (selectedDate && selectedTime) {
-      setBooked(true);
-      setTimeout(() => {
-        setBooked(false);
-        setSelectedDate(null);
-        setSelectedTime(null);
-      }, 3000);
+      setShowEmailModal(true);
     }
   };
 
+  const handleEmailSubmit = () => {
+    if (!email) return;
+    setShowEmailModal(false);
+    setShowConfirmation(true);
+    setTimeout(() => {
+      setShowConfirmation(false);
+      setIsOpen(false);
+      setSelectedDate(null);
+      setSelectedTime(null);
+      setEmail("");
+    }, 3000);
+  };
+
+  const handleEmailCancel = () => {
+    setShowEmailModal(false);
+    setShowCancelMsg(true);
+    setTimeout(() => {
+      setShowCancelMsg(false);
+      setIsOpen(false);
+      setSelectedDate(null);
+      setSelectedTime(null);
+      setEmail("");
+    }, 2000);
+  };
+
+  const handleBookingCancel = () => {
+    setIsOpen(false);
+    setSelectedDate(null);
+    setSelectedTime(null);
+    setEmail("");
+  };
+
   return (
-    <div className="bg-card border border-border rounded-lg p-5 space-y-4">
-      <div className="flex items-center gap-3 mb-1">
-        <div className="w-10 h-10 rounded-lg bg-neon/10 flex items-center justify-center shrink-0">
-          <Calendar className="text-neon" size={18} />
+    <>
+      {/* Clickable "Let's Talk" card */}
+      <button
+        onClick={() => setIsOpen(true)}
+        className="w-full flex items-center gap-4 p-3 rounded-lg hover:bg-card transition-colors group text-left"
+      >
+        <div className="w-12 h-12 rounded-lg bg-neon/10 flex items-center justify-center shrink-0">
+          <Calendar className="text-neon" size={20} />
         </div>
         <div>
-          <p className="text-sm font-semibold">Let's Talk</p>
+          <p className="text-sm font-semibold group-hover:text-neon transition-colors">Let's Talk</p>
           <p className="text-xs text-muted-foreground">Schedule a Call or Meeting</p>
         </div>
-      </div>
+      </button>
 
-      <AnimatePresence mode="wait">
-        {booked ? (
+      {/* Booking Window Overlay */}
+      <AnimatePresence>
+        {isOpen && (
           <motion.div
-            key="booked"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="text-center py-6 space-y-2"
           >
-            <CheckCircle className="text-neon mx-auto" size={32} />
-            <p className="text-sm font-medium">Meeting Booked!</p>
-            <p className="text-xs text-muted-foreground">
-              {format(selectedDate!, "PPP")} at {selectedTime}
-            </p>
-          </motion.div>
-        ) : (
-          <motion.div key="form" className="space-y-4">
-            <MiniCalendar selectedDate={selectedDate} onSelect={setSelectedDate} />
-
-            {selectedDate && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                className="space-y-2"
-              >
-                <p className="text-xs text-muted-foreground flex items-center gap-1">
-                  <Clock size={12} /> Available slots for{" "}
-                  {format(selectedDate, "MMM d")}
-                </p>
-                <div className="grid grid-cols-2 gap-2">
-                  {TIME_SLOTS.map((slot) => (
-                    <button
-                      key={slot}
-                      type="button"
-                      onClick={() => setSelectedTime(slot)}
-                      className={`text-xs py-2 px-3 rounded-md border transition-colors ${
-                        selectedTime === slot
-                          ? "border-neon bg-neon/10 text-neon font-medium"
-                          : "border-border hover:border-neon/30 text-muted-foreground"
-                      }`}
-                    >
-                      {slot}
-                    </button>
-                  ))}
+            <motion.div
+              className="absolute inset-0 bg-background/85 backdrop-blur-md"
+              onClick={handleBookingCancel}
+            />
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              className="relative z-10 bg-card border border-border rounded-2xl w-full max-w-md p-6 space-y-4"
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-neon/10 flex items-center justify-center">
+                    <Calendar className="text-neon" size={18} />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold">Let's Talk</p>
+                    <p className="text-xs text-muted-foreground">Pick a date & time</p>
+                  </div>
                 </div>
                 <button
-                  type="button"
-                  onClick={handleBook}
-                  disabled={!selectedTime}
-                  className="w-full mt-2 bg-neon text-primary-foreground py-2.5 rounded-md text-sm font-medium disabled:opacity-40 hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+                  onClick={handleBookingCancel}
+                  className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center hover:bg-muted transition-colors"
                 >
-                  <Calendar size={14} />
-                  Book Meeting
+                  <X size={14} />
                 </button>
-              </motion.div>
-            )}
+              </div>
+
+              <AnimatePresence mode="wait">
+                {showConfirmation ? (
+                  <motion.div
+                    key="confirmed"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="text-center py-8 space-y-3"
+                  >
+                    <CheckCircle className="text-neon mx-auto" size={36} />
+                    <p className="text-sm font-medium">I typically respond within 12-24 hours.</p>
+                  </motion.div>
+                ) : showCancelMsg ? (
+                  <motion.div
+                    key="cancelled"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="text-center py-8 space-y-3"
+                  >
+                    <p className="text-sm text-muted-foreground">Booking cancelled. See you next time!</p>
+                  </motion.div>
+                ) : (
+                  <motion.div key="form" className="space-y-4">
+                    <MiniCalendar selectedDate={selectedDate} onSelect={setSelectedDate} />
+
+                    {selectedDate && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        className="space-y-2"
+                      >
+                        <p className="text-xs text-muted-foreground flex items-center gap-1">
+                          <Clock size={12} /> Available slots for{" "}
+                          {format(selectedDate, "MMM d")}
+                        </p>
+                        <div className="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto">
+                          {TIME_SLOTS.map((slot) => (
+                            <button
+                              key={slot}
+                              type="button"
+                              onClick={() => setSelectedTime(slot)}
+                              className={`text-xs py-2 px-3 rounded-md border transition-colors ${
+                                selectedTime === slot
+                                  ? "border-neon bg-neon/10 text-neon font-medium"
+                                  : "border-border hover:border-neon/30 text-muted-foreground"
+                              }`}
+                            >
+                              {slot}
+                            </button>
+                          ))}
+                        </div>
+                        <div className="flex gap-3 mt-3">
+                          <button
+                            type="button"
+                            onClick={handleBookingCancel}
+                            className="flex-1 py-2.5 rounded-md text-sm font-medium border border-border text-muted-foreground hover:border-neon/30 transition-colors"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            type="button"
+                            onClick={handleSlotSelected}
+                            disabled={!selectedTime}
+                            className="flex-1 bg-neon text-primary-foreground py-2.5 rounded-md text-sm font-medium disabled:opacity-40 hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+                          >
+                            <Calendar size={14} />
+                            Continue
+                          </button>
+                        </div>
+                      </motion.div>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+
+      {/* Email Modal */}
+      <AnimatePresence>
+        {showEmailModal && (
+          <motion.div
+            className="fixed inset-0 z-[60] flex items-center justify-center p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div className="absolute inset-0 bg-background/90 backdrop-blur-sm" />
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="relative z-10 bg-card border border-border rounded-xl w-full max-w-sm p-6 space-y-4"
+            >
+              <h3 className="text-sm font-semibold">Enter your email</h3>
+              <p className="text-xs text-muted-foreground">
+                {selectedDate && selectedTime && (
+                  <>Booking for {format(selectedDate, "PPP")} at {selectedTime}</>
+                )}
+              </p>
+              <input
+                type="email"
+                placeholder="you@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full bg-background border border-border rounded-md px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-neon/50 transition-colors"
+              />
+              <div className="flex gap-3">
+                <button
+                  onClick={handleEmailCancel}
+                  className="flex-1 py-2.5 rounded-md text-sm font-medium border border-border text-muted-foreground hover:border-neon/30 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleEmailSubmit}
+                  disabled={!email}
+                  className="flex-1 bg-neon text-primary-foreground py-2.5 rounded-md text-sm font-medium disabled:opacity-40 hover:opacity-90 transition-opacity"
+                >
+                  Submit
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 
@@ -368,7 +510,7 @@ const ContactSection = () => {
               />
               <input
                 type="text"
-                placeholder="Optional"
+                placeholder="Your company (optional)"
                 value={formState.company}
                 onChange={(e) => handleChange("company", e.target.value)}
                 className={inputClass}
@@ -429,7 +571,7 @@ const ContactSection = () => {
                 </div>
               </a>
 
-              {/* Meeting Scheduler replaces Location */}
+              {/* Meeting Scheduler */}
               <MeetingScheduler />
 
               <div className="pt-3 border-t border-border">
