@@ -19,7 +19,7 @@ interface Spark {
 }
 
 const ClickSpark: React.FC<ClickSparkProps> = ({
-  sparkColor = 'hsl(var(--neon))',
+  sparkColor = '#00ff41',
   sparkSize = 10,
   sparkRadius = 15,
   sparkCount = 8,
@@ -35,12 +35,9 @@ const ClickSpark: React.FC<ClickSparkProps> = ({
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-
     const parent = canvas.parentElement;
     if (!parent) return;
-
     let resizeTimeout: ReturnType<typeof setTimeout>;
-
     const resizeCanvas = () => {
       const { width, height } = parent.getBoundingClientRect();
       if (canvas.width !== width || canvas.height !== height) {
@@ -48,34 +45,20 @@ const ClickSpark: React.FC<ClickSparkProps> = ({
         canvas.height = height;
       }
     };
-
-    const handleResize = () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(resizeCanvas, 100);
-    };
-
+    const handleResize = () => { clearTimeout(resizeTimeout); resizeTimeout = setTimeout(resizeCanvas, 100); };
     const ro = new ResizeObserver(handleResize);
     ro.observe(parent);
-
     resizeCanvas();
-
-    return () => {
-      ro.disconnect();
-      clearTimeout(resizeTimeout);
-    };
+    return () => { ro.disconnect(); clearTimeout(resizeTimeout); };
   }, []);
 
   const easeFunc = useCallback(
     (t: number) => {
       switch (easing) {
-        case 'linear':
-          return t;
-        case 'ease-in':
-          return t * t;
-        case 'ease-in-out':
-          return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-        default:
-          return t * (2 - t);
+        case 'linear': return t;
+        case 'ease-in': return t * t;
+        case 'ease-in-out': return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+        default: return t * (2 - t);
       }
     },
     [easing]
@@ -86,25 +69,19 @@ const ClickSpark: React.FC<ClickSparkProps> = ({
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-
     let animationId: number;
 
     const draw = (timestamp: number) => {
-      if (!startTimeRef.current) {
-        startTimeRef.current = timestamp;
-      }
+      if (!startTimeRef.current) startTimeRef.current = timestamp;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       sparksRef.current = sparksRef.current.filter((spark: Spark) => {
         const elapsed = timestamp - spark.startTime;
         if (elapsed >= duration) return false;
-
         const progress = elapsed / duration;
         const eased = easeFunc(progress);
-
         const distance = eased * sparkRadius * extraScale;
         const lineLength = sparkSize * (1 - eased);
-
         const x1 = spark.x + distance * Math.cos(spark.angle);
         const y1 = spark.y + distance * Math.sin(spark.angle);
         const x2 = spark.x + (distance + lineLength) * Math.cos(spark.angle);
@@ -112,11 +89,15 @@ const ClickSpark: React.FC<ClickSparkProps> = ({
 
         ctx.strokeStyle = sparkColor;
         ctx.lineWidth = 2;
+        ctx.globalAlpha = 1 - eased;
+        ctx.shadowColor = sparkColor;
+        ctx.shadowBlur = 8;
         ctx.beginPath();
         ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y2);
         ctx.stroke();
-
+        ctx.globalAlpha = 1;
+        ctx.shadowBlur = 0;
         return true;
       });
 
@@ -124,10 +105,7 @@ const ClickSpark: React.FC<ClickSparkProps> = ({
     };
 
     animationId = requestAnimationFrame(draw);
-
-    return () => {
-      cancelAnimationFrame(animationId);
-    };
+    return () => cancelAnimationFrame(animationId);
   }, [sparkColor, sparkSize, sparkRadius, sparkCount, duration, easeFunc, extraScale]);
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>): void => {
@@ -136,15 +114,12 @@ const ClickSpark: React.FC<ClickSparkProps> = ({
     const rect = canvas.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-
     const now = performance.now();
     const newSparks: Spark[] = Array.from({ length: sparkCount }, (_, i) => ({
-      x,
-      y,
+      x, y,
       angle: (2 * Math.PI * i) / sparkCount,
       startTime: now
     }));
-
     sparksRef.current.push(...newSparks);
   };
 
