@@ -18,7 +18,7 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <ClickSpark sparkColor="hsl(var(--neon))" sparkSize={10} sparkRadius={15} sparkCount={8} duration={400}>
+      <ClickSpark sparkColor="#00ff41" sparkSize={10} sparkRadius={20} sparkCount={8} duration={500}>
         <Toaster />
         <Sonner />
         <BrowserRouter>
