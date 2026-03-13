@@ -12,20 +12,20 @@ interface Device {
   borderRadius: string;
   nativeW: number;
   nativeH: number;
-  isFold?: boolean;
+  type: "tablet" | "phone" | "laptop" | "desktop";
 }
 
 const devices: Device[] = [
   {
-    name: "Samsung Fold 7",
-    frameW: 160,
-    frameH: 340,
-    screenW: 144,
-    screenH: 310,
-    borderRadius: "18px",
-    nativeW: 380,
-    nativeH: 820,
-    isFold: true,
+    name: "Samsung Tab",
+    frameW: 200,
+    frameH: 290,
+    screenW: 184,
+    screenH: 268,
+    borderRadius: "16px",
+    nativeW: 800,
+    nativeH: 1280,
+    type: "tablet",
   },
   {
     name: "iPhone 17 Pro Max",
@@ -36,9 +36,10 @@ const devices: Device[] = [
     borderRadius: "28px",
     nativeW: 430,
     nativeH: 932,
+    type: "phone",
   },
   {
-    name: "MacBook Pro",
+    name: "MacBook M5",
     frameW: 320,
     frameH: 210,
     screenW: 300,
@@ -46,6 +47,7 @@ const devices: Device[] = [
     borderRadius: "10px",
     nativeW: 1440,
     nativeH: 900,
+    type: "laptop",
   },
   {
     name: "Desktop Monitor",
@@ -56,21 +58,19 @@ const devices: Device[] = [
     borderRadius: "6px",
     nativeW: 1920,
     nativeH: 1080,
+    type: "desktop",
   },
 ];
 
 const DeviceFrame = ({ device }: { device: Device }) => {
   const scale = device.screenW / device.nativeW;
-  const isLaptopOrDesktop = device.nativeW > 1000;
 
   return (
-    <div className="flex flex-col items-center gap-2">
-      {/* Device name label */}
-      <span className="text-[10px] font-mono text-muted-foreground/60 tracking-wider uppercase">
+    <div className="flex flex-col items-center gap-2 md:gap-3">
+      <span className="text-[10px] md:text-xs font-mono text-muted-foreground/60 tracking-wider uppercase">
         {device.name}
       </span>
 
-      {/* Device frame */}
       <div
         className="relative bg-[hsl(0,0%,10%)] shadow-2xl overflow-hidden"
         style={{
@@ -80,17 +80,10 @@ const DeviceFrame = ({ device }: { device: Device }) => {
           border: "2px solid hsl(0 0% 18%)",
         }}
       >
-        {/* Notch for iPhone */}
-        {device.name.includes("iPhone") && (
+        {device.type === "phone" && (
           <div className="absolute top-0.5 left-1/2 -translate-x-1/2 w-16 h-4 bg-[hsl(0,0%,6%)] rounded-b-xl z-10" />
         )}
 
-        {/* Fold hinge line */}
-        {device.isFold && (
-          <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-px bg-[hsl(0,0%,20%)] z-10" />
-        )}
-
-        {/* Screen area */}
         <div
           className="absolute overflow-hidden bg-background"
           style={{
@@ -117,8 +110,7 @@ const DeviceFrame = ({ device }: { device: Device }) => {
         </div>
       </div>
 
-      {/* Laptop base */}
-      {device.name === "MacBook Pro" && (
+      {device.type === "laptop" && (
         <div className="relative -mt-1">
           <div
             className="h-2.5 bg-[hsl(0,0%,12%)] rounded-b-lg border-x-2 border-b-2 border-[hsl(0,0%,18%)]"
@@ -131,8 +123,7 @@ const DeviceFrame = ({ device }: { device: Device }) => {
         </div>
       )}
 
-      {/* Monitor stand */}
-      {device.name === "Desktop Monitor" && (
+      {device.type === "desktop" && (
         <div className="flex flex-col items-center -mt-1">
           <div className="w-4 h-6 bg-[hsl(0,0%,14%)] border-x border-[hsl(0,0%,18%)]" />
           <div className="w-16 h-1.5 bg-[hsl(0,0%,12%)] rounded-md border border-[hsl(0,0%,18%)]" />
@@ -142,18 +133,16 @@ const DeviceFrame = ({ device }: { device: Device }) => {
   );
 };
 
-/* Only show 2 devices at a time, swapping every 5 seconds */
 const DeviceShowcase = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
   const [activeIdx, setActiveIdx] = useState(0);
 
-  // Pairs of devices to show
   const pairs = [
-    [0, 1], // Fold + iPhone
+    [0, 1], // Tab + iPhone
     [2, 3], // MacBook + Desktop
     [1, 2], // iPhone + MacBook
-    [0, 3], // Fold + Desktop
+    [0, 3], // Tab + Desktop
   ];
 
   useEffect(() => {
@@ -173,7 +162,7 @@ const DeviceShowcase = () => {
         transition={{ duration: 0.8 }}
         className="relative w-full max-w-3xl"
       >
-        {/* Simulator header bar */}
+        {/* Simulator header */}
         <div className="flex items-center gap-2 px-4 py-2 bg-[hsl(0,0%,8%)] border border-border rounded-t-xl">
           <div className="flex gap-1.5">
             <div className="w-2.5 h-2.5 rounded-full bg-destructive/60" />
@@ -186,7 +175,7 @@ const DeviceShowcase = () => {
         </div>
 
         {/* Device display area */}
-        <div className="bg-[hsl(0,0%,6%)] border-x border-b border-border rounded-b-xl p-6 md:p-10 min-h-[280px] md:min-h-[380px] flex items-center justify-center">
+        <div className="bg-[hsl(0,0%,6%)] border-x border-b border-border rounded-b-xl p-4 sm:p-6 md:p-10 min-h-[300px] md:min-h-[400px] flex items-center justify-center">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeIdx}
@@ -194,7 +183,7 @@ const DeviceShowcase = () => {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.5 }}
-              className="flex flex-wrap items-end justify-center gap-6 md:gap-10"
+              className="flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-10 md:gap-14 lg:gap-16"
             >
               {currentPair.map((deviceIdx) => (
                 <motion.div
@@ -209,7 +198,7 @@ const DeviceShowcase = () => {
           </AnimatePresence>
         </div>
 
-        {/* Device indicator dots */}
+        {/* Indicator dots */}
         <div className="flex justify-center gap-2 mt-3">
           {pairs.map((_, i) => (
             <button

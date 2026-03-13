@@ -13,6 +13,17 @@ const experiences = [
   },
 ];
 
+const otherExperiences = [
+  {
+    role: "Sales Associate",
+    company: "Lulu Hypermarket",
+    period: "May 2022 — Aug 2023",
+    description:
+      "Handled customer interactions and product inquiries. Maintained inventory records, assisted in visual merchandising, and supported daily sales operations.",
+    tech: ["Customer Service", "Inventory", "Sales"],
+  },
+];
+
 const ExperienceSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
@@ -68,6 +79,50 @@ const ExperienceSection = () => {
               </motion.div>
             ))}
           </div>
+
+          {/* Other Experience */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ delay: 0.6 }}
+            className="mt-12"
+          >
+            <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase mb-6 pl-14">
+              Other Experience
+            </p>
+            <div className="space-y-8">
+              {otherExperiences.map((exp, i) => (
+                <motion.div
+                  key={`other-${i}`}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={isInView ? { opacity: 1, x: 0 } : {}}
+                  transition={{ delay: 0.7 + i * 0.2 }}
+                  className="relative pl-14"
+                >
+                  <div className="absolute left-2.5 top-1 w-4 h-4 rounded-full bg-muted-foreground/30 border border-muted-foreground/50" />
+
+                  <div className="bg-card/50 border border-border/50 rounded-lg p-5 hover:border-muted-foreground/30 transition-colors">
+                    <div className="flex flex-wrap items-center gap-3 mb-2">
+                      <Briefcase className="text-muted-foreground" size={14} />
+                      <h3 className="font-medium text-base">{exp.role}</h3>
+                      <span className="text-muted-foreground text-sm">@ {exp.company}</span>
+                    </div>
+                    <p className="text-muted-foreground text-xs font-mono mb-2">{exp.period}</p>
+                    <p className="text-muted-foreground/80 text-sm leading-relaxed mb-3">
+                      {exp.description}
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {exp.tech.map((t) => (
+                        <span key={t} className="text-xs font-mono text-muted-foreground bg-muted/50 px-2 py-1 rounded">
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>
