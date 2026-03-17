@@ -83,7 +83,7 @@ const ResumeSection = () => {
   const [showPreview, setShowPreview] = useState(false);
 
   const resumeHighlights: { label: string; value: number; suffix: string; link?: string }[] = [
-    { label: "Years Experience", value: 1.5, suffix: "+", link: "/experience" },
+    { label: "Years Experience", value: .5, suffix: "+", link: "/experience" },
     { label: "Projects", value: 30, suffix: "+", link: "/tested-apps" },
     { label: "Selenium & Java Automation Knowledge", value: 0, suffix: "⚙️" },
     { label: "Bugs Found", value: 555, suffix: "+" },
