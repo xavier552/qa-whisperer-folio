@@ -85,7 +85,7 @@ const ResumeSection = () => {
   const resumeHighlights: { label: string; value: number; suffix: string; link?: string }[] = [
     { label: "Years Experience", value: 1, suffix: "+", link: "/experience" },
     { label: "Projects", value: 30, suffix: "+", link: "/tested-apps" },
-    { label: "Selenium & Java Automation Knowledge", value: 0, suffix: "Skill" },
+    { label: "Selenium & Java Automation Knowledge", value: 0, suffix: "Automation Terminology" },
     { label: "Bugs Found", value: 555, suffix: "+" },
   ];
 
@@ -118,10 +118,18 @@ const ResumeSection = () => {
             {resumeHighlights.map((item) => {
               const Wrapper = item.link ? "button" : "div";
               return (
-                <Wrapper key={item.label} onClick={item.link ? () => navigate(item.link!) : undefined}
+                <Wrapper
+                  key={item.label}
+                  onClick={item.link ? () => navigate(item.link!) : undefined}
                   className={`bg-card border border-border rounded-lg p-5 text-center hover:border-neon/40 transition-colors ${item.link ? "cursor-pointer" : ""}`}
                 >
-                  <p className="text-3xl font-bold mb-1"><CountUp end={item.value} suffix={item.suffix} /></p>
+                  <p className="text-3xl font-bold mb-1">
+                    {item.value !== 0 ? (
+                      <CountUp end={item.value} suffix={item.suffix} />
+                    ) : (
+                      <span>{item.suffix}</span>
+                    )}
+                  </p>
                   <p className="text-xs text-muted-foreground">{item.label}</p>
                 </Wrapper>
               );
