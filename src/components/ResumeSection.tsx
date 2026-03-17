@@ -127,7 +127,7 @@ const ResumeSection = () => {
                     {item.value !== 0 ? (
                       <CountUp end={item.value} suffix={item.suffix} />
                     ) : (
-                      <span>{item.suffix}</span>
+                      <span>{item.suffix}</span><span className="text-foreground">{item.suffix}</span>
                     )}
                   </p>
                   <p className="text-xs text-muted-foreground">{item.label}</p>
