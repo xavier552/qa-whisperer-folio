@@ -85,7 +85,7 @@ const ResumeSection = () => {
   const resumeHighlights: { label: string; value: number; suffix: string; link?: string }[] = [
     { label: "Years Experience", value: 1, suffix: "+", link: "/experience" },
     { label: "Projects", value: 30, suffix: "+", link: "/tested-apps" },
-    { label: "Selenium & Java Automation Knowledge", suffix: 100 },
+    { label: "Selenium & Java Automation Knowledge", value: 0, suffix: "Skill" },
     { label: "Bugs Found", value: 555, suffix: "+" },
   ];
 
