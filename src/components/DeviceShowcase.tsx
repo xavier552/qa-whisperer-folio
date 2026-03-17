@@ -1,97 +1,98 @@
-import { motion, useInView, AnimatePresence } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
-
 const PREVIEW_URL = window.location.origin;
-
 interface Device {
   name: string;
+  width: number;
+  height: number;
   screenW: number;
   screenH: number;
-  frameW: number;
-  frameH: number;
   borderRadius: string;
-  nativeW: number;
-  nativeH: number;
-  type: "tablet" | "phone" | "laptop" | "desktop";
+  bezel: { top: number; bottom: number; left: number; right: number };
+  notch?: boolean;
+  isLaptop?: boolean;
 }
-
 const devices: Device[] = [
   {
-    name: "Samsung Tab",
-    frameW: 200,
-    frameH: 290,
-    screenW: 184,
-    screenH: 268,
-    borderRadius: "16px",
-    nativeW: 800,
-    nativeH: 1280,
-    type: "tablet",
-  },
-  {
     name: "iPhone 17 Pro Max",
-    frameW: 170,
-    frameH: 360,
-    screenW: 154,
-    screenH: 330,
+    width: 200,
+    height: 420,
+    screenW: 180,
+    screenH: 388,
     borderRadius: "28px",
-    nativeW: 430,
-    nativeH: 932,
-    type: "phone",
+    bezel: { top: 16, bottom: 16, left: 10, right: 10 },
+    notch: true,
   },
   {
-    name: "MacBook M5",
-    frameW: 320,
-    frameH: 210,
-    screenW: 300,
-    screenH: 188,
-    borderRadius: "10px",
-    nativeW: 1440,
-    nativeH: 900,
-    type: "laptop",
+    name: "Samsung S26",
+    width: 195,
+    height: 410,
+    screenW: 179,
+    screenH: 386,
+    borderRadius: "22px",
+    bezel: { top: 12, bottom: 12, left: 8, right: 8 },
   },
   {
-    name: "Desktop Monitor",
-    frameW: 360,
-    frameH: 220,
-    screenW: 340,
-    screenH: 200,
-    borderRadius: "6px",
-    nativeW: 1920,
-    nativeH: 1080,
-    type: "desktop",
+    name: "MacBook Pro",
+    width: 380,
+    height: 250,
+    screenW: 356,
+    screenH: 222,
+    borderRadius: "12px",
+    bezel: { top: 14, bottom: 14, left: 12, right: 12 },
+    isLaptop: true,
   },
 ];
-
-const DeviceFrame = ({ device }: { device: Device }) => {
-  const scale = device.screenW / device.nativeW;
-
+const DeviceFrame = ({
+  device,
+  zIndex,
+  rotation,
+  offsetX,
+  offsetY,
+  scale,
+}: {
+  device: Device;
+  zIndex: number;
+  rotation: number;
+  offsetX: number;
+  offsetY: number;
+  scale: number;
+}) => {
   return (
-    <div className="flex flex-col items-center gap-2 md:gap-3">
-      <span className="text-[10px] md:text-xs font-mono text-muted-foreground/60 tracking-wider uppercase">
-        {device.name}
-      </span>
-
+    <motion.div
+      className="absolute cursor-pointer"
+      style={{ zIndex }}
+      animate={{
+        x: offsetX,
+        y: offsetY,
+        rotate: rotation,
+        scale,
+      }}
+      transition={{ type: "spring", stiffness: 120, damping: 20, mass: 1 }}
+      whileHover={{ scale: scale * 1.05, zIndex: 50, rotate: 0 }}
+    >
       <div
-        className="relative bg-[hsl(0,0%,10%)] shadow-2xl overflow-hidden"
+        className="relative bg-[hsl(0,0%,12%)] shadow-2xl overflow-hidden"
         style={{
-          width: device.frameW,
-          height: device.frameH,
+          width: device.width,
+          height: device.height,
           borderRadius: device.borderRadius,
-          border: "2px solid hsl(0 0% 18%)",
+          border: "2px solid hsl(0 0% 20%)",
         }}
       >
-        {device.type === "phone" && (
-          <div className="absolute top-0.5 left-1/2 -translate-x-1/2 w-16 h-4 bg-[hsl(0,0%,6%)] rounded-b-xl z-10" />
+        {/* Notch for iPhone */}
+        {device.notch && (
+          <div className="absolute top-1 left-1/2 -translate-x-1/2 w-20 h-5 bg-[hsl(0,0%,8%)] rounded-b-xl z-10" />
         )}
-
+        {/* Screen */}
         <div
           className="absolute overflow-hidden bg-background"
           style={{
-            top: (device.frameH - device.screenH) / 2,
-            left: (device.frameW - device.screenW) / 2,
+            top: device.bezel.top,
+            left: device.bezel.left,
             width: device.screenW,
             height: device.screenH,
-            borderRadius: `calc(${device.borderRadius} - 4px)`,
+            borderRadius: `calc(${device.borderRadius} - 6px)`,
           }}
         >
           <iframe
@@ -99,120 +100,92 @@ const DeviceFrame = ({ device }: { device: Device }) => {
             title={`${device.name} preview`}
             className="border-0 origin-top-left"
             style={{
-              width: device.nativeW,
-              height: device.nativeH,
-              transform: `scale(${scale})`,
+              width: device.isLaptop ? 1440 : 390,
+              height: device.isLaptop ? 900 : 844,
+              transform: `scale(${device.screenW / (device.isLaptop ? 1440 : 390)})`,
               pointerEvents: "none",
             }}
             loading="lazy"
             sandbox="allow-scripts allow-same-origin"
           />
         </div>
+        {/* Device label */}
+        <div
+          className="absolute bottom-1 left-1/2 -translate-x-1/2 text-[8px] text-muted-foreground/40 font-mono whitespace-nowrap"
+          style={{ zIndex: 5 }}
+        >
+          {device.name}
+        </div>
       </div>
-
-      {device.type === "laptop" && (
-        <div className="relative -mt-1">
+      {/* Laptop base/keyboard */}
+      {device.isLaptop && (
+        <div className="relative mx-auto" style={{ width: device.width + 40 }}>
           <div
-            className="h-2.5 bg-[hsl(0,0%,12%)] rounded-b-lg border-x-2 border-b-2 border-[hsl(0,0%,18%)]"
-            style={{ width: device.frameW + 30 }}
+            className="h-3 bg-[hsl(0,0%,14%)] rounded-b-lg mx-auto border-x-2 border-b-2 border-[hsl(0,0%,20%)]"
+            style={{ width: device.width + 40 }}
           />
           <div
-            className="h-1 bg-[hsl(0,0%,16%)] rounded-b-sm mx-auto"
-            style={{ width: device.frameW - 60 }}
+            className="h-1 bg-[hsl(0,0%,18%)] rounded-b-sm mx-auto"
+            style={{ width: device.width - 40 }}
           />
         </div>
       )}
-
-      {device.type === "desktop" && (
-        <div className="flex flex-col items-center -mt-1">
-          <div className="w-4 h-6 bg-[hsl(0,0%,14%)] border-x border-[hsl(0,0%,18%)]" />
-          <div className="w-16 h-1.5 bg-[hsl(0,0%,12%)] rounded-md border border-[hsl(0,0%,18%)]" />
-        </div>
-      )}
-    </div>
+    </motion.div>
   );
 };
-
+/* Positions for the 3 cards — swap on interval */
+const layouts = [
+  // Layout 0: MacBook center, phones on sides
+  [
+    { idx: 1, x: -180, y: 20, rot: -6, scale: 0.85, z: 2 },   // Samsung left
+    { idx: 0, x: 170, y: 20, rot: 5, scale: 0.85, z: 2 },    // iPhone right
+    { idx: 2, x: -10, y: -10, rot: 0, scale: 0.95, z: 3 },   // MacBook center
+  ],
+  // Layout 1: iPhone center, others behind
+  [
+    { idx: 0, x: 0, y: 0, rot: 0, scale: 1, z: 3 },           // iPhone center
+    { idx: 1, x: -160, y: 30, rot: -8, scale: 0.75, z: 1 },   // Samsung left
+    { idx: 2, x: 80, y: 50, rot: 4, scale: 0.7, z: 1 },       // MacBook right
+  ],
+  // Layout 2: Samsung center
+  [
+    { idx: 1, x: 0, y: 0, rot: 0, scale: 1, z: 3 },           // Samsung center
+    { idx: 0, x: 160, y: 30, rot: 7, scale: 0.75, z: 1 },     // iPhone right
+    { idx: 2, x: -100, y: 50, rot: -4, scale: 0.7, z: 1 },    // MacBook left
+  ],
+];
 const DeviceShowcase = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
-  const [activeIdx, setActiveIdx] = useState(0);
-
-  const pairs = [
-    [0, 1], // Tab + iPhone
-    [2, 3], // MacBook + Desktop
-    [1, 2], // iPhone + MacBook
-    [0, 3], // Tab + Desktop
-  ];
-
+  const [layoutIdx, setLayoutIdx] = useState(0);
   useEffect(() => {
     const interval = setInterval(() => {
-      setActiveIdx((prev) => (prev + 1) % pairs.length);
-    }, 5000);
+      setLayoutIdx((prev) => (prev + 1) % layouts.length);
+    }, 4000);
     return () => clearInterval(interval);
   }, []);
-
-  const currentPair = pairs[activeIdx];
-
+  const currentLayout = layouts[layoutIdx];
   return (
-    <div ref={ref} className="w-full flex justify-center py-4 md:py-8">
+    <div ref={ref} className="w-full flex justify-center py-8 md:py-12">
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 40 }}
         animate={isInView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.8 }}
-        className="relative w-full max-w-3xl"
+        className="relative w-full max-w-2xl h-[340px] md:h-[420px] flex items-center justify-center"
       >
-        {/* Simulator header */}
-        <div className="flex items-center gap-2 px-4 py-2 bg-[hsl(0,0%,8%)] border border-border rounded-t-xl">
-          <div className="flex gap-1.5">
-            <div className="w-2.5 h-2.5 rounded-full bg-destructive/60" />
-            <div className="w-2.5 h-2.5 rounded-full bg-[hsl(40,80%,50%)]/60" />
-            <div className="w-2.5 h-2.5 rounded-full bg-neon/60" />
-          </div>
-          <span className="text-[10px] font-mono text-muted-foreground/50 ml-2">
-            Device Simulator — {devices[currentPair[0]].name} & {devices[currentPair[1]].name}
-          </span>
-        </div>
-
-        {/* Device display area */}
-        <div className="bg-[hsl(0,0%,6%)] border-x border-b border-border rounded-b-xl p-4 sm:p-6 md:p-10 min-h-[300px] md:min-h-[400px] flex items-center justify-center">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeIdx}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.5 }}
-              className="flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-10 md:gap-14 lg:gap-16"
-            >
-              {currentPair.map((deviceIdx) => (
-                <motion.div
-                  key={devices[deviceIdx].name}
-                  whileHover={{ y: -8, transition: { duration: 0.2 } }}
-                  className="cursor-default"
-                >
-                  <DeviceFrame device={devices[deviceIdx]} />
-                </motion.div>
-              ))}
-            </motion.div>
-          </AnimatePresence>
-        </div>
-
-        {/* Indicator dots */}
-        <div className="flex justify-center gap-2 mt-3">
-          {pairs.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setActiveIdx(i)}
-              className={`w-2 h-2 rounded-full transition-colors ${
-                i === activeIdx ? "bg-neon" : "bg-border hover:bg-muted-foreground/30"
-              }`}
-            />
-          ))}
-        </div>
+        {currentLayout.map((pos) => (
+          <DeviceFrame
+            key={devices[pos.idx].name}
+            device={devices[pos.idx]}
+            zIndex={pos.z}
+            rotation={pos.rot}
+            offsetX={pos.x}
+            offsetY={pos.y}
+            scale={pos.scale}
+          />
+        ))}
       </motion.div>
     </div>
   );
 };
-
 export default DeviceShowcase;
