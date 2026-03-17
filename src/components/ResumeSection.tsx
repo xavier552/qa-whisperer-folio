@@ -85,7 +85,7 @@ const ResumeSection = () => {
   const resumeHighlights: { label: string; value: number; suffix: string; link?: string }[] = [
     { label: "Years Experience", value: 1, suffix: "+", link: "/experience" },
     { label: "Projects", value: 30, suffix: "+", link: "/tested-apps" },
-    { label: "Selenium & Java Automation Knowledge", value: 0, suffix: "Automation" },
+    { label: "Selenium & Java Automation Knowledge", value: 0, suffix: "Automation Terminology" },
     { label: "Bugs Found", value: 555, suffix: "+" },
   ];
 
@@ -127,7 +127,7 @@ const ResumeSection = () => {
                     {item.value !== 0 ? (
                       <CountUp end={item.value} suffix={item.suffix} />
                     ) : (
-                      <span>{item.suffix}</span>
+                      <span className="text-foreground">{item.suffix}</span>
                     )}
                   </p>
                   <p className="text-xs text-muted-foreground">{item.label}</p>
