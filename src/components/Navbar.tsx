@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { Menu, X, Home, User, FolderOpen, Mail, FileText, Eye } from "lucide-react";
+import { Menu, X, Home, User, FolderOpen, Mail, FileText } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import useClickSound from "@/hooks/useClickSound";
 
@@ -11,42 +11,10 @@ const navItems = [
   { label: "Resume", href: "resume", icon: FileText },
 ];
 
-const ResumePreviewModal = ({ onClose }: { onClose: () => void }) => (
-  <motion.div
-    className="fixed inset-0 z-[100] flex items-center justify-center p-4"
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    exit={{ opacity: 0 }}
-  >
-    <motion.div className="absolute inset-0 bg-background/85 backdrop-blur-md" onClick={onClose} />
-    <motion.div
-      initial={{ scale: 0.85, opacity: 0, rotateY: -15 }}
-      animate={{ scale: 1, opacity: 1, rotateY: 0 }}
-      exit={{ scale: 0.85, opacity: 0, rotateY: 15 }}
-      transition={{ type: "spring", stiffness: 200, damping: 25 }}
-      className="relative z-10 bg-card border border-border rounded-2xl w-full max-w-3xl h-[80vh] flex flex-col overflow-hidden shadow-2xl"
-    >
-      <div className="flex items-center justify-between p-4 border-b border-border">
-        <div className="flex items-center gap-2">
-          <FileText className="text-neon" size={18} />
-          <span className="text-sm font-semibold">Resume Preview</span>
-        </div>
-        <button onClick={onClose} className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center hover:bg-muted transition-colors">
-          <X size={14} />
-        </button>
-      </div>
-      <div className="flex-1 bg-background">
-        <iframe src="/XAVIER_ATS_CV.pdf" className="w-full h-full border-0" title="Resume Preview" />
-      </div>
-    </motion.div>
-  </motion.div>
-);
-
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
-  const [showPreview, setShowPreview] = useState(false);
   const playClick = useClickSound();
 
   useEffect(() => {
@@ -78,9 +46,23 @@ const Navbar = () => {
   const handleNavClick = useCallback((href: string, e?: React.MouseEvent) => {
     e?.preventDefault();
     setIsOpen(false);
+    
+    if (href === "about") {
+      // Find the "About Me" text heading, not the device showcase
+      const aboutSection = document.getElementById("about");
+      if (aboutSection) {
+        const heading = aboutSection.querySelector("h2");
+        if (heading) {
+          const top = heading.getBoundingClientRect().top + window.scrollY - 100;
+          window.scrollTo({ top, behavior: "smooth" });
+          return;
+        }
+      }
+    }
+    
     const el = document.getElementById(href);
     if (el) {
-      const offset = 80; // navbar height
+      const offset = 80;
       const top = el.getBoundingClientRect().top + window.scrollY - offset;
       window.scrollTo({ top, behavior: "smooth" });
     }
@@ -98,10 +80,6 @@ const Navbar = () => {
 
   return (
     <>
-      <AnimatePresence>
-        {showPreview && <ResumePreviewModal onClose={() => setShowPreview(false)} />}
-      </AnimatePresence>
-
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled ? "bg-background/80 backdrop-blur-xl border-b border-border" : "bg-transparent"
@@ -135,11 +113,6 @@ const Navbar = () => {
                       <motion.div layoutId="activeIndicator" className="absolute -bottom-1 left-0 right-0 h-px bg-neon" transition={{ type: "spring", stiffness: 400, damping: 30 }} />
                     )}
                   </button>
-                  {isResume && (
-                    <button onClick={() => setShowPreview(true)} className="text-muted-foreground hover:text-neon transition-colors p-0.5" title="Preview Resume">
-                      <Eye size={14} />
-                    </button>
-                  )}
                 </div>
               );
             })}
@@ -172,11 +145,6 @@ const Navbar = () => {
                           <motion.span animate={{ opacity: [1, 0.5, 1] }} transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}>{item.label}</motion.span>
                         ) : item.label}
                       </button>
-                      {isResume && (
-                        <button onClick={() => { setIsOpen(false); setShowPreview(true); }} className="text-muted-foreground hover:text-neon transition-colors p-2" title="Preview Resume">
-                          <Eye size={16} />
-                        </button>
-                      )}
                     </div>
                   );
                 })}
