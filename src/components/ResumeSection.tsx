@@ -55,7 +55,6 @@ const ResumeSection = () => {
     <>
       <AnimatePresence>
         {showSuccess && <SuccessAnimation onComplete={() => setShowSuccess(false)} />}
-        {showPreview && <ResumePreviewModal onClose={() => setShowPreview(false)} />}
       </AnimatePresence>
 
       <section id="resume" className="section-padding relative">
