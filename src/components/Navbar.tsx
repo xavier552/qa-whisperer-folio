@@ -11,42 +11,10 @@ const navItems = [
   { label: "Resume", href: "resume", icon: FileText },
 ];
 
-const ResumePreviewModal = ({ onClose }: { onClose: () => void }) => (
-  <motion.div
-    className="fixed inset-0 z-[100] flex items-center justify-center p-4"
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    exit={{ opacity: 0 }}
-  >
-    <motion.div className="absolute inset-0 bg-background/85 backdrop-blur-md" onClick={onClose} />
-    <motion.div
-      initial={{ scale: 0.85, opacity: 0, rotateY: -15 }}
-      animate={{ scale: 1, opacity: 1, rotateY: 0 }}
-      exit={{ scale: 0.85, opacity: 0, rotateY: 15 }}
-      transition={{ type: "spring", stiffness: 200, damping: 25 }}
-      className="relative z-10 bg-card border border-border rounded-2xl w-full max-w-3xl h-[80vh] flex flex-col overflow-hidden shadow-2xl"
-    >
-      <div className="flex items-center justify-between p-4 border-b border-border">
-        <div className="flex items-center gap-2">
-          <FileText className="text-neon" size={18} />
-          <span className="text-sm font-semibold">Resume Preview</span>
-        </div>
-        <button onClick={onClose} className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center hover:bg-muted transition-colors">
-          <X size={14} />
-        </button>
-      </div>
-      <div className="flex-1 bg-background">
-        <iframe src="/XAVIER_ATS_CV.pdf" className="w-full h-full border-0" title="Resume Preview" />
-      </div>
-    </motion.div>
-  </motion.div>
-);
-
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
-  const [showPreview, setShowPreview] = useState(false);
   const playClick = useClickSound();
 
   useEffect(() => {
