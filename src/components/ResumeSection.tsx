@@ -1,7 +1,7 @@
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Download, FileText, CheckCircle, Eye, X } from "lucide-react";
+import { Download, FileText, CheckCircle } from "lucide-react";
 import CountUp from "./CountUp";
 
 const SuccessAnimation = ({ onComplete }: { onComplete: () => void }) => (
