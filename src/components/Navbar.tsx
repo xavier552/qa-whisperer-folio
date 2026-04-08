@@ -113,11 +113,6 @@ const Navbar = () => {
                       <motion.div layoutId="activeIndicator" className="absolute -bottom-1 left-0 right-0 h-px bg-neon" transition={{ type: "spring", stiffness: 400, damping: 30 }} />
                     )}
                   </button>
-                  {isResume && (
-                    <button onClick={() => setShowPreview(true)} className="text-muted-foreground hover:text-neon transition-colors p-0.5" title="Preview Resume">
-                      <Eye size={14} />
-                    </button>
-                  )}
                 </div>
               );
             })}
