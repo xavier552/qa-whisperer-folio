@@ -145,11 +145,6 @@ const Navbar = () => {
                           <motion.span animate={{ opacity: [1, 0.5, 1] }} transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}>{item.label}</motion.span>
                         ) : item.label}
                       </button>
-                      {isResume && (
-                        <button onClick={() => { setIsOpen(false); setShowPreview(true); }} className="text-muted-foreground hover:text-neon transition-colors p-2" title="Preview Resume">
-                          <Eye size={16} />
-                        </button>
-                      )}
                     </div>
                   );
                 })}
