@@ -46,9 +46,23 @@ const Navbar = () => {
   const handleNavClick = useCallback((href: string, e?: React.MouseEvent) => {
     e?.preventDefault();
     setIsOpen(false);
+    
+    if (href === "about") {
+      // Find the "About Me" text heading, not the device showcase
+      const aboutSection = document.getElementById("about");
+      if (aboutSection) {
+        const heading = aboutSection.querySelector("h2");
+        if (heading) {
+          const top = heading.getBoundingClientRect().top + window.scrollY - 100;
+          window.scrollTo({ top, behavior: "smooth" });
+          return;
+        }
+      }
+    }
+    
     const el = document.getElementById(href);
     if (el) {
-      const offset = 80; // navbar height
+      const offset = 80;
       const top = el.getBoundingClientRect().top + window.scrollY - offset;
       window.scrollTo({ top, behavior: "smooth" });
     }

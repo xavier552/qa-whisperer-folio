@@ -90,18 +90,11 @@ const ResumeSection = () => {
             <FileText className="text-neon mx-auto mb-4" size={40} />
             <h3 className="text-xl font-semibold mb-2">Download Full Resume</h3>
             <p className="text-sm text-muted-foreground mb-6">Get a detailed overview of my skills, experience, and certifications.</p>
-            <div className="flex items-center justify-center gap-3">
-              <motion.button onClick={handleDownload} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-                className="btn-press inline-flex items-center gap-2 bg-neon text-primary-foreground px-6 py-3 rounded-md font-medium hover:opacity-90 transition-opacity text-sm"
-              >
-                <Download size={16} /> Download Resume (PDF)
-              </motion.button>
-              <motion.button onClick={() => setShowPreview(true)} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-                className="btn-press inline-flex items-center gap-2 border border-neon/50 text-neon px-4 py-3 rounded-md font-medium hover:bg-neon/10 transition-colors text-sm"
-              >
-                <Eye size={16} /> Preview
-              </motion.button>
-            </div>
+            <motion.button onClick={handleDownload} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+              className="btn-press inline-flex items-center gap-2 bg-neon text-primary-foreground px-6 py-3 rounded-md font-medium hover:opacity-90 transition-opacity text-sm"
+            >
+              <Download size={16} /> Download Resume (PDF)
+            </motion.button>
           </motion.div>
         </div>
       </section>

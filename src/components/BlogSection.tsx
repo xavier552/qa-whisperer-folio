@@ -85,7 +85,7 @@ const BlogSection = () => {
 
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-muted-foreground">{post.readTime}</span>
-                  <ArrowRight className="text-neon opacity-0 group-hover:opacity-100 transition-opacity" size={16} />
+                  <span className="text-[10px] font-mono text-neon/60 bg-neon/5 px-2 py-0.5 rounded">Not published yet</span>
                 </div>
               </div>
             </motion.article>
