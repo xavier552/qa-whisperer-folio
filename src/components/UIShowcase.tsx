@@ -279,12 +279,16 @@ const ChattingFlow = () => {
   ];
   useEffect(() => {
     let i = 0;
+    let resetting = false;
     const id = setInterval(() => {
+      if (resetting) return;
       if (i < allMsgs.length) {
-        setMsgs(p => [...p, allMsgs[i]]);
+        const msg = allMsgs[i];
         i++;
+        setMsgs(p => [...p, msg]);
       } else {
-        setTimeout(() => { setMsgs([]); i = 0; }, 2000);
+        resetting = true;
+        setTimeout(() => { setMsgs([]); i = 0; resetting = false; }, 2000);
       }
     }, 1000);
     return () => clearInterval(id);
