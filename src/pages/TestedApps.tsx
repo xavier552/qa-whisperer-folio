@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Search, X, Layers, LayoutGrid, List, ExternalLink } from "lucide-react";
 import SubPageHeader from "@/components/SubPageHeader";
 import FadeInUp from "@/components/FadeInUp";
+import UIShowcase from "@/components/UIShowcase";
 
 type AppEntry = {
   name: string;
@@ -88,13 +89,8 @@ const TestedApps = () => {
 
         {/* Appmaker Works Block */}
         <FadeInUp delay={0.2}>
-          <motion.button
-            whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
-            whileTap={{ scale: 0.98 }}
-            onClick={() => setShowModal(true)}
-            className="w-full bg-card border border-border rounded-2xl p-8 text-left hover:border-neon/50 transition-all group cursor-pointer mb-8"
-          >
-            <div className="flex items-center gap-4">
+          <div className="w-full bg-card border border-border rounded-2xl p-8 hover:border-neon/50 transition-all group mb-8">
+            <div className="flex items-center gap-4 mb-2">
               <div className="w-14 h-14 rounded-xl bg-neon/10 border border-neon/20 flex items-center justify-center group-hover:bg-neon/20 transition-colors">
                 <Layers className="text-neon" size={28} />
               </div>
@@ -104,7 +100,6 @@ const TestedApps = () => {
                     href="https://appmaker.xyz"
                     target="_blank"
                     rel="noopener noreferrer"
-                    onClick={(e) => e.stopPropagation()}
                     className="hover:underline inline-flex items-center gap-1.5"
                   >
                     Appmaker
@@ -117,7 +112,14 @@ const TestedApps = () => {
                 </p>
               </div>
             </div>
-          </motion.button>
+            <button
+              onClick={() => setShowModal(true)}
+              className="btn-press text-neon text-xs font-medium hover:opacity-80 transition-opacity mb-4 ml-[4.5rem]"
+            >
+              View all 60+ tested apps →
+            </button>
+            <UIShowcase compact />
+          </div>
         </FadeInUp>
 
         {/* Modal */}

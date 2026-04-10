@@ -443,21 +443,25 @@ const cards: ShowcaseCard[] = [
 const CARD_WIDTH = 220;
 const GAP = 24;
 
-const UIShowcase = () => {
+const UIShowcase = ({ compact = false }: { compact?: boolean }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isPaused, setIsPaused] = useState(false);
 
+  const cardW = compact ? 180 : CARD_WIDTH;
+  const cardH = compact ? 260 : 320;
+  const containerH = compact ? 280 : 340;
+
   const duplicatedCards = [...cards, ...cards];
-  const totalWidth = cards.length * (CARD_WIDTH + GAP);
+  const totalWidth = cards.length * (cardW + GAP);
 
   return (
-    <div className="w-full py-6 md:py-10 overflow-hidden">
+    <div className={`w-full overflow-hidden ${compact ? 'py-2' : 'py-6 md:py-10'}`}>
       <div
         ref={containerRef}
         className="relative"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
-        style={{ height: 340 }}
+        style={{ height: containerH }}
       >
         <motion.div
           className="flex absolute left-0 top-0"
@@ -465,7 +469,7 @@ const UIShowcase = () => {
           animate={{ x: isPaused ? undefined : [-0, -totalWidth] }}
           transition={{
             x: {
-              duration: 40,
+              duration: compact ? 30 : 40,
               repeat: Infinity,
               ease: "linear",
               repeatType: "loop",
@@ -476,13 +480,13 @@ const UIShowcase = () => {
             <motion.div
               key={`${card.title}-${i}`}
               className="shrink-0 rounded-3xl bg-card border border-border overflow-hidden flex flex-col group cursor-pointer"
-              style={{ width: CARD_WIDTH, height: 320 }}
+              style={{ width: cardW, height: cardH }}
               whileHover={{ scale: 1.05, boxShadow: "0 0 30px hsl(72 100% 50% / 0.15)" }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
               <div className="flex items-center gap-2 px-4 py-3 border-b border-border">
-                <card.icon size={14} className="text-primary" />
-                <span className="text-[11px] font-semibold text-foreground tracking-wide">{card.title}</span>
+                <card.icon size={compact ? 12 : 14} className="text-primary" />
+                <span className={`font-semibold text-foreground tracking-wide ${compact ? 'text-[10px]' : 'text-[11px]'}`}>{card.title}</span>
               </div>
               <div className="flex-1 overflow-hidden">
                 {card.content}
