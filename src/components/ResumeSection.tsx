@@ -64,16 +64,16 @@ const ResumeSection = () => {
             <h2 className="text-4xl md:text-5xl font-bold mb-4">My Resume</h2>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.3 }} className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.3 }} className="grid grid-cols-2 gap-3 sm:gap-4 mb-10">
             {resumeHighlights.map((item) => {
               const Wrapper = item.link ? "button" : "div";
               return (
                 <Wrapper
                   key={item.label}
                   onClick={item.link ? () => navigate(item.link!) : undefined}
-                  className={`bg-card border border-border rounded-lg p-5 text-center hover:border-neon/40 transition-colors ${item.link ? "cursor-pointer" : ""}`}
-                >
-                  <p className="text-3xl font-bold mb-1">
+                   className={`bg-card border border-border rounded-lg p-4 sm:p-5 text-center hover:border-neon/40 transition-colors ${item.link ? "cursor-pointer" : ""}`}
+                 >
+                   <p className="text-2xl sm:text-3xl font-bold mb-1">
                     {item.value !== 0 ? (
                       <CountUp end={item.value} suffix={item.suffix} />
                     ) : (
@@ -86,7 +86,7 @@ const ResumeSection = () => {
             })}
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.5 }} className="bg-card border border-border rounded-lg p-8 text-center">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.5 }} className="bg-card border border-border rounded-lg p-6 sm:p-8 text-center">
             <FileText className="text-neon mx-auto mb-4" size={40} />
             <h3 className="text-xl font-semibold mb-2">Download Full Resume</h3>
             <p className="text-sm text-muted-foreground mb-6">Get a detailed overview of my skills, experience, and certifications.</p>
