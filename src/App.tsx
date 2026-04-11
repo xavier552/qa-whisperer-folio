@@ -12,6 +12,7 @@ import ExperiencePage from "./pages/ExperiencePage";
 import TestedApps from "./pages/TestedApps";
 import BlogsPage from "./pages/BlogsPage";
 import ClickSpark from "./components/ClickSpark";
+import GlobalBackground from "./components/GlobalBackground";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ const App = () => (
       <ClickSpark sparkColor="#00ff41" sparkSize={10} sparkRadius={20} sparkCount={8} duration={500}>
         <Toaster />
         <Sonner />
+        <GlobalBackground />
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
