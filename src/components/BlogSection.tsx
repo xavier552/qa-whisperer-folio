@@ -45,13 +45,13 @@ const BlogSection = () => {
             <h2 className="text-4xl md:text-5xl font-bold">
               Latest Articles
             </h2>
-            <a
-              href="/blogs"
-              className="text-muted-foreground hover:text-neon transition-colors p-2 rounded-lg hover:bg-neon/10"
-              aria-label="View all blog articles"
+            <span
+              className="text-muted-foreground p-2 rounded-lg cursor-default opacity-50"
+              aria-label="Blog page coming soon"
+              title="Coming soon"
             >
               <ArrowRight size={24} />
-            </a>
+            </span>
           </div>
         </motion.div>
 

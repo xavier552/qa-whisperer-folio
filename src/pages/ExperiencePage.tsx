@@ -48,7 +48,7 @@ const ExperiencePage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background/80 text-foreground relative z-10">
       <SubPageHeader />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-20 pb-20">
         {/* Header */}

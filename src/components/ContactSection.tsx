@@ -140,39 +140,87 @@ const TypingText = ({ text, delay = 0 }: { text: string; delay?: number }) => {
   return <span>{displayed}<span className="animate-pulse">|</span></span>;
 };
 
+/* ─── Weather Codes ─── */
+const weatherCodes: Record<number, string> = {
+  0: "Clear sky", 1: "Mainly clear", 2: "Partly cloudy", 3: "Overcast",
+  45: "Foggy", 48: "Rime fog", 51: "Light drizzle", 53: "Moderate drizzle",
+  55: "Dense drizzle", 61: "Slight rain", 63: "Moderate rain", 65: "Heavy rain",
+  71: "Slight snow", 73: "Moderate snow", 75: "Heavy snow", 80: "Slight showers",
+  81: "Moderate showers", 82: "Violent showers", 95: "Thunderstorm",
+};
+
+type WeatherData = { temp: number; desc: string; pressure: number; humidity: number };
+
+const fetchWeather = (lat: number, lon: number): Promise<WeatherData> =>
+  fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,surface_pressure,weather_code&timezone=auto`)
+    .then(r => r.json())
+    .then(data => ({
+      temp: data.current.temperature_2m,
+      desc: weatherCodes[data.current.weather_code] || "Unknown",
+      pressure: Math.round(data.current.surface_pressure),
+      humidity: data.current.relative_humidity_2m,
+    }));
+
 /* ─── Weather Block ─── */
 const WeatherBlock = () => {
-  const [weather, setWeather] = useState<{ temp: number; desc: string; pressure: number; humidity: number } | null>(null);
+  const [kochiWeather, setKochiWeather] = useState<WeatherData | null>(null);
+  const [userWeather, setUserWeather] = useState<WeatherData | null>(null);
+  const [userLocation, setUserLocation] = useState<string | null>(null);
   const [isHovered, setIsHovered] = useState(false);
+  const [showUser, setShowUser] = useState(false);
+  const [geoError, setGeoError] = useState<string | null>(null);
+  const [loadingGeo, setLoadingGeo] = useState(false);
 
   useEffect(() => {
-    // Open-Meteo API - free, no key required
-    fetch("https://api.open-meteo.com/v1/forecast?latitude=9.9312&longitude=76.2673&current=temperature_2m,relative_humidity_2m,surface_pressure,weather_code&timezone=Asia/Kolkata")
-      .then(r => r.json())
-      .then(data => {
-        const current = data.current;
-        const weatherCodes: Record<number, string> = {
-          0: "Clear sky", 1: "Mainly clear", 2: "Partly cloudy", 3: "Overcast",
-          45: "Foggy", 48: "Rime fog", 51: "Light drizzle", 53: "Moderate drizzle",
-          55: "Dense drizzle", 61: "Slight rain", 63: "Moderate rain", 65: "Heavy rain",
-          71: "Slight snow", 73: "Moderate snow", 75: "Heavy snow", 80: "Slight showers",
-          81: "Moderate showers", 82: "Violent showers", 95: "Thunderstorm",
-        };
-        setWeather({
-          temp: current.temperature_2m,
-          desc: weatherCodes[current.weather_code] || "Unknown",
-          pressure: Math.round(current.surface_pressure),
-          humidity: current.relative_humidity_2m,
-        });
-      })
-      .catch(() => {});
+    fetchWeather(9.9312, 76.2673).then(setKochiWeather).catch(() => {});
   }, []);
+
+  const handleGeoClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (userWeather) {
+      setShowUser(v => !v);
+      return;
+    }
+    if (!navigator.geolocation) {
+      setGeoError("Geolocation not supported");
+      return;
+    }
+    setLoadingGeo(true);
+    setGeoError(null);
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        try {
+          const { latitude, longitude } = pos.coords;
+          const [weather, geoRes] = await Promise.all([
+            fetchWeather(latitude, longitude),
+            fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`)
+              .then(r => r.json()).catch(() => null),
+          ]);
+          setUserWeather(weather);
+          setUserLocation(geoRes?.city || geoRes?.locality || `${latitude.toFixed(2)}, ${longitude.toFixed(2)}`);
+          setShowUser(true);
+        } catch {
+          setGeoError("Failed to fetch weather");
+        } finally {
+          setLoadingGeo(false);
+        }
+      },
+      () => {
+        setGeoError("Location permission denied");
+        setLoadingGeo(false);
+      },
+      { timeout: 10000 }
+    );
+  };
+
+  const displayWeather = showUser && userWeather ? userWeather : kochiWeather;
+  const displayLabel = showUser && userLocation ? userLocation : "Kochi";
 
   return (
     <div
       className="relative"
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseLeave={() => { setIsHovered(false); setShowUser(false); }}
     >
       <div className="flex items-center gap-4 p-3 rounded-lg hover:bg-card transition-colors group cursor-pointer">
         <div className="w-12 h-12 rounded-lg bg-neon/10 flex items-center justify-center shrink-0 relative">
@@ -183,16 +231,32 @@ const WeatherBlock = () => {
             transition={{ repeat: Infinity, duration: 2 }}
           />
         </div>
-        <div>
+        <div className="flex-1 min-w-0">
           <p className="text-sm font-medium group-hover:text-neon transition-colors">Location</p>
           <p className="text-xs text-muted-foreground">Kochi, India</p>
         </div>
-        <CloudSun className="ml-auto text-muted-foreground/40" size={16} />
+        <button
+          onClick={handleGeoClick}
+          className="p-2 rounded-lg hover:bg-neon/10 transition-colors text-muted-foreground hover:text-neon"
+          title="Show your local weather"
+        >
+          {loadingGeo ? (
+            <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }}>
+              <CloudSun size={16} />
+            </motion.div>
+          ) : (
+            <CloudSun size={16} />
+          )}
+        </button>
       </div>
 
-      {/* Weather hover preview */}
+      {geoError && (
+        <p className="text-xs text-destructive px-3 pb-2">{geoError}</p>
+      )}
+
+      {/* Weather hover/click preview */}
       <AnimatePresence>
-        {isHovered && weather && (
+        {isHovered && displayWeather && (
           <motion.div
             initial={{ opacity: 0, y: 8, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -200,22 +264,27 @@ const WeatherBlock = () => {
             transition={{ duration: 0.2 }}
             className="absolute left-0 right-0 top-full mt-2 z-30 bg-card/90 backdrop-blur-xl border border-border rounded-xl p-5 shadow-2xl"
           >
-            <p className="text-xs font-mono text-neon mb-3 tracking-wider">
-              <TypingText text="Kochi Today" />
-            </p>
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-xs font-mono text-neon tracking-wider">
+                <TypingText text={`${displayLabel} Today`} />
+              </p>
+              {showUser && (
+                <span className="text-[9px] font-mono text-neon/60 bg-neon/10 px-1.5 py-0.5 rounded">Your Location</span>
+              )}
+            </div>
             <div className="space-y-2">
               <p className="text-2xl font-bold">
-                <TypingText text={`${weather.temp}°C`} delay={200} />
+                <TypingText text={`${displayWeather.temp}°C`} delay={200} />
               </p>
               <p className="text-sm text-muted-foreground">
-                <TypingText text={weather.desc} delay={400} />
+                <TypingText text={displayWeather.desc} delay={400} />
               </p>
               <div className="border-t border-border pt-2 mt-2 space-y-1">
                 <p className="text-xs text-muted-foreground">
-                  <TypingText text={`Pressure: ${weather.pressure} hPa`} delay={600} />
+                  <TypingText text={`Pressure: ${displayWeather.pressure} hPa`} delay={600} />
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  <TypingText text={`Humidity: ${weather.humidity}%`} delay={800} />
+                  <TypingText text={`Humidity: ${displayWeather.humidity}%`} delay={800} />
                 </p>
               </div>
             </div>
