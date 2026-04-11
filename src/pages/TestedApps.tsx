@@ -139,7 +139,7 @@ const TestedApps = () => {
                 exit={{ scale: 0.9, opacity: 0, rotateX: 8 }}
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 onClick={(e) => e.stopPropagation()}
-                className="relative bg-card border border-border rounded-[20px] w-[85%] max-w-6xl h-[80vh] flex flex-col overflow-hidden z-10"
+                className="relative bg-card border border-border rounded-[20px] w-[95%] sm:w-[85%] max-w-6xl h-[80vh] flex flex-col overflow-hidden z-10"
               >
                 <div className="flex flex-col gap-4 p-6 border-b border-border shrink-0">
                   <div className="flex items-center justify-between">
