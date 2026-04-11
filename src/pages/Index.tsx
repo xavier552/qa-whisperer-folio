@@ -36,7 +36,7 @@ const Index = () => {
       </AnimatePresence>
 
       {!loading && (
-        <div className="min-h-screen bg-background text-foreground">
+        <div className="min-h-screen bg-background/80 text-foreground relative z-10 overflow-x-hidden">
           <Navbar />
           <HeroSection />
           <AboutSection />
