@@ -89,13 +89,13 @@ const TestedApps = () => {
 
         {/* Appmaker Works Block */}
         <FadeInUp delay={0.2}>
-          <div className="w-full bg-card border border-border rounded-2xl p-8 hover:border-neon/50 transition-all group mb-8">
-            <div className="flex items-center gap-4 mb-2">
-              <div className="w-14 h-14 rounded-xl bg-neon/10 border border-neon/20 flex items-center justify-center group-hover:bg-neon/20 transition-colors">
-                <Layers className="text-neon" size={28} />
+          <div className="w-full bg-card border border-border rounded-2xl p-4 sm:p-8 hover:border-neon/50 transition-all group mb-8 overflow-hidden">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-3">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-neon/10 border border-neon/20 flex items-center justify-center group-hover:bg-neon/20 transition-colors shrink-0">
+                <Layers className="text-neon" size={24} />
               </div>
               <div className="flex-1 min-w-0">
-                <h2 className="text-xl font-bold group-hover:text-neon transition-colors">
+                <h2 className="text-lg sm:text-xl font-bold group-hover:text-neon transition-colors">
                   <a
                     href="https://appmaker.xyz"
                     target="_blank"
@@ -107,14 +107,14 @@ const TestedApps = () => {
                   </a>{" "}
                   Works
                 </h2>
-                <p className="text-sm text-muted-foreground mt-1 max-w-xl">
-                  Mobile applications built using the Appmaker platform that I have tested across Android and iOS devices, ensuring functionality, usability, and release quality.
+                <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+                  Mobile applications built using the Appmaker platform that I have tested across Android and iOS devices.
                 </p>
               </div>
             </div>
             <button
               onClick={() => setShowModal(true)}
-              className="btn-press text-neon text-xs font-medium hover:opacity-80 transition-opacity mb-4 ml-[4.5rem]"
+              className="btn-press text-neon text-xs font-medium hover:opacity-80 transition-opacity mb-4 sm:ml-16"
             >
               View all 60+ tested apps →
             </button>
@@ -139,7 +139,7 @@ const TestedApps = () => {
                 exit={{ scale: 0.9, opacity: 0, rotateX: 8 }}
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 onClick={(e) => e.stopPropagation()}
-                className="relative bg-card border border-border rounded-[20px] w-[85%] max-w-6xl h-[80vh] flex flex-col overflow-hidden z-10"
+                className="relative bg-card border border-border rounded-[20px] w-[95%] sm:w-[85%] max-w-6xl h-[80vh] flex flex-col overflow-hidden z-10"
               >
                 <div className="flex flex-col gap-4 p-6 border-b border-border shrink-0">
                   <div className="flex items-center justify-between">
