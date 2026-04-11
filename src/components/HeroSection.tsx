@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import GeometricCircles from "./GeometricCircles";
 
 const HeroSection = () => {
   return (
@@ -7,7 +6,6 @@ const HeroSection = () => {
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
-      <GeometricCircles />
 
       <div className="relative z-10 text-center max-w-4xl mx-auto px-6">
         <motion.h1

@@ -26,7 +26,7 @@ const NotFound = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex items-center justify-center relative overflow-hidden">
+    <div className="min-h-screen bg-background/80 text-foreground flex items-center justify-center relative overflow-hidden z-10">
       {/* Floating particles */}
       {Array.from({ length: 20 }).map((_, i) => (
         <motion.div
