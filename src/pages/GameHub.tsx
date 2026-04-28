@@ -44,7 +44,7 @@ const GameHub = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background/80 text-foreground relative z-10">
+    <div className="min-h-screen bg-transparent text-foreground relative z-10">
       <SubPageHeader />
 
       <div className="max-w-4xl mx-auto px-4 pt-20 pb-8">

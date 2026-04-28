@@ -77,7 +77,7 @@ const TestedApps = () => {
   );
 
   return (
-    <div className="min-h-screen bg-background/80 text-foreground relative z-10">
+    <div className="min-h-screen bg-transparent text-foreground relative z-10">
       <SubPageHeader />
       <div className="max-w-[1200px] mx-auto px-6 pt-20 pb-20">
         <FadeInUp className="mb-12">

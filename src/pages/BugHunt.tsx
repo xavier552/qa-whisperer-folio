@@ -283,7 +283,7 @@ const BugHunt = ({ embedded = false }: { embedded?: boolean }) => {
   }, [spawnBug, highScore, gameState]);
 
   return (
-    <div className={`${embedded ? "" : "min-h-screen"} bg-background/80 text-foreground flex flex-col items-center justify-center p-4 relative z-10`}>
+    <div className={`${embedded ? "" : "min-h-screen"} bg-transparent text-foreground flex flex-col items-center justify-center p-4 relative z-10`}>
       <div className="w-full max-w-md">
         {!embedded && (
           <div className="flex items-center justify-between mb-4">
