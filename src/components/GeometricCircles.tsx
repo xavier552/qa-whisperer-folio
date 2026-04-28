@@ -13,8 +13,8 @@ const GeometricCircles = () => {
           cx="450"
           cy="450"
           r="440"
-          stroke="hsl(72 100% 50% / 0.15)"
-          strokeWidth="1"
+          stroke="hsl(72 100% 50% / 0.35)"
+          strokeWidth="1.2"
           strokeDasharray="2200"
           className="animate-draw-circle"
         />
@@ -32,8 +32,8 @@ const GeometricCircles = () => {
           cx="200"
           cy="200"
           r="195"
-          stroke="hsl(72 100% 50% / 0.1)"
-          strokeWidth="1"
+          stroke="hsl(72 100% 50% / 0.28)"
+          strokeWidth="1.2"
         />
       </svg>
 
@@ -50,8 +50,8 @@ const GeometricCircles = () => {
           cx="250"
           cy="250"
           r="245"
-          stroke="hsl(72 100% 50% / 0.08)"
-          strokeWidth="1"
+          stroke="hsl(72 100% 50% / 0.22)"
+          strokeWidth="1.2"
         />
       </svg>
 
@@ -68,7 +68,7 @@ const GeometricCircles = () => {
           y1="100"
           x2="100"
           y2="0"
-          stroke="hsl(72 100% 50% / 0.2)"
+          stroke="hsl(72 100% 50% / 0.4)"
           strokeWidth="1"
         />
       </svg>
@@ -85,10 +85,14 @@ const GeometricCircles = () => {
           y1="80"
           x2="80"
           y2="0"
-          stroke="hsl(72 100% 50% / 0.15)"
+          stroke="hsl(72 100% 50% / 0.3)"
           strokeWidth="1"
         />
       </svg>
+
+      {/* Soft radial glows for depth */}
+      <div className="absolute top-[15%] left-[20%] w-[420px] h-[420px] rounded-full bg-[radial-gradient(circle,hsl(72_100%_50%/0.12),transparent_70%)] blur-2xl" />
+      <div className="absolute bottom-[10%] right-[10%] w-[520px] h-[520px] rounded-full bg-[radial-gradient(circle,hsl(90_100%_55%/0.08),transparent_70%)] blur-3xl" />
     </div>
   );
 };
