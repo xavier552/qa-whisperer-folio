@@ -37,7 +37,7 @@ const experiences = [
       "Firebase",
       "MoEngage",
       "Functional & Non-Functional",
-           "Perfomance Testing",
+      "Perfomance Testing",
       "Shopify Inventory",
     ],
   },
