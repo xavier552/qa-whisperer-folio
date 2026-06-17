@@ -5,10 +5,10 @@ import FadeInUp from "@/components/FadeInUp";
 
 const experiences = [
   {
-    role: "QA Engineer",
+    role: "Associate QA",
     company: "Appmaker.xyz",
     location: "Kochi, India",
-    period: "Sep 2024 — Present",
+    period: "Sep 2024 — Mar 2026",
     type: "Full-time",
     summary:
       "Ensuring quality across Shopify-based mobile applications on Android and iOS platforms through structured manual testing practices, cross-device validation, and close collaboration with the development and support teams.",
@@ -36,8 +36,9 @@ const experiences = [
       "iOS",
       "Firebase",
       "MoEngage",
-      "Excel",
-      "Google Sheets",
+      "Functional & Non-Functional",
+           "Perfomance Testing",
+      "Shopify Inventory",
     ],
   },
 ];
