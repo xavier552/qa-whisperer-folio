@@ -41,10 +41,11 @@ const AboutPage = () => {
 
           <div className="md:col-span-2 space-y-4">
             <p className="text-muted-foreground leading-relaxed">
-              I am a Software Quality Engineer with 1.5+ years of hands-on experience in manual testing, currently working with mobile applications built using Appmaker.xyz.
+              I am a Software Quality Engineer with 1.8+ years of hands-on experience in manual testing, currently working with Zerone Consulting Pvt.Ltd.
+              
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              I specialize in mobile application testing across Android and iOS platforms, ensuring stable releases through structured testing practices including functional, regression, and usability testing.
+              I specialize in web & mobile application testing across Android and iOS platforms, ensuring stable releases through structured testing practices including functional, regression, and usability testing.
             </p>
             <p className="text-muted-foreground leading-relaxed">
               Although my professional experience has been focused on manual testing, I also have knowledge of test automation concepts and tools. I am passionate about shift-left testing practices, collaborating closely with development teams to identify issues early and maintain product quality.
