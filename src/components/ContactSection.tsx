@@ -567,28 +567,58 @@ const ContactSection = () => {
 
           <div className="grid md:grid-cols-2 gap-10">
             <motion.form initial={{ opacity: 0, x: -30 }} animate={isInView ? { opacity: 1, x: 0 } : {}} transition={{ delay: 0.3 }} onSubmit={handleSubmit} className="space-y-4" noValidate>
+              {/* Honeypot: hidden from real users */}
+              <div aria-hidden="true" className="absolute -left-[9999px] w-px h-px overflow-hidden" style={{ position: "absolute" }}>
+                <label htmlFor="website-url">Leave this field empty</label>
+                <input
+                  id="website-url"
+                  type="text"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                />
+              </div>
               <div>
-                <input type="text" placeholder="Your Full Name" value={formState.name} onChange={(e) => handleChange("name", e.target.value)} className={formErrors.name ? errorInputClass : inputClass} />
+                <input type="text" placeholder="Your Full Name" maxLength={80} autoComplete="name" value={formState.name} onChange={(e) => handleChange("name", e.target.value)} className={formErrors.name ? errorInputClass : inputClass} aria-invalid={!!formErrors.name} />
                 {formErrors.name && <p className="text-xs text-destructive mt-1">{formErrors.name}</p>}
               </div>
               <div>
-                <input type="email" placeholder="you@email.com" value={formState.email} onChange={(e) => handleChange("email", e.target.value)} className={formErrors.email ? errorInputClass : inputClass} />
+                <input type="email" placeholder="you@email.com" maxLength={254} autoComplete="email" value={formState.email} onChange={(e) => handleChange("email", e.target.value)} className={formErrors.email ? errorInputClass : inputClass} aria-invalid={!!formErrors.email} />
                 {formErrors.email && <p className="text-xs text-destructive mt-1">{formErrors.email}</p>}
               </div>
-              <input type="text" placeholder="Your company (optional)" value={formState.company} onChange={(e) => handleChange("company", e.target.value)} className={inputClass} />
+              <div>
+                <input type="text" placeholder="Your company (optional)" maxLength={100} autoComplete="organization" value={formState.company} onChange={(e) => handleChange("company", e.target.value)} className={formErrors.company ? errorInputClass : inputClass} aria-invalid={!!formErrors.company} />
+                {formErrors.company && <p className="text-xs text-destructive mt-1">{formErrors.company}</p>}
+              </div>
               <div className="relative">
-                <select value={formState.projectType} onChange={(e) => handleChange("projectType", e.target.value)} className={`${inputClass} appearance-none cursor-pointer ${!formState.projectType ? "text-muted-foreground" : ""}`}>
+                <select value={formState.projectType} onChange={(e) => handleChange("projectType", e.target.value)} className={`${formErrors.projectType ? errorInputClass : inputClass} appearance-none cursor-pointer ${!formState.projectType ? "text-muted-foreground" : ""}`} aria-invalid={!!formErrors.projectType}>
                   <option value="" disabled>Select Project Type</option>
                   {PROJECT_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
                 </select>
                 <ChevronRight size={14} className="absolute right-4 top-1/2 -translate-y-1/2 rotate-90 text-muted-foreground pointer-events-none" />
+                {formErrors.projectType && <p className="text-xs text-destructive mt-1">{formErrors.projectType}</p>}
               </div>
               <div>
-                <textarea placeholder="Your Message" rows={4} value={formState.message} onChange={(e) => handleChange("message", e.target.value)} className={`${formErrors.message ? errorInputClass : inputClass} resize-none`} />
+                <textarea placeholder="Your Message" rows={4} maxLength={1000} value={formState.message} onChange={(e) => handleChange("message", e.target.value)} className={`${formErrors.message ? errorInputClass : inputClass} resize-none`} aria-invalid={!!formErrors.message} />
+                <div className="flex justify-between mt-1">
                 {formErrors.message && <p className="text-xs text-destructive mt-1">{formErrors.message}</p>}
+                  <span className="text-[10px] text-muted-foreground ml-auto">{formState.message.length}/1000</span>
+                </div>
               </div>
-              <button type="submit" className="btn-press w-full bg-neon text-primary-foreground py-3 rounded-md font-medium flex items-center justify-center gap-2 hover:opacity-90 transition-opacity text-sm">
-                <Send size={16} /> Send Message
+              <button type="submit" disabled={isSubmitting} className="btn-press w-full bg-neon text-primary-foreground py-3 rounded-md font-medium flex items-center justify-center gap-2 hover:opacity-90 transition-opacity text-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                {isSubmitting ? (
+                  <>
+                    <motion.span animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }} className="inline-block">
+                      <Send size={16} />
+                    </motion.span>
+                    Sending…
+                  </>
+                ) : (
+                  <>
+                    <Send size={16} /> Send Message
+                  </>
+                )}
               </button>
             </motion.form>
 
