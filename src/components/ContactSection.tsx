@@ -170,7 +170,6 @@ const WeatherBlock = () => {
   const [userLocation, setUserLocation] = useState<string | null>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [showUser, setShowUser] = useState(false);
-  const [geoError, setGeoError] = useState<string | null>(null);
   const [loadingGeo, setLoadingGeo] = useState(false);
 
   useEffect(() => {
@@ -184,11 +183,10 @@ const WeatherBlock = () => {
       return;
     }
     if (!navigator.geolocation) {
-      setGeoError("Geolocation not supported");
+      toast.error("Geolocation is not supported by your browser", { duration: 4000 });
       return;
     }
     setLoadingGeo(true);
-    setGeoError(null);
     navigator.geolocation.getCurrentPosition(
       async (pos) => {
         try {
@@ -202,13 +200,19 @@ const WeatherBlock = () => {
           setUserLocation(geoRes?.city || geoRes?.locality || `${latitude.toFixed(2)}, ${longitude.toFixed(2)}`);
           setShowUser(true);
         } catch {
-          setGeoError("Failed to fetch weather");
+          toast.error("Failed to fetch weather for your location", { duration: 4000 });
         } finally {
           setLoadingGeo(false);
         }
       },
-      () => {
-        setGeoError("Location permission denied");
+      (err) => {
+        const msg =
+          err.code === err.PERMISSION_DENIED
+            ? "Location permission denied. You can try again anytime."
+            : err.code === err.TIMEOUT
+            ? "Location request timed out. Please try again."
+            : "Unable to retrieve your location.";
+        toast.error(msg, { duration: 4000 });
         setLoadingGeo(false);
       },
       { timeout: 10000 }
@@ -251,10 +255,6 @@ const WeatherBlock = () => {
           )}
         </button>
       </div>
-
-      {geoError && (
-        <p className="text-xs text-destructive px-3 pb-2">{geoError}</p>
-      )}
 
       {/* Weather hover/click preview */}
       <AnimatePresence>
