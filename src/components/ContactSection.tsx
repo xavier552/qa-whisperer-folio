@@ -2,6 +2,8 @@ import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState, useMemo, useEffect } from "react";
 import { Mail, Send, Linkedin, Github, CheckCircle, Calendar, Clock, ChevronLeft, ChevronRight, X, MapPin, CloudSun } from "lucide-react";
 import { format, addDays, isBefore, startOfDay } from "date-fns";
+import { toast } from "sonner";
+import { z } from "zod";
 
 const PROJECT_TYPES = [
   "Web Application",
@@ -168,7 +170,6 @@ const WeatherBlock = () => {
   const [userLocation, setUserLocation] = useState<string | null>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [showUser, setShowUser] = useState(false);
-  const [geoError, setGeoError] = useState<string | null>(null);
   const [loadingGeo, setLoadingGeo] = useState(false);
 
   useEffect(() => {
@@ -182,11 +183,10 @@ const WeatherBlock = () => {
       return;
     }
     if (!navigator.geolocation) {
-      setGeoError("Geolocation not supported");
+      toast.error("Geolocation is not supported by your browser", { duration: 4000 });
       return;
     }
     setLoadingGeo(true);
-    setGeoError(null);
     navigator.geolocation.getCurrentPosition(
       async (pos) => {
         try {
@@ -200,13 +200,19 @@ const WeatherBlock = () => {
           setUserLocation(geoRes?.city || geoRes?.locality || `${latitude.toFixed(2)}, ${longitude.toFixed(2)}`);
           setShowUser(true);
         } catch {
-          setGeoError("Failed to fetch weather");
+          toast.error("Failed to fetch weather for your location", { duration: 4000 });
         } finally {
           setLoadingGeo(false);
         }
       },
-      () => {
-        setGeoError("Location permission denied");
+      (err) => {
+        const msg =
+          err.code === err.PERMISSION_DENIED
+            ? "Location permission denied. You can try again anytime."
+            : err.code === err.TIMEOUT
+            ? "Location request timed out. Please try again."
+            : "Unable to retrieve your location.";
+        toast.error(msg, { duration: 4000 });
         setLoadingGeo(false);
       },
       { timeout: 10000 }
@@ -249,10 +255,6 @@ const WeatherBlock = () => {
           )}
         </button>
       </div>
-
-      {geoError && (
-        <p className="text-xs text-destructive px-3 pb-2">{geoError}</p>
-      )}
 
       {/* Weather hover/click preview */}
       <AnimatePresence>
@@ -427,41 +429,122 @@ const MeetingScheduler = () => {
 };
 
 /* ─── Main Section ─── */
+// Strip control chars, HTML tags, script/js protocols, and common injection patterns.
+const sanitizeInput = (raw: string): string => {
+  let v = raw.replace(/[\u0000-\u001F\u007F]/g, ""); // control chars
+  v = v.replace(/<[^>]*>/g, ""); // strip HTML tags
+  v = v.replace(/javascript:/gi, "");
+  v = v.replace(/on\w+\s*=/gi, ""); // inline event handlers
+  return v.trim();
+};
+
+const nameRe = /^[\p{L}\p{M}][\p{L}\p{M}\s'.-]{1,79}$/u;
+const companyRe = /^[\p{L}\p{N}\p{M}\s&'.,-]{0,100}$/u;
+
+const contactSchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(2, "Name must be at least 2 characters")
+    .max(80, "Name must be less than 80 characters")
+    .regex(nameRe, "Please enter a valid name"),
+  email: z
+    .string()
+    .trim()
+    .min(5, "Email is required")
+    .max(254, "Email is too long")
+    .email("Invalid email address"),
+  company: z
+    .string()
+    .trim()
+    .max(100, "Company must be less than 100 characters")
+    .regex(companyRe, "Company contains invalid characters")
+    .optional()
+    .or(z.literal("")),
+  projectType: z
+    .string()
+    .trim()
+    .min(1, "Please select a project type")
+    .refine((v) => PROJECT_TYPES.includes(v), "Invalid project type"),
+  message: z
+    .string()
+    .trim()
+    .min(10, "Message must be at least 10 characters")
+    .max(1000, "Message must be less than 1000 characters"),
+});
+
 const ContactSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [formState, setFormState] = useState({ name: "", email: "", company: "", projectType: "", message: "" });
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [showSendAnimation, setShowSendAnimation] = useState(false);
-
-  const validate = () => {
-    const errors: Record<string, string> = {};
-    if (!formState.name.trim()) errors.name = "Name is required";
-    if (!formState.email.trim()) errors.email = "Email is required";
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formState.email)) errors.email = "Invalid email address";
-    if (!formState.message.trim()) errors.message = "Message is required";
-    setFormErrors(errors);
-    return Object.keys(errors).length === 0;
-  };
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [honeypot, setHoneypot] = useState(""); // bot trap
+  const lastSubmitRef = useRef<number>(0);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validate()) return;
+    if (isSubmitting) return;
 
-    // Send via mailto
-    const subject = encodeURIComponent(`Portfolio Contact: ${formState.name}`);
-    const body = encodeURIComponent(
-      `Name: ${formState.name}\nEmail: ${formState.email}\nCompany: ${formState.company || "N/A"}\nProject Type: ${formState.projectType || "N/A"}\n\nMessage:\n${formState.message}`
-    );
-    window.open(`mailto:xaviervarghese468@gmail.com?subject=${subject}&body=${body}`, "_blank");
+    // Honeypot: real users leave this empty
+    if (honeypot.trim() !== "") return;
 
-    setShowSendAnimation(true);
-    setFormState({ name: "", email: "", company: "", projectType: "", message: "" });
+    // Rate limit: 15s between submissions
+    const now = Date.now();
+    if (now - lastSubmitRef.current < 15000) {
+      toast.error("Please wait a moment before sending another message.", { duration: 4000 });
+      return;
+    }
+
+    // Sanitize before validation
+    const clean = {
+      name: sanitizeInput(formState.name),
+      email: sanitizeInput(formState.email).toLowerCase(),
+      company: sanitizeInput(formState.company),
+      projectType: sanitizeInput(formState.projectType),
+      message: sanitizeInput(formState.message),
+    };
+
+    const parsed = contactSchema.safeParse(clean);
+    if (!parsed.success) {
+      const errors: Record<string, string> = {};
+      for (const issue of parsed.error.issues) {
+        const key = issue.path[0] as string;
+        if (key && !errors[key]) errors[key] = issue.message;
+      }
+      setFormErrors(errors);
+      toast.error("Please fix the highlighted fields.", { duration: 4000 });
+      return;
+    }
+
     setFormErrors({});
+    setIsSubmitting(true);
+    lastSubmitRef.current = now;
+
+    try {
+      const data = parsed.data;
+      const subject = encodeURIComponent(`Portfolio Contact: ${data.name}`);
+      const body = encodeURIComponent(
+        `Name: ${data.name}\nEmail: ${data.email}\nCompany: ${data.company || "N/A"}\nProject Type: ${data.projectType}\n\nMessage:\n${data.message}`
+      );
+      window.open(`mailto:xaviervarghese468@gmail.com?subject=${subject}&body=${body}`, "_blank");
+
+      setShowSendAnimation(true);
+      toast.success("Message ready to send in your email client!", { duration: 4000 });
+      setFormState({ name: "", email: "", company: "", projectType: "", message: "" });
+    } catch {
+      toast.error("Something went wrong. Please try again.", { duration: 4000 });
+    } finally {
+      setTimeout(() => setIsSubmitting(false), 800);
+    }
   };
 
   const handleChange = (field: string, value: string) => {
-    setFormState((prev) => ({ ...prev, [field]: value }));
+    // Cap input length at the point of entry as a defensive measure
+    const caps: Record<string, number> = { name: 80, email: 254, company: 100, projectType: 50, message: 1000 };
+    const capped = caps[field] ? value.slice(0, caps[field]) : value;
+    setFormState((prev) => ({ ...prev, [field]: capped }));
     if (formErrors[field]) setFormErrors((prev) => ({ ...prev, [field]: "" }));
   };
 
@@ -484,28 +567,58 @@ const ContactSection = () => {
 
           <div className="grid md:grid-cols-2 gap-10">
             <motion.form initial={{ opacity: 0, x: -30 }} animate={isInView ? { opacity: 1, x: 0 } : {}} transition={{ delay: 0.3 }} onSubmit={handleSubmit} className="space-y-4" noValidate>
+              {/* Honeypot: hidden from real users */}
+              <div aria-hidden="true" className="absolute -left-[9999px] w-px h-px overflow-hidden" style={{ position: "absolute" }}>
+                <label htmlFor="website-url">Leave this field empty</label>
+                <input
+                  id="website-url"
+                  type="text"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                />
+              </div>
               <div>
-                <input type="text" placeholder="Your Full Name" value={formState.name} onChange={(e) => handleChange("name", e.target.value)} className={formErrors.name ? errorInputClass : inputClass} />
+                <input type="text" placeholder="Your Full Name" maxLength={80} autoComplete="name" value={formState.name} onChange={(e) => handleChange("name", e.target.value)} className={formErrors.name ? errorInputClass : inputClass} aria-invalid={!!formErrors.name} />
                 {formErrors.name && <p className="text-xs text-destructive mt-1">{formErrors.name}</p>}
               </div>
               <div>
-                <input type="email" placeholder="you@email.com" value={formState.email} onChange={(e) => handleChange("email", e.target.value)} className={formErrors.email ? errorInputClass : inputClass} />
+                <input type="email" placeholder="you@email.com" maxLength={254} autoComplete="email" value={formState.email} onChange={(e) => handleChange("email", e.target.value)} className={formErrors.email ? errorInputClass : inputClass} aria-invalid={!!formErrors.email} />
                 {formErrors.email && <p className="text-xs text-destructive mt-1">{formErrors.email}</p>}
               </div>
-              <input type="text" placeholder="Your company (optional)" value={formState.company} onChange={(e) => handleChange("company", e.target.value)} className={inputClass} />
+              <div>
+                <input type="text" placeholder="Your company (optional)" maxLength={100} autoComplete="organization" value={formState.company} onChange={(e) => handleChange("company", e.target.value)} className={formErrors.company ? errorInputClass : inputClass} aria-invalid={!!formErrors.company} />
+                {formErrors.company && <p className="text-xs text-destructive mt-1">{formErrors.company}</p>}
+              </div>
               <div className="relative">
-                <select value={formState.projectType} onChange={(e) => handleChange("projectType", e.target.value)} className={`${inputClass} appearance-none cursor-pointer ${!formState.projectType ? "text-muted-foreground" : ""}`}>
+                <select value={formState.projectType} onChange={(e) => handleChange("projectType", e.target.value)} className={`${formErrors.projectType ? errorInputClass : inputClass} appearance-none cursor-pointer ${!formState.projectType ? "text-muted-foreground" : ""}`} aria-invalid={!!formErrors.projectType}>
                   <option value="" disabled>Select Project Type</option>
                   {PROJECT_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
                 </select>
                 <ChevronRight size={14} className="absolute right-4 top-1/2 -translate-y-1/2 rotate-90 text-muted-foreground pointer-events-none" />
+                {formErrors.projectType && <p className="text-xs text-destructive mt-1">{formErrors.projectType}</p>}
               </div>
               <div>
-                <textarea placeholder="Your Message" rows={4} value={formState.message} onChange={(e) => handleChange("message", e.target.value)} className={`${formErrors.message ? errorInputClass : inputClass} resize-none`} />
+                <textarea placeholder="Your Message" rows={4} maxLength={1000} value={formState.message} onChange={(e) => handleChange("message", e.target.value)} className={`${formErrors.message ? errorInputClass : inputClass} resize-none`} aria-invalid={!!formErrors.message} />
+                <div className="flex justify-between mt-1">
                 {formErrors.message && <p className="text-xs text-destructive mt-1">{formErrors.message}</p>}
+                  <span className="text-[10px] text-muted-foreground ml-auto">{formState.message.length}/1000</span>
+                </div>
               </div>
-              <button type="submit" className="btn-press w-full bg-neon text-primary-foreground py-3 rounded-md font-medium flex items-center justify-center gap-2 hover:opacity-90 transition-opacity text-sm">
-                <Send size={16} /> Send Message
+              <button type="submit" disabled={isSubmitting} className="btn-press w-full bg-neon text-primary-foreground py-3 rounded-md font-medium flex items-center justify-center gap-2 hover:opacity-90 transition-opacity text-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                {isSubmitting ? (
+                  <>
+                    <motion.span animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }} className="inline-block">
+                      <Send size={16} />
+                    </motion.span>
+                    Sending…
+                  </>
+                ) : (
+                  <>
+                    <Send size={16} /> Send Message
+                  </>
+                )}
               </button>
             </motion.form>
 

@@ -1,5 +1,5 @@
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Github, TestTube, Bug, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -21,6 +21,32 @@ const projects = [
     icon: Bug,
   },
 ];
+
+// Wave text: animates each letter with a small vertical wave. Pauses on hover.
+const WaveText = ({ text, className = "" }: { text: string; className?: string }) => {
+  const [paused, setPaused] = useState(false);
+  return (
+    <span
+      className={`inline-flex ${className}`}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      aria-label={text}
+    >
+      {text.split("").map((char, i) => (
+        <span
+          key={i}
+          className="inline-block"
+          style={{
+            animation: paused ? "none" : `wave-text 2.8s ease-in-out ${i * 0.08}s infinite`,
+            whiteSpace: "pre",
+          }}
+        >
+          {char}
+        </span>
+      ))}
+    </span>
+  );
+};
 
 const ProjectsSection = () => {
   const ref = useRef(null);
@@ -80,9 +106,7 @@ const ProjectsSection = () => {
                   className="inline-flex items-center gap-2 text-muted-foreground hover:text-neon transition-colors text-sm font-medium group/link w-fit"
                 >
                   <Github size={16} className="transition-transform group-hover/link:scale-110" />
-                  <span className="relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-neon group-hover/link:after:w-full after:transition-all after:duration-300">
-                    View More
-                  </span>
+                  <WaveText text="View More" />
                 </a>
               </motion.div>
             );
@@ -99,7 +123,7 @@ const ProjectsSection = () => {
             onClick={() => navigate("/projects")}
             className="btn-press inline-flex items-center gap-2 border border-neon text-neon px-6 py-3 rounded-md font-medium hover:bg-neon hover:text-primary-foreground transition-all text-sm"
           >
-            View All Projects
+            <WaveText text="View All Projects" />
             <ArrowRight size={16} />
           </button>
         </motion.div>
