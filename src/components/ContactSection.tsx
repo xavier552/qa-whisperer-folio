@@ -2,6 +2,8 @@ import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState, useMemo, useEffect } from "react";
 import { Mail, Send, Linkedin, Github, CheckCircle, Calendar, Clock, ChevronLeft, ChevronRight, X, MapPin, CloudSun } from "lucide-react";
 import { format, addDays, isBefore, startOfDay } from "date-fns";
+import { toast } from "sonner";
+import { z } from "zod";
 
 const PROJECT_TYPES = [
   "Web Application",
