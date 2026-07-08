@@ -61,7 +61,7 @@ const ResumeSection = () => {
         <div className="max-w-4xl mx-auto" ref={ref}>
           <motion.div initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }} className="text-center mb-12">
             <p className="text-neon font-mono text-sm tracking-widest uppercase mb-2">Resume</p>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">My Resume</h2>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">My Journey</h2>
           </motion.div>
 
           <motion.div initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.3 }} className="grid grid-cols-2 gap-3 sm:gap-4 mb-10">
