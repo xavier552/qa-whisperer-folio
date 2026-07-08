@@ -10,6 +10,7 @@ const allPosts = [
     date: "Jan 2026",
     readTime: "8 min read",
     tag: "Automation",
+    url: "https://www.linkedin.com/pulse/how-build-scalable-test-automation-framework-from-scratch-deviqa-5ufde/",
   },
   {
     title: "API Testing Best Practices in 2026",
@@ -17,6 +18,7 @@ const allPosts = [
     date: "Dec 2025",
     readTime: "6 min read",
     tag: "API Testing",
+    url: "https://www.aiotests.com/blog/api-testing-best-practices",
   },
   {
     title: "Shift-Left Testing: A Practical Guide",
@@ -24,6 +26,7 @@ const allPosts = [
     date: "Nov 2025",
     readTime: "5 min read",
     tag: "Process",
+    url: "https://www.linkedin.com/pulse/shift-left-testing-complete-guide-ram-sharan-sgoec/",
   },
 ];
 
@@ -66,7 +69,12 @@ const BlogsPage = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filtered.map((post, i) => (
             <FadeInUp key={post.title} delay={0.15 + i * 0.1}>
-              <article className="bg-card border border-border rounded-lg overflow-hidden hover:border-neon/40 transition-all group hover:-translate-y-1 duration-300 cursor-pointer h-full">
+              <a
+                href={post.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block bg-card border border-border rounded-lg overflow-hidden hover:border-neon/40 transition-all group hover:-translate-y-1 duration-300 cursor-pointer h-full"
+              >
                 <div className="h-1 bg-neon/20 group-hover:bg-neon transition-colors" />
                 <div className="p-6">
                   <div className="flex items-center gap-3 mb-4">
@@ -83,7 +91,7 @@ const BlogsPage = () => {
                     <ArrowRight className="text-neon opacity-0 group-hover:opacity-100 transition-opacity" size={16} />
                   </div>
                 </div>
-              </article>
+              </a>
             </FadeInUp>
           ))}
         </div>
