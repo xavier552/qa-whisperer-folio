@@ -9,6 +9,7 @@ const posts = [
     date: "Jan 2026",
     readTime: "8 min read",
     tag: "Automation",
+    url: "https://www.linkedin.com/pulse/how-build-scalable-test-automation-framework-from-scratch-deviqa-5ufde/",
   },
   {
     title: "API Testing Best Practices in 2026",
@@ -16,6 +17,7 @@ const posts = [
     date: "Dec 2025",
     readTime: "6 min read",
     tag: "API Testing",
+    url: "https://www.aiotests.com/blog/api-testing-best-practices",
   },
   {
     title: "Shift-Left Testing: A Practical Guide",
@@ -23,6 +25,7 @@ const posts = [
     date: "Nov 2025",
     readTime: "5 min read",
     tag: "Process",
+    url: "https://www.linkedin.com/pulse/shift-left-testing-complete-guide-ram-sharan-sgoec/",
   },
 ];
 
@@ -57,12 +60,15 @@ const BlogSection = () => {
 
         <div className="grid md:grid-cols-3 gap-6">
           {posts.map((post, i) => (
-            <motion.article
+            <motion.a
               key={post.title}
+              href={post.url}
+              target="_blank"
+              rel="noopener noreferrer"
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.2 + i * 0.15 }}
-              className="bg-card border border-border rounded-lg overflow-hidden hover:border-neon/40 transition-all group hover:-translate-y-1 duration-300 cursor-pointer"
+              className="block bg-card border border-border rounded-lg overflow-hidden hover:border-neon/40 transition-all group hover:-translate-y-1 duration-300 cursor-pointer"
             >
               <div className="h-1 bg-neon/20 group-hover:bg-neon transition-colors" />
               <div className="p-6">
@@ -85,10 +91,12 @@ const BlogSection = () => {
 
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-muted-foreground">{post.readTime}</span>
-                  <span className="text-[10px] font-mono text-neon/60 bg-neon/5 px-2 py-0.5 rounded">Not published yet</span>
+                  <span className="text-[10px] font-mono text-neon/70 bg-neon/10 px-2 py-0.5 rounded inline-flex items-center gap-1">
+                    Read article <ArrowRight size={10} />
+                  </span>
                 </div>
               </div>
-            </motion.article>
+            </motion.a>
           ))}
         </div>
       </div>
