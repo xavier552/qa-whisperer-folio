@@ -429,41 +429,122 @@ const MeetingScheduler = () => {
 };
 
 /* ─── Main Section ─── */
+// Strip control chars, HTML tags, script/js protocols, and common injection patterns.
+const sanitizeInput = (raw: string): string => {
+  let v = raw.replace(/[\u0000-\u001F\u007F]/g, ""); // control chars
+  v = v.replace(/<[^>]*>/g, ""); // strip HTML tags
+  v = v.replace(/javascript:/gi, "");
+  v = v.replace(/on\w+\s*=/gi, ""); // inline event handlers
+  return v.trim();
+};
+
+const nameRe = /^[\p{L}\p{M}][\p{L}\p{M}\s'.-]{1,79}$/u;
+const companyRe = /^[\p{L}\p{N}\p{M}\s&'.,-]{0,100}$/u;
+
+const contactSchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(2, "Name must be at least 2 characters")
+    .max(80, "Name must be less than 80 characters")
+    .regex(nameRe, "Please enter a valid name"),
+  email: z
+    .string()
+    .trim()
+    .min(5, "Email is required")
+    .max(254, "Email is too long")
+    .email("Invalid email address"),
+  company: z
+    .string()
+    .trim()
+    .max(100, "Company must be less than 100 characters")
+    .regex(companyRe, "Company contains invalid characters")
+    .optional()
+    .or(z.literal("")),
+  projectType: z
+    .string()
+    .trim()
+    .min(1, "Please select a project type")
+    .refine((v) => PROJECT_TYPES.includes(v), "Invalid project type"),
+  message: z
+    .string()
+    .trim()
+    .min(10, "Message must be at least 10 characters")
+    .max(1000, "Message must be less than 1000 characters"),
+});
+
 const ContactSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [formState, setFormState] = useState({ name: "", email: "", company: "", projectType: "", message: "" });
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [showSendAnimation, setShowSendAnimation] = useState(false);
-
-  const validate = () => {
-    const errors: Record<string, string> = {};
-    if (!formState.name.trim()) errors.name = "Name is required";
-    if (!formState.email.trim()) errors.email = "Email is required";
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formState.email)) errors.email = "Invalid email address";
-    if (!formState.message.trim()) errors.message = "Message is required";
-    setFormErrors(errors);
-    return Object.keys(errors).length === 0;
-  };
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [honeypot, setHoneypot] = useState(""); // bot trap
+  const lastSubmitRef = useRef<number>(0);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validate()) return;
+    if (isSubmitting) return;
 
-    // Send via mailto
-    const subject = encodeURIComponent(`Portfolio Contact: ${formState.name}`);
-    const body = encodeURIComponent(
-      `Name: ${formState.name}\nEmail: ${formState.email}\nCompany: ${formState.company || "N/A"}\nProject Type: ${formState.projectType || "N/A"}\n\nMessage:\n${formState.message}`
-    );
-    window.open(`mailto:xaviervarghese468@gmail.com?subject=${subject}&body=${body}`, "_blank");
+    // Honeypot: real users leave this empty
+    if (honeypot.trim() !== "") return;
 
-    setShowSendAnimation(true);
-    setFormState({ name: "", email: "", company: "", projectType: "", message: "" });
+    // Rate limit: 15s between submissions
+    const now = Date.now();
+    if (now - lastSubmitRef.current < 15000) {
+      toast.error("Please wait a moment before sending another message.", { duration: 4000 });
+      return;
+    }
+
+    // Sanitize before validation
+    const clean = {
+      name: sanitizeInput(formState.name),
+      email: sanitizeInput(formState.email).toLowerCase(),
+      company: sanitizeInput(formState.company),
+      projectType: sanitizeInput(formState.projectType),
+      message: sanitizeInput(formState.message),
+    };
+
+    const parsed = contactSchema.safeParse(clean);
+    if (!parsed.success) {
+      const errors: Record<string, string> = {};
+      for (const issue of parsed.error.issues) {
+        const key = issue.path[0] as string;
+        if (key && !errors[key]) errors[key] = issue.message;
+      }
+      setFormErrors(errors);
+      toast.error("Please fix the highlighted fields.", { duration: 4000 });
+      return;
+    }
+
     setFormErrors({});
+    setIsSubmitting(true);
+    lastSubmitRef.current = now;
+
+    try {
+      const data = parsed.data;
+      const subject = encodeURIComponent(`Portfolio Contact: ${data.name}`);
+      const body = encodeURIComponent(
+        `Name: ${data.name}\nEmail: ${data.email}\nCompany: ${data.company || "N/A"}\nProject Type: ${data.projectType}\n\nMessage:\n${data.message}`
+      );
+      window.open(`mailto:xaviervarghese468@gmail.com?subject=${subject}&body=${body}`, "_blank");
+
+      setShowSendAnimation(true);
+      toast.success("Message ready to send in your email client!", { duration: 4000 });
+      setFormState({ name: "", email: "", company: "", projectType: "", message: "" });
+    } catch {
+      toast.error("Something went wrong. Please try again.", { duration: 4000 });
+    } finally {
+      setTimeout(() => setIsSubmitting(false), 800);
+    }
   };
 
   const handleChange = (field: string, value: string) => {
-    setFormState((prev) => ({ ...prev, [field]: value }));
+    // Cap input length at the point of entry as a defensive measure
+    const caps: Record<string, number> = { name: 80, email: 254, company: 100, projectType: 50, message: 1000 };
+    const capped = caps[field] ? value.slice(0, caps[field]) : value;
+    setFormState((prev) => ({ ...prev, [field]: capped }));
     if (formErrors[field]) setFormErrors((prev) => ({ ...prev, [field]: "" }));
   };
 
