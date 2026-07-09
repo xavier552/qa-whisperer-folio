@@ -7,7 +7,7 @@ import useClickSound from "@/hooks/useClickSound";
 type NavItem = {
   label: string;
   href: string;
-  icon: React.ComponentType<{ size?: number }>;
+  icon: React.ComponentType<any>;
   route?: string;
 };
 
