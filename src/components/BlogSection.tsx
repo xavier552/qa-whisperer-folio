@@ -1,37 +1,16 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { Calendar, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Calendar, Clock, ArrowRight } from "lucide-react";
+import { blogPosts } from "@/data/blogPosts";
+import ReadArticleButton from "@/components/ReadArticleButton";
+import BlogCover from "@/components/blog/BlogCover";
 
-const posts = [
-  {
-    title: "Building a Scalable Test Automation Framework",
-    excerpt: "Learn how to architect a test automation framework that grows with your application and team.",
-    date: "Jan 2026",
-    readTime: "8 min read",
-    tag: "Automation",
-    url: "https://www.linkedin.com/pulse/how-build-scalable-test-automation-framework-from-scratch-deviqa-5ufde/",
-  },
-  {
-    title: "API Testing Best Practices in 2026",
-    excerpt: "A comprehensive guide to modern API testing strategies, tools, and patterns.",
-    date: "Dec 2025",
-    readTime: "6 min read",
-    tag: "API Testing",
-    url: "https://www.aiotests.com/blog/api-testing-best-practices",
-  },
-  {
-    title: "Shift-Left Testing: A Practical Guide",
-    excerpt: "How to implement shift-left testing in your team and catch bugs earlier in the SDLC.",
-    date: "Nov 2025",
-    readTime: "5 min read",
-    tag: "Process",
-    url: "https://www.linkedin.com/pulse/shift-left-testing-complete-guide-ram-sharan-sgoec/",
-  },
-];
+const posts = blogPosts.slice(0, 3);
 
 const BlogSection = () => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isInView = useInView(ref, { once: false, margin: "-100px" });
 
   return (
     <section id="blog" className="section-padding relative">
@@ -44,61 +23,63 @@ const BlogSection = () => {
           <p className="text-neon font-mono text-sm tracking-widest uppercase mb-2">
             Blog
           </p>
-          <div className="flex items-center justify-between mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold">
-              Latest Articles
-            </h2>
-            <span
-              className="text-muted-foreground p-2 rounded-lg cursor-default opacity-50"
-              aria-label="Blog page coming soon"
-              title="Coming soon"
+          <div className="flex items-center justify-between mb-12 flex-wrap gap-4">
+            <h2 className="text-4xl md:text-5xl font-bold">Latest Articles</h2>
+            <Link
+              to="/blog"
+              className="text-sm font-mono text-neon hover:opacity-80 transition-opacity inline-flex items-center gap-2 group"
             >
-              <ArrowRight size={24} />
-            </span>
+              View all articles
+              <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+            </Link>
           </div>
         </motion.div>
 
         <div className="grid md:grid-cols-3 gap-6">
           {posts.map((post, i) => (
-            <motion.a
-              key={post.title}
-              href={post.url}
-              target="_blank"
-              rel="noopener noreferrer"
+            <motion.div
+              key={post.slug}
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.2 + i * 0.15 }}
-              className="block bg-card border border-border rounded-lg overflow-hidden hover:border-neon/40 transition-all group hover:-translate-y-1 duration-300 cursor-pointer"
+              transition={{ delay: 0.15 + i * 0.12 }}
+              className="group flex flex-col bg-card border border-border rounded-lg overflow-hidden hover:border-neon/40 hover:-translate-y-1 transition-all duration-300"
             >
-              <div className="h-1 bg-neon/20 group-hover:bg-neon transition-colors" />
-              <div className="p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="text-xs font-mono text-neon bg-neon/10 px-2 py-1 rounded">
-                    {post.tag}
+              <Link to={`/blog/${post.slug}`} aria-label={post.title}>
+                <BlogCover post={post} />
+              </Link>
+              <div className="p-5 flex flex-col flex-1">
+                <div className="flex items-center gap-3 text-[11px] text-muted-foreground mb-3">
+                  <span className="inline-flex items-center gap-1">
+                    <Calendar size={11} /> {post.date}
                   </span>
-                  <span className="text-xs text-muted-foreground flex items-center gap-1">
-                    <Calendar size={12} />
-                    {post.date}
+                  <span className="inline-flex items-center gap-1">
+                    <Clock size={11} /> {post.readTime}
                   </span>
                 </div>
-
-                <h3 className="font-semibold mb-2 group-hover:text-neon transition-colors leading-tight">
-                  {post.title}
-                </h3>
-                <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+                <Link to={`/blog/${post.slug}`}>
+                  <h3 className="font-semibold mb-2 group-hover:text-neon transition-colors leading-tight">
+                    {post.title}
+                  </h3>
+                </Link>
+                <p className="text-sm text-muted-foreground leading-relaxed mb-5 line-clamp-3">
                   {post.excerpt}
                 </p>
-
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-muted-foreground">{post.readTime}</span>
-                  <span className="text-[10px] font-mono text-neon/70 bg-neon/10 px-2 py-0.5 rounded inline-flex items-center gap-1">
-                    Read article <ArrowRight size={10} />
-                  </span>
+                <div className="mt-auto">
+                  <ReadArticleButton to={`/blog/${post.slug}`} />
                 </div>
               </div>
-            </motion.a>
+            </motion.div>
           ))}
         </div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ delay: 0.6 }}
+          className="text-center mt-10"
+        >
+          <ReadArticleButton to="/blog" label="View all articles" />
+        </motion.div>
       </div>
     </section>
   );

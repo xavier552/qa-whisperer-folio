@@ -475,7 +475,7 @@ const contactSchema = z.object({
 
 const ContactSection = () => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isInView = useInView(ref, { once: false, margin: "-100px" });
   const [formState, setFormState] = useState({ name: "", email: "", company: "", projectType: "", message: "" });
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [showSendAnimation, setShowSendAnimation] = useState(false);

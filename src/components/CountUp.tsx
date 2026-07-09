@@ -9,7 +9,7 @@ interface CountUpProps {
 
 const CountUp = ({ end, suffix = "", duration = 2000 }: CountUpProps) => {
   const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
+  const isInView = useInView(ref, { once: false, margin: "-50px" });
   const [count, setCount] = useState(0);
 
   useEffect(() => {

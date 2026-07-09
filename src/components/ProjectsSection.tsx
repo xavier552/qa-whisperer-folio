@@ -50,7 +50,7 @@ const WaveText = ({ text, className = "" }: { text: string; className?: string }
 
 const ProjectsSection = () => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isInView = useInView(ref, { once: false, margin: "-100px" });
   const navigate = useNavigate();
 
   return (

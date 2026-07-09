@@ -5,12 +5,15 @@ interface FadeInUpProps {
   children: ReactNode;
   delay?: number;
   className?: string;
+  /** Replay on re-entering viewport. Defaults to true. */
+  replay?: boolean;
 }
 
-const FadeInUp = ({ children, delay = 0, className = "" }: FadeInUpProps) => (
+const FadeInUp = ({ children, delay = 0, className = "", replay = true }: FadeInUpProps) => (
   <motion.div
     initial={{ opacity: 0, y: 30 }}
-    animate={{ opacity: 1, y: 0 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: !replay, margin: "-80px" }}
     transition={{ duration: 0.6, delay, ease: "easeOut" }}
     className={className}
   >
