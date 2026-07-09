@@ -1,14 +1,23 @@
 import { useState, useEffect, useCallback } from "react";
-import { Menu, X, Home, User, FolderOpen, Mail, FileText } from "lucide-react";
+import { Menu, X, Home, FolderOpen, Mail, FileText, Briefcase, BookOpen } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import useClickSound from "@/hooks/useClickSound";
 
-const navItems = [
+type NavItem = {
+  label: string;
+  href: string;
+  icon: React.ComponentType<{ size?: number }>;
+  route?: string;
+};
+
+const navItems: NavItem[] = [
   { label: "Home", href: "home", icon: Home },
-  { label: "About", href: "about", icon: User },
-  { label: "Projects", href: "projects", icon: FolderOpen },
-  { label: "Contact", href: "contact", icon: Mail },
   { label: "Resume", href: "resume", icon: FileText },
+  { label: "Projects", href: "projects", icon: FolderOpen },
+  { label: "Experience", href: "experience", icon: Briefcase, route: "/experience" },
+  { label: "Blog", href: "blog", icon: BookOpen, route: "/blog" },
+  { label: "Contact", href: "contact", icon: Mail },
 ];
 
 const Navbar = () => {
@@ -16,6 +25,7 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const playClick = useClickSound();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -43,30 +53,23 @@ const Navbar = () => {
     return () => observer.disconnect();
   }, []);
 
-  const handleNavClick = useCallback((href: string, e?: React.MouseEvent) => {
-    e?.preventDefault();
-    setIsOpen(false);
-    
-    if (href === "about") {
-      // Find the "About Me" text heading, not the device showcase
-      const aboutSection = document.getElementById("about");
-      if (aboutSection) {
-        const heading = aboutSection.querySelector("h2");
-        if (heading) {
-          const top = heading.getBoundingClientRect().top + window.scrollY - 100;
-          window.scrollTo({ top, behavior: "smooth" });
-          return;
-        }
+  const handleNavClick = useCallback(
+    (item: NavItem, e?: React.MouseEvent) => {
+      e?.preventDefault();
+      setIsOpen(false);
+      if (item.route) {
+        navigate(item.route);
+        return;
       }
-    }
-    
-    const el = document.getElementById(href);
-    if (el) {
-      const offset = 80;
-      const top = el.getBoundingClientRect().top + window.scrollY - offset;
-      window.scrollTo({ top, behavior: "smooth" });
-    }
-  }, []);
+      const el = document.getElementById(item.href);
+      if (el) {
+        const offset = 80;
+        const top = el.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top, behavior: "smooth" });
+      }
+    },
+    [navigate]
+  );
 
   const handleLogoClick = useCallback(
     (e: React.MouseEvent) => {
@@ -99,7 +102,7 @@ const Navbar = () => {
               return (
                 <div key={item.href} className="flex items-center gap-1">
                   <button
-                    onClick={(e) => handleNavClick(item.href, e)}
+                    onClick={(e) => handleNavClick(item, e)}
                     className={`text-sm transition-colors duration-200 tracking-wide uppercase relative pb-0.5 ${
                       isActive ? "text-neon" : isResume ? "text-neon font-semibold" : "text-muted-foreground hover:text-neon"
                     }`}
@@ -135,7 +138,7 @@ const Navbar = () => {
                   return (
                     <div key={item.href} className="flex items-center gap-2">
                       <button
-                        onClick={(e) => handleNavClick(item.href, e)}
+                        onClick={(e) => handleNavClick(item, e)}
                         className={`flex-1 flex items-center gap-3 px-3 py-2.5 rounded-md text-sm tracking-wide transition-colors text-left ${
                           isActive ? "text-neon bg-neon/10" : isResume ? "text-neon bg-neon/5 font-semibold" : "text-muted-foreground hover:text-neon hover:bg-neon/5"
                         }`}
