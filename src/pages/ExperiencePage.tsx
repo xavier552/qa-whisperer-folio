@@ -5,10 +5,23 @@ import FadeInUp from "@/components/FadeInUp";
 
 const experiences = [
   {
+    role: "Software Tester",
+    company: "Zerone Consulting Pvt. Ltd.",
+    location: "India",
+    period: "May 2026 — Present",
+    type: "Full-time",
+    current: true,
+    summary:
+      "Currently working as a Software Tester, applying hands-on quality assurance practices to deliver reliable, high-quality software.",
+    responsibilities: [],
+    achievements: [],
+    tech: [],
+  },
+  {
     role: "Associate QA",
     company: "Appmaker.xyz",
     location: "Kochi, India",
-    period: "Sep 2024 — Mar 2026",
+    period: "Oct 2024 — Mar 2026",
     type: "Full-time",
     summary:
       "Ensuring quality across Shopify-based mobile applications on Android and iOS platforms through structured manual testing practices, cross-device validation, and close collaboration with the development and support teams.",
