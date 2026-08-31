@@ -18,7 +18,7 @@ const breakProjects = [
     description:
       "Automated web interactions using Selenium + TestNG. Implemented Page Object Model (POM) framework. Automated forms, alerts, buttons & iframe navigation.",
     tech: ["Selenium WebDriver", "TestNG", "Maven", "Cucumber (BDD)", "POM", "Java"],
-    github: "https://github.com/xavier552/QA-Automation_practice_final_project",
+    github: "#",
     icon: Bug,
   },
 ];
