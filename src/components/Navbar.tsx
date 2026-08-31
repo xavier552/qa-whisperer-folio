@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { Menu, X, Home, FolderOpen, Mail, FileText, Briefcase, BookOpen, User } from "lucide-react";
+import { Menu, X, Home, FolderOpen, Mail, FileText, BookOpen, User } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import useClickSound from "@/hooks/useClickSound";
