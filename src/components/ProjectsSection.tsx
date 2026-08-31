@@ -17,7 +17,7 @@ const projects = [
     description:
       "Automated web interactions using Selenium + TestNG. Implemented POM framework with Cucumber BDD.",
     tech: ["Selenium WebDriver", "TestNG", "Maven", "POM"],
-    github: "https://github.com/xavier552/QA-Automation_practice_final_project",
+    github: "#",
     icon: Bug,
   },
 ];
