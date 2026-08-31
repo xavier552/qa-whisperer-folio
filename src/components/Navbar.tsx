@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { Menu, X, Home, FolderOpen, Mail, FileText, Briefcase, BookOpen, User } from "lucide-react";
+import { Menu, X, Home, FolderOpen, Mail, FileText, BookOpen, User } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import useClickSound from "@/hooks/useClickSound";
@@ -14,7 +14,7 @@ type NavItem = {
 const navItems: NavItem[] = [
   { label: "Home", href: "home", icon: Home },
   { label: "About", href: "about", icon: User },
-  { label: "Experience", href: "experience", icon: Briefcase, route: "/experience" },
+  
   { label: "Projects", href: "projects", icon: FolderOpen },
   { label: "Blog", href: "blog", icon: BookOpen, route: "/blog" },
   { label: "Contact", href: "contact", icon: Mail },
