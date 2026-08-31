@@ -89,7 +89,14 @@ const ExperiencePage = () => {
                 <div className="p-5 sm:p-6 md:p-8 border-b border-border/50">
                   <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
                     <div>
-                      <h2 className="text-xl md:text-2xl font-bold mb-1">{exp.role}</h2>
+                      <div className="flex flex-wrap items-center gap-2 mb-1">
+                        <h2 className="text-xl md:text-2xl font-bold">{exp.role}</h2>
+                        {exp.current && (
+                          <span className="text-[10px] font-mono uppercase tracking-widest text-neon bg-neon/10 border border-neon/30 px-2 py-0.5 rounded-full animate-pulse">
+                            Current
+                          </span>
+                        )}
+                      </div>
                       <p className="text-neon font-medium">{exp.company}</p>
                     </div>
                     <div className="flex flex-col gap-1 text-sm text-muted-foreground sm:text-right shrink-0">
@@ -106,7 +113,9 @@ const ExperiencePage = () => {
                   <p className="text-muted-foreground text-sm mt-4 leading-relaxed">{exp.summary}</p>
                 </div>
 
+                {(exp.responsibilities.length > 0 || exp.achievements.length > 0 || exp.tech.length > 0) && (
                 <div className="p-5 sm:p-6 md:p-8 space-y-8">
+                  {exp.responsibilities.length > 0 && (
                   <div>
                     <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground/70 mb-4">What I Do</h3>
                     <ul className="space-y-3">
@@ -118,8 +127,10 @@ const ExperiencePage = () => {
                       ))}
                     </ul>
                   </div>
+                  )}
 
                   <div className="grid sm:grid-cols-2 gap-8">
+                    {exp.achievements.length > 0 && (
                     <div>
                       <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground/70 mb-4 flex items-center gap-2">
                         <Trophy size={14} className="text-neon" />
@@ -134,7 +145,9 @@ const ExperiencePage = () => {
                         ))}
                       </ul>
                     </div>
+                    )}
 
+                    {exp.tech.length > 0 && (
                     <div>
                       <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground/70 mb-4 flex items-center gap-2">
                         <Wrench size={14} className="text-neon" />
@@ -146,8 +159,10 @@ const ExperiencePage = () => {
                         ))}
                       </div>
                     </div>
+                    )}
                   </div>
                 </div>
+                )}
               </div>
             </FadeInUp>
           ))}
