@@ -45,7 +45,7 @@ const AboutSection = () => {
              A detail-oriented QA Engineer based in Kochi, Kerala, India, with 2+ years of hands-on experience in manual testing, test automation, API validation, and performance testing.
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              specialize in web and mobile application testing, with a strong focus on functional quality, reliability, and user experience. Passionate about shift-left testing practices, I believe in integrating quality throughout the entire Software Development Life Cycle (SDLC) to identify issues early and deliver reliable, high-quality software.
+             I specialize in web and mobile application testing, with a strong focus on functional quality, reliability, and user experience. Passionate about shift-left testing practices, I believe in integrating quality throughout the entire Software Development Life Cycle (SDLC) to identify issues early and deliver reliable, high-quality software.
             </p>
             <button
               onClick={() => navigate("/about")}
