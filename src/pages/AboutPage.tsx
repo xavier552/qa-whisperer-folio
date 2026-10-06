@@ -41,17 +41,13 @@ const AboutPage = () => {
 
           <div className="md:col-span-2 space-y-4">
             <p className="text-muted-foreground leading-relaxed">
-              I am a Software Quality Engineer with 1.8+ years of hands-on experience in manual testing, currently working with Zerone Consulting Pvt.Ltd.
-              
+              I am a Software Quality Engineer with 2+ years of hands-on experience in software testing, currently working at Zerone Consulting Pvt. Ltd. I specialize in web and mobile application testing, with a strong focus on delivering stable, reliable, and user-centric software through structured testing practices.
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              I specialize in web & mobile application testing across Android and iOS platforms, ensuring stable releases through structured testing practices including functional, regression, and usability testing.
+              My experience includes functional, regression, usability, compatibility, and exploratory testing, along with defect identification, reporting, verification, and release validation. While my professional experience has primarily focused on manual testing, I also have a strong understanding of test automation concepts and modern QA practices.
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              Although my professional experience has been focused on manual testing, I also have knowledge of test automation concepts and tools. I am passionate about shift-left testing practices, collaborating closely with development teams to identify issues early and maintain product quality.
-            </p>
-            <p className="text-muted-foreground leading-relaxed">
-              My toolkit includes Java, SQL, Selenium WebDriver, Postman, JMeter, along with analytics platforms such as Firebase, MoEngage, and CleverTap.
+              I am particularly passionate about shift-left testing and early quality involvement throughout the Software Development Life Cycle (SDLC). I work closely with developers and cross-functional teams to identify issues early, improve test coverage, and contribute to delivering high-quality software with every release.
             </p>
 
             <div className="p-4 bg-neon/5 border border-neon/20 rounded-lg">
