@@ -99,7 +99,18 @@ const ExperiencePage = () => {
                           </span>
                         )}
                       </div>
-                      <p className="text-neon font-medium">{exp.company}</p>
+                      {exp.website ? (
+                        <a
+                          href={exp.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-neon font-medium hover:underline underline-offset-4 transition-colors hover:text-neon/80"
+                        >
+                          {exp.company}
+                        </a>
+                      ) : (
+                        <p className="text-neon font-medium">{exp.company}</p>
+                      )}
                     </div>
                     <div className="flex flex-col gap-1 text-sm text-muted-foreground sm:text-right shrink-0">
                       <span className="flex items-center gap-1.5 sm:justify-end">
@@ -110,6 +121,13 @@ const ExperiencePage = () => {
                         <MapPin size={13} className="text-neon/70" />
                         {exp.location}
                       </span>
+                      <Link
+                        to="/tested-apps"
+                        className="group mt-1 inline-flex w-fit items-center gap-1.5 self-start rounded-full border border-border/70 bg-card/60 px-3 py-1.5 text-[11px] font-mono uppercase tracking-wider text-muted-foreground transition-all duration-300 hover:border-neon/40 hover:bg-neon/5 hover:text-neon sm:self-end"
+                      >
+                        <ArrowUpRight size={12} className="text-neon/60 transition-colors group-hover:text-neon" />
+                        View Works
+                      </Link>
                     </div>
                   </div>
                   <p className="text-muted-foreground text-sm mt-4 leading-relaxed">{exp.summary}</p>
