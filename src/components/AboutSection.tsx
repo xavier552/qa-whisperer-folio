@@ -42,7 +42,7 @@ const AboutSection = () => {
             className="space-y-4"
           >
             <p className="text-muted-foreground leading-relaxed">
-              A detail-oriented QA Engineer based in Kochi, Kerala, India with 1.8+ years of hands-on experience in manual testing, automation, API validation, and performance testing.
+              A detail-oriented QA Engineer based in Kochi, Kerala, India with 2+ years of hands-on experience in manual testing, automation, API validation, and performance testing.
             </p>
             <p className="text-muted-foreground leading-relaxed">
               I specialize in web & mobile application testing across Android & iOS platforms, and I'm passionate about shift-left testing practices — embedding quality throughout the entire SDLC.
