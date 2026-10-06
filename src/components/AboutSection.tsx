@@ -42,10 +42,10 @@ const AboutSection = () => {
             className="space-y-4"
           >
             <p className="text-muted-foreground leading-relaxed">
-              A detail-oriented QA Engineer based in Kochi, Kerala, India with 2+ years of hands-on experience in manual testing, automation, API validation, and performance testing.
+             A detail-oriented QA Engineer based in Kochi, Kerala, India, with 2+ years of hands-on experience in manual testing, test automation, API validation, and performance testing.
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              I specialize in web & mobile application testing across Android & iOS platforms, and I'm passionate about shift-left testing practices — embedding quality throughout the entire SDLC.
+              specialize in web and mobile application testing, with a strong focus on functional quality, reliability, and user experience. Passionate about shift-left testing practices, I believe in integrating quality throughout the entire Software Development Life Cycle (SDLC) to identify issues early and deliver reliable, high-quality software.
             </p>
             <button
               onClick={() => navigate("/about")}
