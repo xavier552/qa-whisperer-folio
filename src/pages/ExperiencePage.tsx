@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { Calendar, MapPin, Trophy, Wrench } from "lucide-react";
+import { Link } from "react-router-dom";
+import { ArrowUpRight, Calendar, MapPin, Trophy, Wrench } from "lucide-react";
 import SubPageHeader from "@/components/SubPageHeader";
 import FadeInUp from "@/components/FadeInUp";
 
@@ -20,6 +21,7 @@ const experiences = [
   {
     role: "Associate QA",
     company: "Appmaker.xyz",
+    website: "https://appmaker.xyz/",
     location: "Kochi, India",
     period: "Oct 2024 — Mar 2026",
     type: "Full-time",
